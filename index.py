@@ -17,16 +17,6 @@ def main():
     game.add_player(id_deck="jug2")
     game.add_player(id_deck="jug3")
     game.add_player(id_deck="jug4")
-    
-    game.add_player(id_deck="jug4")
-    game.add_player(id_deck="jug4")
-    game.add_player(id_deck="jug4")
-    game.add_player(id_deck="jug4")
-    game.add_player(id_deck="jug4")
-    game.add_player(id_deck="jug4")
-    game.add_player(id_deck="jug4")
-    game.add_player(id_deck="jug4")
-    game.add_player(id_deck="jug4")
     game.add_playzone(id_deck="mesa",visible=True)
     
     game.add_deckdraw(id_deck="Mazo para robar", cards=[["As",2,3,4,5,6,7,8,9,10,"J","Q","K"],["espadas","oros","bastos","copas"]],visible=False)
