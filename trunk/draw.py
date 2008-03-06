@@ -79,8 +79,8 @@ class draw:
     def show_card(self,card,position=(0,0),n=0):
         if position==None:
             position=self.screen.get_rect().center
-            
-        image =  pygame.image.load( os.path.join(os.path.dirname(sys.argv[0]), 'c.png'))
+        theme=os.path.join('themes', self.theme )
+        image = pygame.image.load( os.path.join(os.path.dirname(sys.argv[0]), os.path.join( theme ,'c.png') ) )
         image=pygame.transform.rotate(image, 360*n)
         rect = image.get_rect()
         rect.center = position
