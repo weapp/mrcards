@@ -4,6 +4,7 @@ import sys
 import pygame
 import os
 
+
 class gamezone:
 
     def set_down_func(self,down_func):
@@ -12,21 +13,23 @@ class gamezone:
             self.down_func[pygame.K_ESCAPE]=sys.exit
 
     def set_up_func(self,up_func):
-        self.up_func=up_func    
+        self.up_func=up_func
 
-    def __init__(self,caption="unnamed",down_func={},up_func={}):
+    def __init__(self,game_rules=False,caption="Untitled",down_func={},up_func={}):
+        self.rules=game_rules
         self.keys_decriptions="F5:Reload  Esc:Exit  Down:Toggle Fullscreen  D:Draw a card\n" + \
                               "[1-10]:Add to/Rem from Selection  Z:Clear Selection  T,Return:Throws \n" + \
                               "E:End Turn  S:Sort by suit N:Sort by number  P:sort by points"
-    
-        self.draw=draw.draw(self)
+        self.terminable_turn=True
+
+        self.draw=draw.draw(self,caption)
         
         self.down_func=down_func
         if not self.down_func.has_key(pygame.K_ESCAPE):
             self.down_func[pygame.K_ESCAPE]=sys.exit
         
+            
         self.up_func=up_func
-    
         self.player_with_turn=0
         self.clockwise_direction=True
         self.pass_turns_counter=0 #contador de turnos sin tiradas
@@ -43,35 +46,61 @@ class gamezone:
         self.playzone_active=self.playzone_default
         self.deckdiscard_active=0
         
+        
+        try: self.keys_descriptions=rules.keys_descriptions
+        except: pass
+        try: self.terminable_turn=rules.terminable_turn
+        except: pass
+        
+        
+        
+        try: self.player=self.players[self.player_with_turn]
+        except: pass
+        
     #seleccionar
-    def seleccionar(self,n):
-        player=self.players[self.player_with_turn]
-        if n<len(player.cards):#player.clickable and 
-            player.cards[n].select_card()
+    def select(self,n):
+        if n<len(self.player.cards):#self.player.clickable and 
+            self.player.cards[n].select_card()
+            try: self.rules.select()
+            except: pass
             self.show()
         
     def clear_selection(self):
-        player=self.players[self.player_with_turn]
-        #if player.clickable:
-        player.clear_selection_from_deck()
+        #if self.player.clickable:
+        self.player.clear_selection_from_deck()
+        try: self.rules.clear_selection()
+        except: pass
         self.show()
     
     #entre mazos    
     def throw_cards(self,playzone=None):
-        player=self.players[self.player_with_turn]
-        #if player.clickable:
-        if playzone==None:
-            playzone=self.playzone[self.playzone_active]
-        player.send(playzone)
-        self.show()
+        selection=self.player.get_selection_from_deck()
+        if self.throwable_selection(selection):
+            #if self.player.clickable:
+            if playzone==None:
+                playzone=self.playzone[self.playzone_active]
+            self.player.send(playzone)
+            try: self.rules.throw_cards(selection)
+            except: pass
+            self.show()
+    
+    def throwable_selection(self,selection):
+        try: r=self.rules.throwable_selection(selection)
+        except: 
+            r=True
+        finally:
+            return r
     
     def draw_a_card(self,n=1):
-        player=self.players[self.player_with_turn]
-        player.draw_a_card(self.deckdraws[0],n)
+        self.player.draw_a_card(self.deckdraws[0],n)
+        try: self.rules.draw_a_card()
+        except: pass
         self.draw.show()
         
     def deal(self,n):
         self.deckdraws[0].deal(n,self.players)
+        try: self.rules.deal()
+        except: pass
         self.draw.show()
     
     #anyadir
@@ -115,6 +144,7 @@ class gamezone:
         else:
             player=deck.deck(id_deck=id_deck,cards=cards,visible=visible,maxcards=maxcards,clickable=clickable)
         self.players.append(player)
+        self.player=self.players[self.player_with_turn]
     
     def show(self):
         self.draw.show()
@@ -124,9 +154,19 @@ class gamezone:
         #acciones especiales
     def pass_turn(self):
         self.pass_turns_counter+=1
-        self.end_turn()
+        try: self.rules.pass_turn()
+        except: pass
+        self.ending_turn(pass_turn=True)
         
     def end_turn(self):
+        if self.terminable_turn:
+            try: self.rules.end_turn()
+            except: pass
+            self.ending_turn()
+            
+    def ending_turn(self,pass_turn=False):
+        if not pass_turn:
+            self.pass_turns_counter=0
         if self.clockwise_direction:
             self.player_with_turn+=1
         else:
@@ -134,6 +174,9 @@ class gamezone:
         if self.player_with_turn==0:
             self.turn+=1
         self.player_with_turn%=len(self.players)
+        self.player=self.players[self.player_with_turn]
+        try: self.rules.ending_turn()
+        except: pass
         self.show()
 
         
@@ -142,14 +185,11 @@ class gamezone:
         pass#plantarse o retirarse TODO no puede estar bien, no es lo mismo no apostar mas que dejar el juego
         
         #acciones
-    
-    
     def discard(self,deckdiscard=None):
-        player=self.players[self.player_with_turn]
-        #if player.clickable:
+        #if self.player.clickable:
         if deckdiscard==None:
             deckdiscard=self.deckdiscard[self.deckdiscard_active]
-        player.send(deckdiscard)
+        self.player.send(deckdiscard)
         self.show()
         
     def sort_by_suit(self):
@@ -158,16 +198,12 @@ class gamezone:
         self.show()
         
     def sort_by_number(self):
-        player=self.players[self.player_with_turn]
-        player.sort_by_number()
+        self.player.sort_by_number()
         self.show()
         
     def sort_by_points(self):
-        player=self.players[self.player_with_turn]
-        player.sort_by_points()
+        self.player.sort_by_points()
         self.show()
-    
-    
     
     def __str__(self):
         r="_________GAME_________"
@@ -187,7 +223,7 @@ class gamezone:
             r+=" "+str(card)+""
         r+="\n\nSelection (jug actual):"
         r+="\n    "
-        for card in self.players[self.player_with_turn].get_selection_from_deck():
+        for card in self.player.get_selection_from_deck():
             r+=" "+str(card)+""
         r+="\n\n______________________"
         r+="\n"+self.keys_decriptions

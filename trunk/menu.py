@@ -1,24 +1,39 @@
 import pygame
 import sys
-
+import os
 
 #    font = pygame.font.SysFont("Akbar",30)
 #    surfont = font.render("Eggs are good for you, but not on the eiffel tower",True,(0,255,255))
 #    screen.blit(surfont, surfont.get_rect())
 class Menu:
-    def __init__(self, options,margen_sup=0,margen_izq=0,interlineado=20,letra=("Akbar",90,(0,125,255),(0,225,255)),color_base=(113,113,113),color_selec=(213,213,213),menuEnBucle=True):
+    def __init__(self,options,margen_sup=0,margen_izq=0,interlineado=20,letra=("Akbar",90,(0,125,255),(0,225,255)),color_base=(),color_selec=(213,213,213),menuEnBucle=True):
+        
+        # Inicializacion
+        pygame.init()
+        # pantalla a 640x480
+        scrn_anch=640
+        scrn_alto=480
+        self.screen = screen= pygame.display.set_mode((scrn_anch, scrn_alto), pygame.DOUBLEBUF | pygame.HWSURFACE)
+        # se asigna el nombre de la ventana
+        pygame.display.set_caption('Menu')
+        
+        theme=os.path.join('themes', 'default' )
+        
+        fondo = pygame.image.load( os.path.join(os.path.dirname(sys.argv[0]), os.path.join( theme ,'tapete.png') ) ).convert()
+        
+        fondo=pygame.transform.scale(fondo, screen.get_size())
+        screen.blit(fondo, fondo.get_rect())
+        
         self.options=options
         self.position=0
         self.margen_sup=margen_sup
         self.margen_izq=margen_izq
         self.interlineado=interlineado
-        self.screen=pygame.display.get_surface()
+        self.screen=screen
         self.menuEnBucle=menuEnBucle
         
         self.color_base=color_base
         self.color_selec=color_selec
-        
-        #a=hsl2rgb.hsl2rgb(letra[2][0],letra[2][1],letra[2][2])
         
         self.font = pygame.font.SysFont(letra[0],letra[1])
         self.surfont=[]
@@ -34,6 +49,15 @@ class Menu:
         self.alto=self.surfont[0].get_height()
         
     def update(self):
+           
+
+        theme=os.path.join('themes', 'default' )
+        
+        fondo = pygame.image.load( os.path.join(os.path.dirname(sys.argv[0]), os.path.join( theme ,'tapete.png') ) ).convert()
+        
+        fondo=pygame.transform.scale(fondo, self.screen.get_size())
+        self.screen.blit(fondo, fondo.get_rect())
+
         #actuacion en caso de que se salga del array
         if self.menuEnBucle:
             self.position=self.position%len(self.options)
@@ -54,8 +78,11 @@ class Menu:
                 pygame.draw.rect(self.screen, self.color_selec, rect)
                 self.surfont[i]=self.font.render(self.options[i],True,self.colorletra[1])
             else:
-                pygame.draw.rect(self.screen, self.color_base, rect)
-                self.surfont[i]=self.font.render(self.options[i],True,self.colorletra[0])
+                if len(self.color_base)==0:
+                    self.surfont[i]=self.font.render(self.options[i],True,self.colorletra[0])
+                else:
+                    pygame.draw.rect(self.screen, self.color_base, rect)
+                    self.surfont[i]=self.font.render(self.options[i],True,self.colorletra[0])
 
             self.screen.blit(self.surfont[i], rect)
     
@@ -69,3 +96,6 @@ class Menu:
     def up(self):
         self.position-=1
         self.update()
+        
+    def obtain_position(self):
+        return self.position

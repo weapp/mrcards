@@ -49,16 +49,6 @@ class draw:
         self.font=pygame.font.Font(pygame.font.get_default_font(),12)
         
         pygame.display.flip()
-        for i in range (39):
-            z=i**10*100+2500
-            t=z-1**100**2000
-            t=t-1**100**2000
-            t=t-1**100**2000
-            t=t-1**100**2000
-            t=z-1**100**2000
-            t=t-1**100**2000
-            t=t-1**100**2000
-            t=t-1**100**2000
         
     def show(self):
         size=self.screen.get_size()
