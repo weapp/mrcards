@@ -15,13 +15,17 @@ class gamezone:
         self.up_func=up_func    
 
     def __init__(self,caption="unnamed",down_func={},up_func={}):
+        self.keys_decriptions="F5:Reload  Esc:Exit  Down:Toggle Fullscreen  D:Draw a card\n" + \
+                              "[1-10]:Add to/Rem from Selection  Z:Clear Selection  T,Return:Throws \n" + \
+                              "E:End Turn  S:Sort by suit N:Sort by number  P:sort by points"
+    
         self.draw=draw.draw(self)
         
         self.down_func=down_func
         if not self.down_func.has_key(pygame.K_ESCAPE):
             self.down_func[pygame.K_ESCAPE]=sys.exit
         
-        self.up_func=up_func    
+        self.up_func=up_func
     
         self.player_with_turn=0
         self.clockwise_direction=True
@@ -51,7 +55,8 @@ class gamezone:
         #if player.clickable:
         player.clear_selection_from_deck()
         self.show()
-        
+    
+    #entre mazos    
     def throw_cards(self,playzone=None):
         player=self.players[self.player_with_turn]
         #if player.clickable:
@@ -59,7 +64,16 @@ class gamezone:
             playzone=self.playzone[self.playzone_active]
         player.send(playzone)
         self.show()
+    
+    def draw_a_card(self,n=1):
+        player=self.players[self.player_with_turn]
+        player.draw_a_card(self.deckdraws[0],n)
+        self.draw.show()
         
+    def deal(self,n):
+        self.deckdraws[0].deal(n,self.players)
+        self.draw.show()
+    
     #anyadir
     def add_playzone(self,id_deck,cards=[[],[]],visible=False,maxcards=0,clickable=False,point=False):
         if point:
@@ -137,6 +151,21 @@ class gamezone:
             deckdiscard=self.deckdiscard[self.deckdiscard_active]
         player.send(deckdiscard)
         self.show()
+        
+    def sort_by_suit(self):
+        player=self.players[self.player_with_turn]
+        player.sort_by_suit()
+        self.show()
+        
+    def sort_by_number(self):
+        player=self.players[self.player_with_turn]
+        player.sort_by_number()
+        self.show()
+        
+    def sort_by_points(self):
+        player=self.players[self.player_with_turn]
+        player.sort_by_points()
+        self.show()
     
     
     
@@ -161,7 +190,7 @@ class gamezone:
         for card in self.players[self.player_with_turn].get_selection_from_deck():
             r+=" "+str(card)+""
         r+="\n\n______________________"
-        r+="\nF5:Reload  [1-10]:Add to/Rem from Selection  Z:Clear Selection  T:Throws  E:End Turn "
+        r+="\n"+self.keys_decriptions
         #self.show()
         return r
     

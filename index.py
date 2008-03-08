@@ -17,14 +17,35 @@ def main():
     game.add_player(id_deck="jug2")
     game.add_player(id_deck="jug3")
     game.add_player(id_deck="jug4")
+    
+    game.add_player(id_deck="jug1")
+    game.add_player(id_deck="jug2")
+    game.add_player(id_deck="jug3")
+    game.add_player(id_deck="jug4")
+    
     game.add_playzone(id_deck="mesa",visible=True)
     
-    game.add_deckdraw(id_deck="Mazo para robar", cards=[["As",2,3,4,5,6,7,8,9,10,"J","Q","K"],["espadas","oros","bastos","copas"]],visible=False)
+    
+    def points_tute(number,suit):
+        r=0
+        if number=="As":
+            r=11
+        elif number==3:
+            r=10
+        elif number=="J":
+            r=2
+        elif number=="Q":
+            r=3
+        elif number=="K":
+            r=4
+        return r
+            
+    game.add_deckdraw(id_deck="Mazo para robar", cards=[["As",2,3,4,5,6,7,8,9,10,"J","Q","K"],["espadas","oros","bastos","copas"]],visible=False,point=points_tute)
     
     game.deckdraws[0].shuffle()
     
-    game.players[0].draw(1,game.deckdraws[0]) #robar una carta
-    game.deckdraws[0].deal(1,game.players) #repartir cartas   
+    game.draw_a_card() #robar una carta
+    game.deal(4) #repartir cartas   
     
     print game
     
@@ -49,8 +70,12 @@ def main():
             pygame.K_0      :   [game.seleccionar,9], \
             pygame.K_z      :   game.clear_selection, \
             pygame.K_t      :   game.throw_cards, \
-            pygame.K_RETURN  :   game.throw_cards, \
+            pygame.K_RETURN :   game.throw_cards, \
             pygame.K_e      :   game.end_turn, \
+            pygame.K_s      :   game.sort_by_suit, \
+            pygame.K_n      :   game.sort_by_number, \
+            pygame.K_p      :   game.sort_by_points, \
+            pygame.K_d      :   game.draw_a_card, \
     }
     
     game.set_down_func(down_func)
