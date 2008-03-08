@@ -61,6 +61,7 @@ class deck:
         self.rem_cards(selection)
     
     def add_card(self,card):
+        card.change_owner(self)
         self.cards.append(card)
         card.setVisibility(self.visible)
         

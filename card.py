@@ -40,7 +40,7 @@ class card:
         
     def change_owner(self, new_owner):
         self.previous_owner=self.actual_owner
-        self.actual_owner=new_
+        self.actual_owner=new_owner
 
 #seleccion de cartas                               ----- TERMINADO
     def select_card(self):#si no esta seleccionada: seleccionar. si lo esta: eliminar
