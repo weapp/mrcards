@@ -39,24 +39,26 @@ class deck:
         
     def sort_by_points(self):
         self.cards.sort(CmpAttr("points"))
-        
 
     #cambiar cartas entre mazos
     def deal(self,n,decks):#repartir
-        for deck in decks:
-            deck.draw(n,self)
+        for i in range(n):
+            for deck in decks:
+                deck.draw_a_card(self,1)
     
-    def draw(self,n,deck):
+    def draw_a_card(self,deck,n=1):
         #for i in range(len(self.cards)):
         for i in range(n):
-            self.add_card(deck.cards[0])
-            deck.rem_card(deck.cards[0])
+            if len(deck.cards)>0:
+                self.add_card(deck.cards[0])
+                deck.rem_card(deck.cards[0])
         #pass#robar,si no se le indica nada se utilizara el mazo definido arriba.
     
     def send(self,deck):#la seleccion #eviar a un jugador o zona
-        deck.add_cards(self.get_selection_from_deck())
-        self.rem_cards(self.get_selection_from_deck())
+        selection=self.get_selection_from_deck()
+        deck.add_cards(selection)
         self.clear_selection_from_deck()
+        self.rem_cards(selection)
     
     def add_card(self,card):
         self.cards.append(card)
