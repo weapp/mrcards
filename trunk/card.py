@@ -23,16 +23,16 @@ class card:
     def setVisibility(self, new_visibility):
         self.visible=new_visibility
     
-    def getId(self):
+    def get_Id(self):
         return self.id
     
-    def getSuit(self):
+    def get_suit(self):
         return self.suit
     
-    def getNum(self):
+    def get_number(self):
         return self.number
         
-    def getPoints(self):
+    def get_points(self):
         return self.points
     
     def is_visible(self):

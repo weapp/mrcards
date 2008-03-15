@@ -1,34 +1,24 @@
 import deck
-import draw
+import drawer
 import sys
 import pygame
 import os
+import actions
 
 
-class gamezone:
-
-    def set_down_func(self,down_func):
-        self.down_func=down_func
-        if not self.down_func.has_key(pygame.K_ESCAPE):
-            self.down_func[pygame.K_ESCAPE]=sys.exit
-
-    def set_up_func(self,up_func):
-        self.up_func=up_func
-
-    def __init__(self,game_rules=False,caption="Untitled",down_func={},up_func={}):
-        self.rules=game_rules
+class Gamezone:
+    def __init__(self,rules=False,down_func={},up_func={}):
+        self.actions=actions.Actions(self,rules)
+        self.rules=self.actions.rules
+        
+        self.drawer=drawer.Drawer(self,caption=self.rules.caption)
         self.keys_decriptions="F5:Reload  Esc:Exit  Down:Toggle Fullscreen  D:Draw a card\n" + \
                               "[1-10]:Add to/Rem from Selection  Z:Clear Selection  T,Return:Throws \n" + \
                               "E:End Turn  S:Sort by suit N:Sort by number  P:sort by points"
-        self.terminable_turn=True
-
-        self.draw=draw.draw(self,caption)
-        
         self.down_func=down_func
         if not self.down_func.has_key(pygame.K_ESCAPE):
             self.down_func[pygame.K_ESCAPE]=sys.exit
         
-            
         self.up_func=up_func
         self.player_with_turn=0
         self.clockwise_direction=True
@@ -40,70 +30,58 @@ class gamezone:
         self.deckdiscard=[]
         self.deckpoints=[]
         self.playzone=[]
+        
         self.selection=deck.deck(id_deck="selection",visible=True)
+        self.throws=[]
+        
         self.player_default=0
         self.playzone_default=0
         self.playzone_active=self.playzone_default
         self.deckdiscard_active=0
-        
+        self.user = 0
         
         try: self.keys_descriptions=rules.keys_descriptions
         except: pass
-        try: self.terminable_turn=rules.terminable_turn
-        except: pass
         
         
         
-        try: self.player=self.players[self.player_with_turn]
-        except: pass
         
-    #seleccionar
-    def select(self,n):
-        if n<len(self.player.cards):#self.player.clickable and 
-            self.player.cards[n].select_card()
-            try: self.rules.select()
+        
+    def __getattr__(self,attr):
+        if attr=="p":
+            return self.players
+        elif attr=="pwt":
+            return self.player_with_turn
+        elif attr=="last_throw":
+            return self.throws[len(self.throws)-1]
+        elif attr=="terminable_turn":
+            try: return rules.terminable_turn()
+            except: return True
+        elif attr=="player":
+            try: return self.players[self.player_with_turn]
             except: pass
-            self.show()
-        
-    def clear_selection(self):
-        #if self.player.clickable:
-        self.player.clear_selection_from_deck()
-        try: self.rules.clear_selection()
-        except: pass
-        self.show()
-    
-    #entre mazos    
-    def throw_cards(self,playzone=None):
-        selection=self.player.get_selection_from_deck()
-        if self.throwable_selection(selection):
-            #if self.player.clickable:
-            if playzone==None:
-                playzone=self.playzone[self.playzone_active]
-            self.player.send(playzone)
-            try: self.rules.throw_cards(selection)
+            
+    def __setattr__(self, attr, value):
+        if attr=="p":
+            self.players=value
+        elif attr=="pwt":
+            self.player_with_turn=value
+        elif attr=="player":
+            try: self.players[self.player_with_turn]=value
             except: pass
-            self.show()
-    
-    def throwable_selection(self,selection):
-        try: r=self.rules.throwable_selection(selection)
-        except: 
-            r=True
-        finally:
-            return r
-    
-    def draw_a_card(self,n=1):
-        self.player.draw_a_card(self.deckdraws[0],n)
-        try: self.rules.draw_a_card()
-        except: pass
-        self.draw.show()
+        else:
+            self.__dict__[ attr] = value
+
         
-    def deal(self,n):
-        self.deckdraws[0].deal(n,self.players)
-        try: self.rules.deal()
-        except: pass
-        self.draw.show()
-    
-    #anyadir
+    def set_down_func(self,down_func):
+        self.down_func=down_func
+        if not self.down_func.has_key(pygame.K_ESCAPE):
+            self.down_func[pygame.K_ESCAPE]=sys.exit
+
+    def set_up_func(self,up_func):
+        self.up_func=up_func
+
+    #anyadir mazos
     def add_playzone(self,id_deck,cards=[[],[]],visible=False,maxcards=0,clickable=False,point=False):
         if point:
             playzone=deck.deck(id_deck=id_deck,cards=cards,visible=visible,maxcards=maxcards,clickable=clickable,point=point)
@@ -131,7 +109,7 @@ class gamezone:
             if len(self.players)==self.player_default:
                 visible=True
             else:
-                visible=False
+                visible=True
                 
         if clickable == None:
             if len(self.players)==self.player_default:
@@ -145,65 +123,9 @@ class gamezone:
             player=deck.deck(id_deck=id_deck,cards=cards,visible=visible,maxcards=maxcards,clickable=clickable)
         self.players.append(player)
         self.player=self.players[self.player_with_turn]
-    
-    def show(self):
-        self.draw.show()
-        print self
-    
-    
-        #acciones especiales
-    def pass_turn(self):
-        self.pass_turns_counter+=1
-        try: self.rules.pass_turn()
-        except: pass
-        self.ending_turn(pass_turn=True)
-        
-    def end_turn(self):
-        if self.terminable_turn:
-            try: self.rules.end_turn()
-            except: pass
-            self.ending_turn()
-            
-    def ending_turn(self,pass_turn=False):
-        if not pass_turn:
-            self.pass_turns_counter=0
-        if self.clockwise_direction:
-            self.player_with_turn+=1
-        else:
-            self.player_with_turn-=1
-        if self.player_with_turn==0:
-            self.turn+=1
-        self.player_with_turn%=len(self.players)
-        self.player=self.players[self.player_with_turn]
-        try: self.rules.ending_turn()
-        except: pass
-        self.show()
 
-        
-        
-    def stick(self):
-        pass#plantarse o retirarse TODO no puede estar bien, no es lo mismo no apostar mas que dejar el juego
-        
-        #acciones
-    def discard(self,deckdiscard=None):
-        #if self.player.clickable:
-        if deckdiscard==None:
-            deckdiscard=self.deckdiscard[self.deckdiscard_active]
-        self.player.send(deckdiscard)
-        self.show()
-        
-    def sort_by_suit(self):
-        player=self.players[self.player_with_turn]
-        player.sort_by_suit()
-        self.show()
-        
-    def sort_by_number(self):
-        self.player.sort_by_number()
-        self.show()
-        
-    def sort_by_points(self):
-        self.player.sort_by_points()
-        self.show()
+       
+
     
     def __str__(self):
         r="_________GAME_________"
@@ -219,19 +141,23 @@ class gamezone:
             r+="\n    "+str(deck)
         r+="\n\nSelection:"
         r+="\n    "
-        for card in self.players[0].get_selection_from_deck():
+        for card in self.players[0].selection:
             r+=" "+str(card)+""
         r+="\n\nSelection (jug actual):"
         r+="\n    "
-        for card in self.player.get_selection_from_deck():
+        for card in self.players[self.player_with_turn].get_selection_from_deck():
             r+=" "+str(card)+""
         r+="\n\n______________________"
         r+="\n"+self.keys_decriptions
         #self.show()
         return r
+        
+    #pintar
+    def show(self):
+        self.drawer.show()
+        print self
     
-    
-    
+    #bucle
     def init_bucle(self):
         self.clock = pygame.time.Clock()
         # Bucle principal
@@ -266,7 +192,7 @@ class gamezone:
                     dic_func=self.up_func
                             
                 if event.type == pygame.KEYDOWN or event.type == pygame.KEYUP:
-                    if (dic_func.has_key(event.key)):
+                    if dic_func.has_key(event.key):# and self.player_with_turn == self.user:
                         
                         if(type(dic_func[event.key])==type([])):
                             tmp_fun=dic_func[event.key][0]
@@ -280,12 +206,10 @@ class gamezone:
                                 tmp_fun(tmp_arg)
                         else:
                             dic_func[event.key]()
+ 
 
             # Refresco de pantalla
-            pygame.display.flip()    
+            pygame.display.flip()
 
-
-
-
-def pint(self,x="tecla",y="pulsada"):
-    print "evento:",x,y
+    def exit(self):
+        sys.exit()
