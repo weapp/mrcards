@@ -5,7 +5,7 @@ from math import sin, cos,pi
 import menu
 import random
 
-class draw:
+class Drawer:
     def __init__(self,gamezone,caption="Untitled",theme="default"):
         self.ancho=50
         self.alto=80
@@ -82,7 +82,7 @@ class draw:
         if position==None:
             position=self.screen.get_rect().center
             
-            len_cards=len(deck.cards)
+            len_cards=len(deck)
             
         if show_mode=="circular" and (not pars==None) and len(pars)==4:
             center=position
@@ -107,10 +107,10 @@ class draw:
             for i in range(len_cards):
                 position[0] = pos[0]+i*padding_width * cos(n_tmp*2*pi)
                 position[1] = pos[1]-i*padding_width * sin(n_tmp*2*pi)
-                self.show_card(deck.cards[i],position,n_tmp,random_cards)
+                self.show_card(deck[i],position,n_tmp,random_cards)
         else:
             for i in range(len_cards):
-                self.show_card(deck.cards[i],(position[0]-i,position[1]),random_cards=random_cards)
+                self.show_card(deck[i],(position[0]-i,position[1]),random_cards=random_cards)
 
     def show_card(self,card,position=[0,0],n=0,random_cards=False):
         if position==None:

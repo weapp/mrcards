@@ -1,33 +1,34 @@
 #!/usr/bin/python
 import pygame
 import sys
-from gamezone import pint
 import deck
 import gamezone
 
 def main():
-
-    #self.game.show()
-
-    rules="culo"
-    players="Player_1,Player_2,Player_3,Player_4"
     
-    for option in sys.argv:
-        if option.startswith('--game:'):
-            rules=option[7:]
-            print "Import >>> ",option[2:]
-        elif option.startswith('--players:'):
-            players=option[10:]
-            print "players >>> ",option[2:]
+    #self.gamezone.show()
     
-    rules=__import__("rules/"+rules)
-
-    game=gamezone.gamezone(caption=rules.caption,game_rules=rules)#declaramos la zona de juegos y le anyadimos los jugadores y el mazo para robar
     
-    try: rules.register_gamezone(game)
-    except: pass
+    print "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
     
-    players=players.replace('_'," ").split(",")
+    options={
+    "rules":"culo", \
+    "players":"Player_1,Player_2,Player_3,Player_4"
+    }
+    
+    for key in options.keys():
+        for option in sys.argv:
+            if option.startswith('--'+key+':'):
+                options[key]=option[ (len(key)+3) :]
+                print key , " >>> ",option[ (len(key)+2) :]
+    
+    players=options["players"].replace('_'," ").split(",")
+    rules=options["rules"]
+    
+    game=gamezone.Gamezone(rules=rules)#declaramos la zona de juegos y le anyadimos los jugadores y el mazo para robar
+    actions=game.actions
+    rules=game.rules
+    
     for player in players:
         game.add_player(id_deck=player)
     
@@ -42,7 +43,7 @@ def main():
     
     print game
     
-    game.set_down_func(eval(rules.down_func))
+    game.set_down_func(rules.down_func)
     
     game.show()
     

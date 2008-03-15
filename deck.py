@@ -29,17 +29,17 @@ class deck:
         
     #reordenar mazos
     def shuffle(self):
-        random.shuffle(self.cards)    
+        random.shuffle(self)    
         
     def sort_by_suit(self):#palo
-        self.cards.sort(CmpAttr("suit"))
+        self.sort(CmpAttr("suit"))
         
     def sort_by_number(self):
-        self.cards.sort(CmpAttr("number"))
+        self.sort(CmpAttr("number"))
         
     def sort_by_points(self):
-        self.cards.sort(CmpAttr("points"))
-
+        self.sort(CmpAttr("points"))
+    
     #cambiar cartas entre mazos
     def deal(self,n,decks):#repartir
         for i in range(n):
@@ -47,15 +47,15 @@ class deck:
                 deck.draw_a_card(self,1)
     
     def draw_a_card(self,deck,n=1):
-        #for i in range(len(self.cards)):
+        #for i in range(len(self)):
         for i in range(n):
-            if len(deck.cards)>0:
-                self.add_card(deck.cards[0])
-                deck.rem_card(deck.cards[0])
+            if len(deck)>0:
+                self.add_card(deck[0])
+                deck.rem_card(deck[0])
         #pass#robar,si no se le indica nada se utilizara el mazo definido arriba.
     
     def send(self,deck):#la seleccion #eviar a un jugador o zona
-        selection=self.get_selection_from_deck()
+        selection=self.selection
         deck.add_cards(selection)
         self.clear_selection_from_deck()
         self.rem_cards(selection)
@@ -80,10 +80,14 @@ class deck:
     def count_points(self):
         points=0
         for card in self.cards:
-            point+=card.getPoints()
+            point+=card.get_points()
         return points
                 
     #seleccion de cartas                               ----- TERMINADO
+    def select(self,n):
+        if n<len(self.cards):#self.clickable and 
+            self.cards[n].select_card()
+            
     def clear_selection_from_deck(self):
         for card in self.cards:
             card.remove_from_selection()
@@ -107,7 +111,42 @@ class deck:
         else:
             r="#"
         return self.id + ": " + r
+    
+    def __len__(self):
+        return len(self.cards)
+    
+    def __getitem__(self, clave):
+        return self.cards[clave]
+        
+    def __setitem__(self, clave, valor):
+        self.cards[clave]=valor
+    
+    def __delitem__(self, clave):
+        del self.cards[clave]
+        
+    def __getslice__(self, i, j):
+        return self.cards[i:j]
+        
+    def __setslice__(self, i, j, secuencia):
+        self.cards[i:j]=secuencia
+        
+    def __delslice__(self, i, j):
+        del self.cards[i:j]
+        
+    def __getattr__(self,attr):
+        if attr=="selection":
+            selected=[]
+            for card in self.cards:
+                if card.is_selected():
+                    selected.append(card)
+            return selected
             
+    def __gt__(self, deck): # >
+        self.send(deck)
+    
+    def sort(self,comparator):
+        self.cards.sort(comparator)
+    
 class CmpAttr:
     def __init__(self, attr):
         self.attr = attr
