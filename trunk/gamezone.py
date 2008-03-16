@@ -10,11 +10,8 @@ class Gamezone:
     def __init__(self,rules=False,down_func={},up_func={}):
         self.actions=actions.Actions(self,rules)
         self.rules=self.actions.rules
-        
         self.drawer=drawer.Drawer(self,caption=self.rules.caption)
-        self.keys_decriptions="F5:Reload  Esc:Exit  Down:Toggle Fullscreen  D:Draw a card\n" + \
-                              "[1-10]:Add to/Rem from Selection  Z:Clear Selection  T,Return:Throws \n" + \
-                              "E:End Turn  S:Sort by suit N:Sort by number  P:sort by points"
+        self.keys_descriptions="Esc:Exit"
         self.down_func=down_func
         if not self.down_func.has_key(pygame.K_ESCAPE):
             self.down_func[pygame.K_ESCAPE]=sys.exit
@@ -40,7 +37,10 @@ class Gamezone:
         self.deckdiscard_active=0
         self.user = 0
         
-        try: self.keys_descriptions=rules.keys_descriptions
+        self.localeventlist=[]
+        self.globaleventlist=[]
+        
+        try: self.keys_descriptions=self.rules.keys_descriptions
         except: pass
         
         
@@ -60,6 +60,11 @@ class Gamezone:
         elif attr=="player":
             try: return self.players[self.player_with_turn]
             except: pass
+        elif attr=="user":
+            print "\n\n\n\n\n\nNO EXISTE USER\n\n\n\n\n\n"
+            #return self.__dict__[attr]
+        else:
+            print "\n\n\n\n\n\nNO EXISTE EL ATRIBUTO:", attr,"\n\n\n\n\n\n"
             
     def __setattr__(self, attr, value):
         if attr=="p":
@@ -70,7 +75,7 @@ class Gamezone:
             try: self.players[self.player_with_turn]=value
             except: pass
         else:
-            self.__dict__[ attr] = value
+            self.__dict__[attr] = value
 
         
     def set_down_func(self,down_func):
@@ -109,7 +114,7 @@ class Gamezone:
             if len(self.players)==self.player_default:
                 visible=True
             else:
-                visible=True
+                visible=False
                 
         if clickable == None:
             if len(self.players)==self.player_default:
@@ -141,14 +146,14 @@ class Gamezone:
             r+="\n    "+str(deck)
         r+="\n\nSelection:"
         r+="\n    "
-        for card in self.players[0].selection:
+        for card in self.players[self.user].selection:
             r+=" "+str(card)+""
         r+="\n\nSelection (jug actual):"
         r+="\n    "
         for card in self.players[self.player_with_turn].get_selection_from_deck():
             r+=" "+str(card)+""
         r+="\n\n______________________"
-        r+="\n"+self.keys_decriptions
+        r+="\n"+self.keys_descriptions
         #self.show()
         return r
         
@@ -160,6 +165,7 @@ class Gamezone:
     #bucle
     def init_bucle(self):
         self.clock = pygame.time.Clock()
+        
         # Bucle principal
         while True:
             self.clock.tick(40)
@@ -170,7 +176,7 @@ class Gamezone:
                     sys.exit()
                 
                 #actualiza el screen para que cuando se cambie a pantalla completa se vea con la nueva resolucion
-                if event.type == pygame.VIDEORESIZE: 
+                if event.type == pygame.VIDEORESIZE:
                     self.screen = pygame.display.set_mode(event.size, pygame.DOUBLEBUF | pygame.HWSURFACE |  pygame.RESIZABLE ) 
                     ##print self.screen
                     self.show()
@@ -194,16 +200,24 @@ class Gamezone:
                 if event.type == pygame.KEYDOWN or event.type == pygame.KEYUP:
                     if dic_func.has_key(event.key):# and self.player_with_turn == self.user:
                         
-                        if(type(dic_func[event.key])==type([])):
+                        if type(dic_func[event.key])==type([]):
                             tmp_fun=dic_func[event.key][0]
-                            tmp_arg=dic_func[event.key][1]
+                            tmp_sco=dic_func[event.key][1] #scope:ambito:local,global
                             
-                            if(type(tmp_arg)==type({})):
-                                tmp_fun( **tmp_arg )
-                            elif(type(tmp_arg)==type([]) or type(tmp_arg)==type(())):
-                                tmp_fun( *tmp_arg )
+                            if tmp_sco=="global":
+                                if self.user==self.pwt:
+                                    self.globaleventlist.append([self.user,tmp_fun])
                             else:
-                                tmp_fun(tmp_arg)
+                                print eval(tmp_fun)
+
+                            print self.globaleventlist
+                            
+                            for event in self.globaleventlist:
+                                if event[1][-2:-1]=="(":
+                                    eval (str(event[1][:-1])+"player="+str(event[0])+")")
+                                else:
+                                    eval (str(event[1][:-1])+",player="+str(event[0])+")")
+                                del self.globaleventlist[self.globaleventlist.index(event)]
                         else:
                             dic_func[event.key]()
  

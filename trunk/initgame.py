@@ -9,8 +9,6 @@ def main():
     #self.gamezone.show()
     
     
-    print "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
-    
     options={
     "rules":"culo", \
     "players":"Player_1,Player_2,Player_3,Player_4"
