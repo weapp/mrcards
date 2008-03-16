@@ -55,20 +55,22 @@ class Actions:
         self.gz.show()
     
     #otras
-    def pass_turn(self):
+    def pass_turn(self,player=-1):
+        self.player=player
         self.gz.pass_turns_counter+=1
-        self.rules.pass_turn()
         try: self.rules.pass_turn()
         except: pass
         self.ending_turn(pass_turn=True)
         
-    def end_turn(self):
+    def end_turn(self,player=-1):
+        self.player=player
         if self.gz.terminable_turn:
             try: self.rules.end_turn()
             except: pass
             self.ending_turn()
             
     def ending_turn(self,pass_turn=False):
+        self.clear_selection()
         if not pass_turn:
             self.gz.pass_turns_counter=0
         if self.gz.clockwise_direction:
@@ -115,14 +117,48 @@ class Actions:
         self.player.sort_by_points()
         self.gz.show()
         
+    def sort(self,by):
+        if by=="suit":
+            self.gz.globaleventlist.append([self.gz.user,"self.actions.sort_by_suit()"])
+        elif by=="number":
+            self.gz.globaleventlist.append([self.gz.user,"self.actions.sort_by_number()"])
+        elif by=="points":
+            self.gz.globaleventlist.append([self.gz.user,"self.actions.sort_by_points()"])
+        
     def exit(self):
-        gamezone.exit()
+        self.gz.exit()
     
     def show(self):
-        gamezone.show()
+        self.gz.show()
         
+    def F(self,f=0):
+        for player in self.gz.players:
+            for card in player.cards:
+                card.setVisibility(False)
+                
+        if f!=10:
+            self.gz.user=f
+            self.gz.players[f].visible=False
+            
+            for card in self.gz.players[f].cards:
+                card.setVisibility(True)
+        self.show()
+        
+    def F1(self):
+        self.F(0)
+    def F2(self):
+        self.F(1)
+    def F3(self):
+        self.F(2)
+    def F4(self):
+        self.F(3)
+    def F12(self):
+        self.F(10)
+        
+    
     def __getattr__(self, attr):
         if attr=="player":
+            #print "\n\n\n\n\n------>", self.p,"<----------------------------\n\n\n\n\n\n\n\n\n"
             return self.gz.p[self.p]
             
     def __setattr__(self, attr, value):
@@ -130,6 +166,7 @@ class Actions:
             try: self.__dict__["p"] = self.gz.player_with_turn
             except:pass
         elif attr=="player":
+            print "\n\n\n\n\nset------>", value,"<----------------------------\n\n\n\n\n\n\n\n\n"
             self.__dict__["p"] = value
         else:
             self.__dict__[attr] = value

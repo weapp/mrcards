@@ -133,6 +133,9 @@ class deck:
     def __delslice__(self, i, j):
         del self.cards[i:j]
         
+    def __contains__(self, x ):
+        x in self.cards
+        
     def __getattr__(self,attr):
         if attr=="selection":
             selected=[]
@@ -140,9 +143,6 @@ class deck:
                 if card.is_selected():
                     selected.append(card)
             return selected
-            
-    def __gt__(self, deck): # >
-        self.send(deck)
     
     def sort(self,comparator):
         self.cards.sort(comparator)
