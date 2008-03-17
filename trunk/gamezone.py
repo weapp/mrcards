@@ -5,7 +5,6 @@ import pygame
 import os
 import actions
 
-
 class Gamezone:
     def __init__(self,rules=False,down_func={},up_func={}):
         self.actions=actions.Actions(self,rules)

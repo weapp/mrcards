@@ -4,9 +4,19 @@ import sys
 from math import sin, cos,pi
 import menu
 import random
+from pickle import load, dump
+
+
+pars = {'theme':'default','rules':'culo'}
+try:pars = load(open('/tmp/mrcards.dump', 'rb'))
+except:pass
+print "\n\n\ncargado pars:",pars
+
+global pars
+
 
 class Drawer:
-    def __init__(self,gamezone,caption="Untitled",theme="default"):
+    def __init__(self,gamezone,caption="Untitled"):
         self.ancho=50
         self.alto=80
         
@@ -22,10 +32,11 @@ class Drawer:
         pygame.display.set_caption(caption)
         
         self.gz=gamezone
-        self.theme=theme
+        global pars
+        self.theme=pars["theme"]
         self.screen=pygame.display.get_surface()
         
-        theme=os.path.join('themes', theme )
+        theme=os.path.join('themes', self.theme )
         
         self.fondo = pygame.image.load( os.path.join(os.path.dirname(sys.argv[0]), os.path.join( theme ,'tapete.png') ) )
         

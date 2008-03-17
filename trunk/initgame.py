@@ -4,24 +4,13 @@ import sys
 import deck
 import gamezone
 
-def main():
-    
+
+
+
+def main(rules,players):
     #self.gamezone.show()
     
-    
-    options={
-    "rules":"culo", \
-    "players":"Player_1,Player_2,Player_3,Player_4"
-    }
-    
-    for key in options.keys():
-        for option in sys.argv:
-            if option.startswith('--'+key+':'):
-                options[key]=option[ (len(key)+3) :]
-                print key , " >>> ",option[ (len(key)+2) :]
-    
-    players=options["players"].replace('_'," ").split(",")
-    rules=options["rules"]
+    players=players.replace('_'," ").split(",")
     
     game=gamezone.Gamezone(rules=rules)#declaramos la zona de juegos y le anyadimos los jugadores y el mazo para robar
     actions=game.actions
@@ -47,4 +36,14 @@ def main():
     
     game.init_bucle()
     
-if __name__ == "__main__": main()
+if __name__ == "__main__":
+    options={
+    "rules":"culo", \
+    "players":"Player_1,Player_2,Player_3,Player_4"
+    }
+    for key in options.keys():
+        for option in sys.argv:
+            if option.startswith('--'+key+':'):
+                options[key]=option[ (len(key)+3) :]
+                print key , " >>> ",option[ (len(key)+2) :]
+    main(**options)

@@ -12,6 +12,7 @@ class Game:
         self.throws=[]
         self.ai=AI()
         self.caption="Culo"
+        self.decription="Game of Culo"
         self.playzone=True
         self.deckdraws=[{"name":"Mazo para robar","numbers":["As",2,3,4,5,6,7,"J","Q","K"],"suits":["espadas","oros","bastos","copas"]}]
         self.keys_descriptions="F5:Reload  Esc:Exit  Down:Toggle Fullscreen  D:Draw a card\n" + \
