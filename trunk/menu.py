@@ -13,7 +13,7 @@ class Menu:
     def __init__(self,options,margen_sup=0,margen_izq=0,interlineado=20,letra=(38,dec("5c3566"),dec("eff2f5")),color_base=(),color_selec=(213,213,213),menuEnBucle=True,only_text=False,nvisibles=7):
         self.screen=pygame.display.get_surface()
         
-        
+        self.letra=letra
         self.options=options
         self.position=0
         self.margen_sup=margen_sup
@@ -62,6 +62,12 @@ class Menu:
             self.maxvisible=self.position+self.nvisibles
             self.optionvisibles=self.options[self.minvisible:self.maxvisible]
     
+    def update_options(self,update=True):
+        self.optionvisibles=self.options[self.minvisible:self.maxvisible]
+        if update:
+            self.update()
+    
+    
     def update(self):                
         #mostrar por terminal en que posicion "se enkuentra el cursor"
         print self.position , ": " , self.options[self.position]
@@ -92,12 +98,27 @@ class Menu:
             if i==self.position-self.minvisible:
                 self.surfont[i]=self.font.render(self.optionvisibles[i],True,self.colorletra[1])
             else:
-                self.surfont[i]=self.font.render(self.optionvisibles[i],True,self.colorletra[0])
+                a=self.optionvisibles[i]
+                self.surfont[i]=self.font.render(a,True,self.colorletra[0])
 
             self.screen.blit(self.surfont[i], rect)
     
         #pintar el rektangulo resaltado
         #pygame.draw.rect(self.screen, self.color_selec, (self.margen_izq,  self.margen_sup+self.interlineado*self.position+self.alto*self.position, self.ancho, self.alto))
+        
+    def change_options(self,options):
+        self.options=options
+        self.position=0
+        self.minvisible=0
+        self.maxvisible=self.nvisibles
+        self.optionvisibles=self.options[self.minvisible:self.maxvisible]
+        self.update_options(update=False)
+        self.surfont=[]
+        for i in range(len(self.options)):
+            self.surfont.append(self.font.render(self.options[i],True,self.letra[1]))
+            if self.ancho<self.surfont[i].get_width():
+                self.ancho=self.surfont[i].get_width() 
+        
         
     def down(self):
         self.position+=1

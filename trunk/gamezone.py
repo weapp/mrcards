@@ -34,13 +34,13 @@ class Gamezone:
         self.playzone_default=0
         self.playzone_active=self.playzone_default
         self.deckdiscard_active=0
-        self.user = 0
+        self.user = self.player_default
         
         self.localeventlist=[]
         self.globaleventlist=[]
         
         try: self.keys_descriptions=self.rules.keys_descriptions
-        except: pass
+        except AttributeError: pass
         
         
         
@@ -55,7 +55,7 @@ class Gamezone:
             return self.throws[len(self.throws)-1]
         elif attr=="terminable_turn":
             try: return rules.terminable_turn()
-            except: return True
+            except AttributeError: return True
         elif attr=="player":
             try: return self.players[self.player_with_turn]
             except: pass
@@ -72,7 +72,7 @@ class Gamezone:
             self.player_with_turn=value
         elif attr=="player":
             try: self.players[self.player_with_turn]=value
-            except: pass
+            except AttributeError: pass
         else:
             self.__dict__[attr] = value
 
@@ -92,7 +92,6 @@ class Gamezone:
         else:
             playzone=deck.deck(id_deck=id_deck,cards=cards,visible=visible,maxcards=maxcards,clickable=clickable)
         self.playzone.append(playzone)
-        #self.playzone.append(playzone)
     
     def add_deckdraw(self,id_deck,cards=[[],[]],visible=False,maxcards=0,clickable=False,point=False):
         if point:
@@ -110,13 +109,13 @@ class Gamezone:
     
     def add_player(self,id_deck,cards=[[],[]],visible = None,maxcards=0,clickable=None,point=False):
         if visible == None:
-            if len(self.players)==self.player_default:
+            if len(self.players)==self.user:
                 visible=True
             else:
                 visible=False
                 
         if clickable == None:
-            if len(self.players)==self.player_default:
+            if len(self.players)==self.user:
                 clickable=True
             else:
                 clickable=False

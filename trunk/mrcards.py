@@ -8,12 +8,15 @@ import os
 from pickle import load, dump
 
 #dump(pars, open('/tmp/mrcards.dump', 'w'))
-pars = {'theme':'default','rules':'culo'}
-try:pars = load(open('/tmp/mrcards.dump', 'rb'))
+pars = {'theme':'default','rules':'culo','players':'player_1,player_2'}
+try:
+    pars2 = load(open('/tmp/mrcards.dump', 'rb'))
+    for key in pars2.keys():
+        pars[key]=pars2[key]
 except:pass
+
 print "\n\n\ncargado pars:",pars
 
-global pars
 
 def main(options="mrcards"):
     mc=Mrcards(options)
@@ -22,11 +25,14 @@ def main(options="mrcards"):
 class Mrcards:
     def __init__(self,options="mrcards"):
         self.options=options
-        mrcards=("Start Game","Select Game","Players","Select Theme","Credits")
-        games=self.rules()
-        themes=self.themes()
+        self.mrcards=("Start Game","Select Game","Players","Select Theme","Credits")
+        self.games=self.rules()
+        self.themes=self.themes()
+        self.players=['Volver','Anyadir Player','Eliminar Player']
+        self.players.extend(iter(pars['players'].split(",")))
+        options=eval('self.'+str(options))
         
-        options=eval(options)
+        self.editable=False
         
         # Inicializacion
         pygame.init()
@@ -76,14 +82,49 @@ class Mrcards:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         sys.exit()
-                    if event.key == pygame.K_SPACE or event.key== pygame.K_RETURN:
-                        self.seleccionar(self.obj_menu.position)
-                    if event.key == pygame.K_UP:
-                        self.update()
-                        self.obj_menu.up()
-                    if event.key == pygame.K_DOWN:
-                        self.update()
-                        self.obj_menu.down()
+                    elif not self.editable:
+                        if event.key == pygame.K_SPACE or event.key== pygame.K_RETURN:
+                            self.seleccionar(self.obj_menu.position)
+                        elif event.key == pygame.K_UP:
+                            self.update()
+                            self.obj_menu.up()
+                        elif event.key == pygame.K_DOWN:
+                            self.update()
+                            self.obj_menu.down()
+                    else:
+                        if event.key== pygame.K_RETURN:
+                            self.editable=False
+                        elif event.key == pygame.K_SPACE:
+                            self.obj_menu.options[self.optioneditable] += " "
+                        elif event.key == pygame.K_BACKSPACE:
+                            self.obj_menu.options[self.optioneditable] = self.obj_menu.options[self.optioneditable][:-1]
+                            self.update()
+                            self.obj_menu.update_options()
+                        elif pygame.key.name(event.key) in ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]:
+                            keyname = pygame.key.name(event.key)
+                            
+                            t=pygame.key.get_mods()
+                            
+                            b = t == pygame.KMOD_LSHIFT
+                            c = t == pygame.KMOD_RSHIFT
+                            d = t == pygame.KMOD_CAPS
+                            
+                            p=pygame
+                            
+                            print t==p.KMOD_NONE, t==p.KMOD_LSHIFT, t==p.KMOD_RSHIFT, t==p.KMOD_SHIFT, t==p.KMOD_CAPS
+                            print t==p.KMOD_LCTRL, t==p.KMOD_RCTRL, t==p.KMOD_CTRL, t==p.KMOD_LALT, t==p.KMOD_RALT
+                            print t==p.KMOD_ALT, t==p.KMOD_LMETA, t==p.KMOD_RMETA, t==p.KMOD_META, t==p.KMOD_NUM, t==p.KMOD_MODE
+                            
+                            print b,c,d
+                            
+                            if b or c or d:
+                                self.obj_menu.options[self.optioneditable] += keyname.upper()
+                            else:
+                                self.obj_menu.options[self.optioneditable] += keyname
+                            self.update()
+                            self.obj_menu.update_options()
+                        
+                            
 
                 elif event.type == pygame.KEYUP:
                     pass
@@ -105,15 +146,26 @@ class Mrcards:
         themes=[]
         for archivo in archivos:
             if os.path.isdir(os.path.join(os.path.dirname(sys.argv[0]), "themes")+ os.sep +archivo):
-                themes.append(archivo)
+                if not archivo.startswith("."):
+                    themes.append(archivo)
         return themes
 
     def seleccionar(self,n):
         if self.options=="mrcards":
             if n==0:
-                __import__("initgame").main(players="player1,player2,player3,player4",rules=pars["rules"])
+                __import__("initgame").main(players=pars["players"],rules=pars["rules"])
             if n==1:
-                __import__("mrcards").main("games")
+                #__import__("mrcards").main("games")
+                self.obj_menu.change_options(self.games)
+                self.options="games"
+                self.update()
+                self.obj_menu.update()
+            if n==2:
+                #__import__("mrcards").main("players")
+                self.obj_menu.change_options(self.players)
+                self.options="players"
+                self.update()
+                self.obj_menu.update()
             if n==3:
                 __import__("mrcards").main("themes")
             if n==4:
@@ -121,20 +173,49 @@ class Mrcards:
                 interlineado=3,letra=(20,dec("FFFFFF"),dec("FFFFFF")),color_selec=())
                 credits.update()
                 
-        if self.options=="games":
-            global pars
+        elif self.options=="games":
             pars['rules']=self.obj_menu.options[self.obj_menu.position]
             dump(pars, open('/tmp/mrcards.dump', 'w'))
             print "\n\n\nguardado pars:",pars
-            __import__("mrcards").main("mrcards")
+            self.obj_menu.change_options(self.mrcards)
+            self.options="mrcards"
+            self.update()
+            self.obj_menu.update()
+            #__import__("mrcards").main("mrcards")
             
-        if self.options=="themes":
-            global pars
+        elif self.options=="themes":
             pars['theme']=self.obj_menu.options[self.obj_menu.position]
             dump(pars, open('/tmp/mrcards.dump', 'w'))
             print "\n\n\nguardado pars:",pars
             __import__("mrcards").main("mrcards")
             
+        elif self.options=="players":
+            if n==0:
+                pars['players']=','.join(self.players[3:])
+                dump(pars, open('/tmp/mrcards.dump', 'w'))
+                __import__("mrcards").main("mrcards")
+                
+            if n==1:
+                self.players.append('new_player')
+                self.obj_menu.change_options(self.players)
+                self.options="players"
+                self.update()
+                self.obj_menu.update()
+                
+            if n==2:
+                if len(self.players)>3:
+                    del self.players[len(self.players)-1]
+                self.obj_menu.change_options(self.players)
+                self.options="players"
+                self.update()
+                self.obj_menu.update()
+            if n>2:
+                self.editable=True
+                self.obj_menu.options[n]=''
+                self.optioneditable=n
+                self.obj_menu.update_options()
+                self.update()
+                self.obj_menu.update()
             
     def update(self):
         self.screen,self.fondo
