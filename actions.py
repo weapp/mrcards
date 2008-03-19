@@ -11,14 +11,14 @@ class Actions:
         self.player=player
         self.player.select(n)
         try: self.rules.select()
-        except: pass
+        except AttributeError: pass
         self.gz.show()
         
     def clear_selection(self,player=-1):
         self.player=player
         self.player.clear_selection_from_deck()
         try: self.rules.clear_selection()
-        except: pass
+        except AttributeError: pass
         self.gz.show()
     
     #entre mazos    
@@ -29,7 +29,7 @@ class Actions:
             self.player.send(self.gz.playzone[self.gz.playzone_active])
             self.gz.throws.append(selection)
             try: self.rules.throw_cards(selection)
-            except: pass
+            except AttributeError: pass
             self.gz.show()
             
             
@@ -38,20 +38,20 @@ class Actions:
     
     def throwable_selection(self,selection):
         try: r=self.rules.throwable_selection(selection)
-        except: r=True
+        except AttributeError: r=True
         finally: return r
     
     def draw_a_card(self,n=1,player=-1):
         self.player=player
         self.player.draw_a_card(self.gz.deckdraws[0],n)
         try: self.rules.draw_a_card()
-        except: pass
+        except AttributeError: pass
         self.gz.draw.show()
         
     def deal(self,n):
         self.gz.deckdraws[0].deal(n,self.gz.p)
         try: self.rules.deal()
-        except: pass
+        except AttributeError: pass
         self.gz.show()
     
     #otras
@@ -59,14 +59,14 @@ class Actions:
         self.player=player
         self.gz.pass_turns_counter+=1
         try: self.rules.pass_turn()
-        except: pass
+        except AttributeError: pass
         self.ending_turn(pass_turn=True)
         
     def end_turn(self,player=-1):
         self.player=player
         if self.gz.terminable_turn:
             try: self.rules.end_turn()
-            except: pass
+            except AttributeError: pass
             self.ending_turn()
             
     def ending_turn(self,pass_turn=False):
@@ -82,10 +82,10 @@ class Actions:
         self.gz.player_with_turn%=len(self.gz.p)
         self.gz.player=self.gz.p[self.gz.pwt]
         try: self.rules.ending_turn()
-        except: pass
+        except AttributeError: pass
         self.gz.show()
         try: self.rules.new_turn()
-        except: pass
+        except AttributeError: pass
     
     def clear_playzone(self):
         del self.gz.playzone[0].cards[:]
@@ -136,7 +136,7 @@ class Actions:
             for card in player.cards:
                 card.setVisibility(False)
                 
-        if f!=10:
+        if f!=10 and f<len(self.gz.players):
             self.gz.user=f
             self.gz.players[f].visible=False
             
@@ -164,7 +164,7 @@ class Actions:
     def __setattr__(self, attr, value):
         if attr=="player" and value ==-1:
             try: self.__dict__["p"] = self.gz.player_with_turn
-            except:pass
+            except AttributeError:pass
         elif attr=="player":
             print "\n\n\n\n\nset------>", value,"<----------------------------\n\n\n\n\n\n\n\n\n"
             self.__dict__["p"] = value

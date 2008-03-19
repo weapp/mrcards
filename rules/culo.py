@@ -19,7 +19,7 @@ class Game:
                               "[1-10]:Add to/Rem from Selection  Z:Clear Selection  T,Return:Throws \n" + \
                               "E:End Turn  S:Sort P:Pass Turn F1-4:Choose User  F12:None User"
         self.down_func={
-            pygame.K_DOWN   :   [pygame.display.toggle_fullscreen,[],"local"] , \
+            pygame.K_DOWN   :   ["pygame.display.toggle_fullscreen()","local"] , \
             pygame.K_ESCAPE :   ["self.actions.exit()","local"], \
             pygame.K_F5     :   ["self.actions.show()","local"], \
             pygame.K_1      :   ["self.actions.select(0)","global"], \
