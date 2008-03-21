@@ -27,6 +27,9 @@ class Property:
         
     def fun(self,item):
         return id(item)
+        
+    def clear(self):
+        self.dict = {}
        
 class Propieties:
     def __init__(self):
@@ -36,7 +39,13 @@ class Propieties:
         self.position = Property()
         self.normal = Property()
         self.align = Property()
-        self.image = Property()
+        self.image = {}
+        self.card = {}        
+                
+    def clear(self):
+        self.position.clear()
+        self.normal.clear()
+        self.align.clear()
     
 class Drawer:
     def __init__(self, gamezone, caption="Untitled"):
@@ -58,11 +67,10 @@ class Drawer:
         self.gz=gamezone
         
         self.theme=pars["theme"]
+        self.theme=os.path.join('themes', self.theme )
+        
         self.screen=pygame.display.get_surface()
-        
-        theme=os.path.join('themes', self.theme )
-        
-        self.fondo = pygame.image.load( os.path.join(os.path.dirname(sys.argv[0]), os.path.join( theme , 'tapete.png') ) )
+        self.fondo = pygame.image.load( os.path.join(os.path.dirname(sys.argv[0]), os.path.join( self.theme , 'tapete.png') ) )
         
         # Esto hace falta para acelerar las cosas, hay que convertir las imagenes
         self.fondo = self.fondo.convert()
@@ -166,6 +174,7 @@ class Drawer:
                 self.props.position[obj][1]+=self.props.normal[obj][1]*self.alto/2.0
                   
     def show(self):
+        self.props.clear()
         self.playersnames=[]
         for player in self.gz.players:
             self.playersnames.append(player.id)
@@ -233,29 +242,24 @@ class Drawer:
         #actualizamos la pantalla
         pygame.display.flip()
     
-    def show_card(self, card, zoom=False):
-        theme=os.path.join('themes', self.theme )
+    def show_card(self, card, zoom=1):
+        
         
         if card.selected:
             self.props.position[card][0] -= 20 * self.props.normal[card][0]
             self.props.position[card][1] -= 20 * self.props.normal[card][1]
         
         if card.visible:
-            image = pygame.image.load( os.path.join(os.path.dirname(sys.argv[0]), os.path.join( theme , str(card.suit)+'.png') ) )
-            
-            image.blit(pygame.image.load( os.path.join(os.path.dirname(sys.argv[0]), os.path.join( theme , str(card.number)+'.png') ) ), (0, 0, 80, 80))
-            
+            image = self.card_complete(card)
+
             if card.selected:
-                pass
-                #image.blit(pygame.image.load( os.path.join(os.path.dirname(sys.argv[0]), os.path.join( theme , 'selected.png') ) ), (0, 0, 80, 80))
+                pass #image.blit(self.image_card("selected"), (0, 0, 80, 80))
 
         else:
-            image = pygame.image.load( os.path.join(os.path.dirname(sys.argv[0]), os.path.join( theme , 'c.png') ) )
+            image = self.image_card("c")
         
-        if zoom:
-            image=pygame.transform.rotozoom(image,0 ,zoom)
         
-        image=pygame.transform.rotate(image, degrees(atan2(*self.props.normal[card])) )
+        image=pygame.transform.rotozoom(image, degrees(atan2(*self.props.normal[card])) , zoom )
         rect = image.get_rect()
         rect.center = self.props.position[card]
         self.screen.blit(image, rect)
@@ -266,7 +270,24 @@ class Drawer:
         rect = image.get_rect()
         rect.center = self.props.position[text]
         self.screen.blit(image, rect)
-
+        
+        
+        
+        
+    def card_complete(self,card):
+        name=str(card.suit)+","+str(card.number) 
+        if not self.props.image.has_key(name):
+            image = self.image_card(card.suit)
+            image.blit(self.image_card(card.number), (0, 0, 80, 80))
+            self.props.card[name]=image
+        return self.props.card[name].copy()
+            
+    def image_card(self,name):
+        if not self.props.image.has_key(name):
+            self.props.image[name] = pygame.image.load(os.path.join(os.path.dirname(sys.argv[0]), os.path.join( self.theme , str(name)+'.png') ) ).convert_alpha()
+        return self.props.image[name].copy()
 
 def prop(i, max1, max2):
     return (i * max2) / float(max1)
+    
+    
