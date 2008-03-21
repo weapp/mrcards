@@ -7,6 +7,7 @@ from menu import dec
 import os
 from pickle import load, dump
 
+
 #dump(pars, open('/tmp/mrcards.dump', 'w'))
 pars = {'theme':'default','rules':'culo','players':'player_1,player_2'}
 try:
@@ -24,6 +25,8 @@ def main(options="mrcards"):
     
 class Mrcards:
     def __init__(self,options="mrcards"):
+        
+        
         self.options=options
         self.mrcards=("Start Game","Select Game","Players","Select Theme","Credits")
         self.games=self.rules()
@@ -104,18 +107,6 @@ class Mrcards:
                             keyname = pygame.key.name(event.key)
                             
                             t=pygame.key.get_mods()
-                            
-                            b = t == pygame.KMOD_LSHIFT
-                            c = t == pygame.KMOD_RSHIFT
-                            d = t == pygame.KMOD_CAPS
-                            
-                            p=pygame
-                            
-                            print t==p.KMOD_NONE, t==p.KMOD_LSHIFT, t==p.KMOD_RSHIFT, t==p.KMOD_SHIFT, t==p.KMOD_CAPS
-                            print t==p.KMOD_LCTRL, t==p.KMOD_RCTRL, t==p.KMOD_CTRL, t==p.KMOD_LALT, t==p.KMOD_RALT
-                            print t==p.KMOD_ALT, t==p.KMOD_LMETA, t==p.KMOD_RMETA, t==p.KMOD_META, t==p.KMOD_NUM, t==p.KMOD_MODE
-                            
-                            print b,c,d
                             
                             if b or c or d:
                                 self.obj_menu.options[self.optioneditable] += keyname.upper()

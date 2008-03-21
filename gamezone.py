@@ -7,6 +7,8 @@ import actions
 
 class Gamezone:
     def __init__(self,rules=False,down_func={},up_func={}):
+        self._counter=0        
+        
         self.actions=actions.Actions(self,rules)
         self.rules=self.actions.rules
         self.drawer=drawer.Drawer(self,caption=self.rules.caption)
@@ -18,7 +20,7 @@ class Gamezone:
         self.up_func=up_func
         self.player_with_turn=0
         self.clockwise_direction=True
-        self.pass_turns_counter=0 #contador de turnos sin tiradas
+        self.pass_turns_counter=0 # contador de turnos sin tiradas
         self.round=0
         self.turn=0
         self.players=[]
@@ -27,7 +29,7 @@ class Gamezone:
         self.deckpoints=[]
         self.playzone=[]
         
-        self.selection=deck.deck(id_deck="selection",visible=True)
+        self.selection=deck.Deck(self.counter,id_deck="selection",visible=True)
         self.throws=[]
         
         self.player_default=0
@@ -41,12 +43,15 @@ class Gamezone:
         
         try: self.keys_descriptions=self.rules.keys_descriptions
         except AttributeError: pass
-        
-        
-        
-        
+    
+    def get_counter(self):
+        ++self._counter
+        return self._counter
         
     def __getattr__(self,attr):
+        if attr=="counter":
+            ++self._counter
+            return self._counter
         if attr=="p":
             return self.players
         elif attr=="pwt":
@@ -59,11 +64,9 @@ class Gamezone:
         elif attr=="player":
             try: return self.players[self.player_with_turn]
             except: pass
-        elif attr=="user":
-            print "\n\n\n\n\n\nNO EXISTE USER\n\n\n\n\n\n"
-            #return self.__dict__[attr]
         else:
-            print "\n\n\n\n\n\nNO EXISTE EL ATRIBUTO:", attr,"\n\n\n\n\n\n"
+            print "\n    INTENTANDO ACCEDER A ATRIBUTO NO EXISTENTE:", attr,"\n"
+            raise AttributeError("Gamezone instance has no attribute '"+str(attr)+"'")
             
     def __setattr__(self, attr, value):
         if attr=="p":
@@ -85,19 +88,19 @@ class Gamezone:
     def set_up_func(self,up_func):
         self.up_func=up_func
 
-    #anyadir mazos
+    # Anyadir mazos
     def add_playzone(self,id_deck,cards=[[],[]],visible=False,maxcards=0,clickable=False,point=False):
         if point:
-            playzone=deck.deck(id_deck=id_deck,cards=cards,visible=visible,maxcards=maxcards,clickable=clickable,point=point)
+            playzone=deck.Deck(self.counter,id_deck=id_deck,cards=cards,visible=visible,maxcards=maxcards,clickable=clickable,point=point)
         else:
-            playzone=deck.deck(id_deck=id_deck,cards=cards,visible=visible,maxcards=maxcards,clickable=clickable)
+            playzone=deck.Deck(self.counter,id_deck=id_deck,cards=cards,visible=visible,maxcards=maxcards,clickable=clickable)
         self.playzone.append(playzone)
     
     def add_deckdraw(self,id_deck,cards=[[],[]],visible=False,maxcards=0,clickable=False,point=False):
         if point:
-            deckdraw=deck.deck(id_deck=id_deck,cards=cards,visible=visible,maxcards=maxcards,clickable=clickable,point=point)
+            deckdraw=deck.Deck(self.counter,id_deck=id_deck,cards=cards,visible=visible,maxcards=maxcards,clickable=clickable,point=point)
         else:
-            deckdraw=deck.deck(id_deck=id_deck,cards=cards,visible=visible,maxcards=maxcards,clickable=clickable)
+            deckdraw=deck.Deck(self.counter,id_deck=id_deck,cards=cards,visible=visible,maxcards=maxcards,clickable=clickable)
         self.deckdraws.append(deckdraw)
     
     
@@ -121,13 +124,13 @@ class Gamezone:
                 clickable=False
         
         if point:
-            player=deck.deck(id_deck=id_deck,cards=cards,visible=visible,maxcards=maxcards,clickable=clickable,point=point)
+            player=deck.Deck(self.counter,id_deck=id_deck,cards=cards,visible=visible,maxcards=maxcards,clickable=clickable,point=point)
         else:
-            player=deck.deck(id_deck=id_deck,cards=cards,visible=visible,maxcards=maxcards,clickable=clickable)
+            player=deck.Deck(self.counter,id_deck=id_deck,cards=cards,visible=visible,maxcards=maxcards,clickable=clickable)
         self.players.append(player)
         self.player=self.players[self.player_with_turn]
 
-       
+
 
     
     def __str__(self):
@@ -154,33 +157,33 @@ class Gamezone:
         r+="\n"+self.keys_descriptions
         #self.show()
         return r
-        
-    #pintar
+
+    # Pintar
     def show(self):
         self.drawer.show()
         print self
-    
-    #bucle
+
+
+    # Bucle principal
     def init_bucle(self):
         self.clock = pygame.time.Clock()
         
-        # Bucle principal
         while True:
             self.clock.tick(40)
                 
-            # control de eventos
+            # Control de eventos
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     sys.exit()
                 
-                #actualiza el screen para que cuando se cambie a pantalla completa se vea con la nueva resolucion
+                # Actualiza el screen para que cuando se cambie a pantalla completa se vea con la nueva resolucion
                 if event.type == pygame.VIDEORESIZE:
                     self.screen = pygame.display.set_mode(event.size, pygame.DOUBLEBUF | pygame.HWSURFACE |  pygame.RESIZABLE ) 
-                    ##print self.screen
+                    #print self.screen
                     self.show()
                     
 
-                # si no es un evento de teclado o raton, lo ignoramos
+                # Si no es un evento de teclado o raton, lo ignoramos
                 if not hasattr(event,'button') and not hasattr(event,'key'):
                     continue
                 
@@ -225,3 +228,6 @@ class Gamezone:
 
     def exit(self):
         sys.exit()
+        
+    def __iter__(self):
+        return iter([self.players, self.deckdraws, self.deckdiscard, self.deckpoints, self.playzone])
