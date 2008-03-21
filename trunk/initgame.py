@@ -28,7 +28,6 @@ def main(rules,players):
     rules.init()
     
     
-    print game
     
     game.set_down_func(rules.down_func)
     

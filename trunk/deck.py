@@ -7,8 +7,8 @@ import random
 def point1(num,suit):
     return 1
 
-class deck:
-    def __init__(self,id_deck,cards=[[],[]],visible=False,maxcards=10,clickable=False,point=point1):
+class Deck:
+    def __init__(self,counter,id_deck,cards=[[],[]],visible=False,maxcards=10,clickable=False,point=point1):
         self.id=id_deck
         self.visible=visible
         self.max=maxcards
@@ -26,7 +26,7 @@ class deck:
     
     def set_max(self,n):
         self.max=n
-        
+    
     #reordenar mazos
     def shuffle(self):
         random.shuffle(self)    
@@ -111,6 +111,15 @@ class deck:
         else:
             r="#"
         return self.id + ": " + r
+        
+    def __id__(self):
+        r="< "
+        for i in range(len(self.cards)):
+            if not i == 0:
+                r+=", "
+            r+=str(self.cards[i])
+        r+=" >"
+        return self.id + ": " + r
     
     def __len__(self):
         return len(self.cards)
@@ -135,6 +144,9 @@ class deck:
         
     def __contains__(self, x ):
         x in self.cards
+        
+    def __iter__(self):
+        return iter(self.cards)
         
     def __getattr__(self,attr):
         if attr=="selection":

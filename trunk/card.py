@@ -66,7 +66,11 @@ class card:
             return "[" + str(self.number) + " " + str(self.suit) + "]"
         else:
             return "#"
-            
+
+    
+    def __id__(self):
+        return "[" + str(self.number) + " " + str(self.suit) + "]"
+        
     def __cmp__(self, other):
             return cmp(self.id, other.id)
         
