@@ -7,7 +7,8 @@ import actions
 
 class Gamezone:
     def __init__(self,rules=False,down_func={},up_func={}):
-        self._counter=0        
+        self._counter=0
+        self.show_layer_alternative=False
         
         self.actions=actions.Actions(self,rules)
         self.rules=self.actions.rules

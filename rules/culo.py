@@ -22,6 +22,7 @@ class Game:
             pygame.K_DOWN   :   ["pygame.display.toggle_fullscreen()","local"] , \
             pygame.K_ESCAPE :   ["self.actions.exit()","local"], \
             pygame.K_F5     :   ["self.actions.show()","local"], \
+            pygame.K_UP     :   ["self.actions.showalt()","local"], \
             pygame.K_1      :   ["self.actions.select(0)","global"], \
             pygame.K_2      :   ["self.actions.select(1)","global"], \
             pygame.K_3      :   ["self.actions.select(2)","global"], \

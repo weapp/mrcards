@@ -128,6 +128,13 @@ class Actions:
     def exit(self):
         self.gz.exit()
     
+    def showalt(self):
+        if self.gz.show_layer_alternative:
+            self.gz.show_layer_alternative = False
+        else:
+            self.gz.show_layer_alternative = True
+        self.show()
+    
     def show(self):
         self.gz.show()
         
