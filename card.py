@@ -1,6 +1,6 @@
 import pygame
 import sys
-class card:
+class Card:
     def __init__(self, card_id, owner, number=False, suit="special", visible=False, points=1):
         self.id=card_id
         self.suit=suit
@@ -10,6 +10,7 @@ class card:
         self.selected = False # ? pasa a convertirse en un nuevo mazo ?
         self.actual_owner=owner#propietario
         self.previous_owner=False
+        
         
     def getNum(self):
         return self.number
@@ -37,6 +38,7 @@ class card:
     
     def is_visible(self):
         return self.visible
+        
         
     def change_owner(self, new_owner):
         self.previous_owner=self.actual_owner
