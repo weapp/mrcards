@@ -39,7 +39,7 @@ class Actions:
     def throwable_selection(self,selection):
         try: r=self.rules.throwable_selection(selection)
         except AttributeError: r=True
-        finally: return r
+        return r
     
     def draw_a_card(self,n=1,player=-1):
         self.player=player

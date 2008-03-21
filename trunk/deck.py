@@ -18,7 +18,21 @@ class Deck:
         
         for num in cards[0]:
             for suit in cards[1]:
-                self.cards.append(card.card(card_id=str(num)+str(suit),owner=self.id,number=num,suit=suit,visible=visible,points=point(num,suit)))    
+                self.cards.append(card.Card(card_id=str(num)+str(suit),owner=self.id,number=num,suit=suit,visible=visible,points=point(num,suit)))    
+                
+    def getx(self):
+        selected=[]
+        for card in self.cards:
+            if card.is_selected():
+                selected.append(card)
+        return selected
+
+    def setx(self, x):
+        pass
+
+    selection = property(getx, setx)
+        
+
     
     #maximo
     def get_max(self):
@@ -91,7 +105,7 @@ class Deck:
     def clear_selection_from_deck(self):
         for card in self.cards:
             card.remove_from_selection()
-            
+    
     def get_selection_from_deck(self):        
         selected=[]
         for card in self.cards:
@@ -113,12 +127,9 @@ class Deck:
         return self.id + ": " + r
         
     def __id__(self):
-        r="< "
-        for i in range(len(self.cards)):
-            if not i == 0:
-                r+=", "
-            r+=str(self.cards[i])
-        r+=" >"
+        r=""
+        for card in self:
+            r+=str(card)
         return self.id + ": " + r
     
     def __len__(self):
@@ -142,20 +153,11 @@ class Deck:
     def __delslice__(self, i, j):
         del self.cards[i:j]
         
-    def __contains__(self, x ):
-        x in self.cards
-        
     def __iter__(self):
         return iter(self.cards)
         
-    def __getattr__(self,attr):
-        if attr=="selection":
-            selected=[]
-            for card in self.cards:
-                if card.is_selected():
-                    selected.append(card)
-            return selected
-    
+
+        
     def sort(self,comparator):
         self.cards.sort(comparator)
     
