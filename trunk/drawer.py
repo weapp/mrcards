@@ -12,6 +12,20 @@ try:pars = load(open('/tmp/mrcards.dump', 'rb'))
 except:pass
 print "\n\n\ncargado pars:", pars
 
+class Zones:
+    def __init__(self):
+        self.counter=0
+        self.zones=[]
+    
+    def create_color(self,item):
+        self.counter+=1
+        return (self.counter,self.counter,self.counter)
+        self.zones[self.counter]=item
+        
+    def clear(self):
+        self.counter=0
+        self.zones=[]
+
 class Property:
     def __init__(self):
         self.dict = {}
@@ -53,7 +67,7 @@ class Drawer:
         self.ancho = 50
         self.alto = 80
         self.props = Propieties()
-        
+        self.zones = Zones()
         
         # Inicializacion
         pygame.init()
@@ -91,7 +105,6 @@ class Drawer:
         #self.font=pygame.font.Font(pygame.font.get_default_font(), 12)
         #self.font = pygame.font.Font( os.path.join(os.path.dirname(sys.argv[0]), "joinpd.ttf" ), 12)
         
-        pygame.display.flip()
         
 
             
@@ -175,20 +188,26 @@ class Drawer:
                   
     def show(self):
         self.props.clear()
+        self.zones.clear()
+        
         self.playersnames=[]
         for player in self.gz.players:
             self.playersnames.append(player.id)
     
         size = self.screen.get_size()
+        
+        #crear una surface alternativa donde se colocara los indices de cada carta
+        self.alt_screen=pygame.Surface(size)
+        
         #esto sirve para cuando se cambia el tamanyo de la ventena
         fondo = pygame.transform.scale(self.fondo, size)
         self.screen.blit(fondo, self.fondo_rect)
 
         #pintar comandos
-        '''text = self.font.render(self.gz.keys_descriptions, True, (255, 255, 255))
+        '''text = self.font.render(nself.gz.keys_descriptions, True, (255, 255, 255))
         self.screen.blit(text, text.get_rect())'''
         
-        #########################################################
+        #mostrar los nombres de los jugadores
         self.place_in_circle(self.playersnames)
         for player in self.playersnames:
             self.align(player,align_vertical="bottom")
@@ -239,12 +258,13 @@ class Drawer:
         
         
         
+        if self.gz.show_layer_alternative:
+            self.screen.blit(self.alt_screen, self.screen.get_rect())
+        
         #actualizamos la pantalla
         pygame.display.flip()
     
     def show_card(self, card, zoom=1):
-        
-        
         if card.selected:
             self.props.position[card][0] -= 20 * self.props.normal[card][0]
             self.props.position[card][1] -= 20 * self.props.normal[card][1]
@@ -259,20 +279,35 @@ class Drawer:
             image = self.image_card("c")
         
         
+        
         image=pygame.transform.rotozoom(image, degrees(atan2(*self.props.normal[card])) , zoom )
         rect = image.get_rect()
         rect.center = self.props.position[card]
         self.screen.blit(image, rect)
-
+        
+        
+        #anyadiendo al mapa de zonas
+        color_zone=self.zones.create_color(card)
+        surf=pygame.Surface([self.ancho,self.alto])
+        pygame.draw.rect(surf, color_zone , (0,0,self.ancho,self.alto))
+        
+        surf=pygame.transform.rotozoom(surf, degrees(atan2(*self.props.normal[card])) , zoom ) #misma funcion de la carta
+        
+        surf.set_colorkey((0,0,0))
+        
+        rect_surf=surf.get_rect()
+        rect_surf.center=rect.center
+        
+        self.alt_screen.blit(surf, rect_surf)
+        
+        
+        
     def show_text(self, text, zoom=False):
         image = self.font.render(text, True, (0,0,0))
         image=pygame.transform.rotate(image, degrees(atan2(*self.props.normal[text])) )
         rect = image.get_rect()
         rect.center = self.props.position[text]
         self.screen.blit(image, rect)
-        
-        
-        
         
     def card_complete(self,card):
         name=str(card.suit)+","+str(card.number) 
