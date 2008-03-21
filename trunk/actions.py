@@ -158,7 +158,6 @@ class Actions:
     
     def __getattr__(self, attr):
         if attr=="player":
-            #print "\n\n\n\n\n------>", self.p,"<----------------------------\n\n\n\n\n\n\n\n\n"
             return self.gz.p[self.p]
             
     def __setattr__(self, attr, value):
@@ -166,7 +165,6 @@ class Actions:
             try: self.__dict__["p"] = self.gz.player_with_turn
             except AttributeError:pass
         elif attr=="player":
-            print "\n\n\n\n\nset------>", value,"<----------------------------\n\n\n\n\n\n\n\n\n"
             self.__dict__["p"] = value
         else:
             self.__dict__[attr] = value
