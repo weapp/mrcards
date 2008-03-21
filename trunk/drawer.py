@@ -15,12 +15,18 @@ print "\n\n\ncargado pars:", pars
 class Property:
     def __init__(self):
         self.dict = {}
+    
     def __getitem__(self, item):
-        return self.dict[id(item)]
+        return self.dict[self.fun(item)]
+    
     def __setitem__(self, item, value):
-        self.dict[id(item)] = value
+        self.dict[self.fun(item)] = value
+    
     def has_key(self, key):
-        return self.dict.has_key(id(key))
+        return self.dict.has_key(self.fun(key))
+        
+    def fun(self,item):
+        return id(item)
        
 class Propieties:
     def __init__(self):
@@ -170,8 +176,8 @@ class Drawer:
         self.screen.blit(fondo, self.fondo_rect)
 
         #pintar comandos
-        text = self.font.render(self.gz.keys_descriptions, True, (255, 255, 255))
-        self.screen.blit(text, text.get_rect())
+        '''text = self.font.render(self.gz.keys_descriptions, True, (255, 255, 255))
+        self.screen.blit(text, text.get_rect())'''
                 
         #situamos los mazos
         self.place_in_circle(self.gz.players)
@@ -194,16 +200,29 @@ class Drawer:
         for deck in self.gz.playzone:
             self.place_in_random(deck, center=self.props.position[deck], normal=self.props.normal[deck], margin=35)
         
-        
+        #pintamos las cartas
         for decks in self.gz:
             for deck in decks:
                 for card in deck:
                     self.show_card(card)
         
+
+        #situamos tiradas            
+        self.place_in_line(self.gz.throws,normal=[1,0],center=[self.screen.get_size()[0]-self.alto-self.ancho,self.screen.get_size()[1]/2],margin=self.alto/2)
+        #situamos cartas
+        for throw in self.gz.throws:
+            self.place_in_line(throw, center=self.props.position[throw], normal=[0,1],margin=self.ancho/2)
+        #pintamos las cartas
+        for deck in self.gz.throws:
+            for card in deck:
+                self.show_card(card, zoom=0.50)
+        
+        
+        
         #actualizamos la pantalla
         pygame.display.flip()
     
-    def show_card(self, card):
+    def show_card(self, card, zoom=False):
         theme=os.path.join('themes', self.theme )
         
         if card.selected:
@@ -212,14 +231,18 @@ class Drawer:
         
         if card.visible:
             image = pygame.image.load( os.path.join(os.path.dirname(sys.argv[0]), os.path.join( theme , str(card.suit)+'.png') ) )
-            image.blit(pygame.image.load( os.path.join(os.path.dirname(sys.argv[0]), os.path.join( theme , str(card.number)+'.png') ) ), (0, 0, 80, 80))
+            
+            image.blit(pygame.image.load( os.path.join(os.path.dirname(sys.argv[0]), os.path.join( theme , str(card.number)+'.png') ) ), (0, 0, 80, 80))    
+            
             if card.selected:
                 pass
                 #image.blit(pygame.image.load( os.path.join(os.path.dirname(sys.argv[0]), os.path.join( theme , 'selected.png') ) ), (0, 0, 80, 80))
 
-
         else:
             image = pygame.image.load( os.path.join(os.path.dirname(sys.argv[0]), os.path.join( theme , 'c.png') ) )
+        
+        if zoom:
+            image=pygame.transform.rotozoom(image,0 ,zoom)
         
         image=pygame.transform.rotate(image, degrees(atan2(*self.props.normal[card])) )
         rect = image.get_rect()

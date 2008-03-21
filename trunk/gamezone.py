@@ -59,7 +59,7 @@ class Gamezone:
         elif attr=="last_throw":
             return self.throws[len(self.throws)-1]
         elif attr=="terminable_turn":
-            try: return rules.terminable_turn()
+            try: return self.rules.terminable_turn()
             except AttributeError: return True
         elif attr=="player":
             try: return self.players[self.player_with_turn]
