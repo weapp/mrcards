@@ -97,10 +97,15 @@ class Deck:
             point+=card.get_points()
         return points
                 
-    #seleccion de cartas                               ----- TERMINADO
+    #seleccion de cartas
     def select(self,n):
         if n<len(self.cards):#self.clickable and 
             self.cards[n].select_card()
+            
+    def select_card(self,card):
+        for icard in self:
+            if id(card) == id(icard):
+                card.select_card()
             
     def clear_selection_from_deck(self):
         for card in self.cards:
