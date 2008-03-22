@@ -9,7 +9,7 @@ from pickle import load, dump
 
 
 #dump(pars, open('/tmp/mrcards.dump', 'w'))
-pars = {'theme':'default','rules':'culo','players':'player_1,player_2'}
+pars = {'theme':'default','rules':'culo','players':'player 1,player 2,player 3,player 4'}
 try:
     pars2 = load(open('/tmp/mrcards.dump', 'rb'))
     for key in pars2.keys():
@@ -106,9 +106,9 @@ class Mrcards:
                         elif pygame.key.name(event.key) in ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]:
                             keyname = pygame.key.name(event.key)
                             
-                            t=pygame.key.get_mods()
-                            
-                            if b or c or d:
+                            mod = pygame.key.get_mods()
+                                                        
+                            if mod == pygame.KMOD_LSHIFT or mod == pygame.KMOD_RSHIFT or mod == pygame.KMOD_CAPS:
                                 self.obj_menu.options[self.optioneditable] += keyname.upper()
                             else:
                                 self.obj_menu.options[self.optioneditable] += keyname

@@ -5,8 +5,6 @@ import deck
 import gamezone
 
 
-
-
 def main(rules,players):
     #self.gamezone.show()
     
