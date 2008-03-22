@@ -20,10 +20,7 @@ def main(rules,players):
     if rules.playzone:
         game.add_playzone(id_deck="playzone",visible=True)
     
-    for deck in rules.deckdraws:
-        game.add_deckdraw(id_deck=deck["name"], cards=[deck["numbers"],deck["suits"]],visible=False,point=rules.points)
-    
-    rules.init()
+    actions.new_round()
     
     
     
