@@ -5,6 +5,19 @@ class Actions:
         self.gz=gamezone
         rules=__import__("rules/"+rules)
         self.rules=rules.Game(self.gz,self)
+        self.gz._counter=0
+        self.gz.player_with_turn=0
+        self.gz.pass_turns_counter=0 
+        
+    def new_round(self):
+        self.gz.round+=1
+        for player in self.gz.players:
+            del player[:]
+        del self.gz.deckdraws[:]
+        
+        for deck in self.rules.deckdraws:
+            self.gz.add_deckdraw(id_deck=deck["name"], cards=[deck["numbers"],deck["suits"]],visible=False,point=self.rules.points)
+        self.rules.init()
         
     #seleccionar
     def select(self,n,player=-1):
@@ -93,9 +106,17 @@ class Actions:
         self.gz.player=self.gz.p[self.gz.pwt]
         try: self.rules.ending_turn()
         except AttributeError: pass
-        self.gz.show()
-        try: self.rules.new_turn()
-        except AttributeError: pass
+        try: irf = self.rules.is_round_finished()
+        except AttributeError: irf = False
+        if irf:
+            try: self.rules.end_of_round()
+            except AttributeError: pass
+            self.new_round()
+            
+        else:           
+            self.gz.show()
+            try: self.rules.new_turn()
+            except AttributeError: pass
     
     def clear_playzone(self):
         del self.gz.playzone[0].cards[:]

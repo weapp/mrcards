@@ -7,7 +7,6 @@ import actions
 
 class Gamezone:
     def __init__(self,rules=False,down_func={},up_func={}):
-        self._counter=0
         self.show_layer_alternative=False
         
         self.actions=actions.Actions(self,rules)
@@ -23,36 +22,28 @@ class Gamezone:
         self.clockwise_direction=True
         self.pass_turns_counter=0 # contador de turnos sin tiradas
         self.round=0
-        self.turn=0
+        self.turn=0 #TODO: vueltas k lleva la partida
         self.players=[]
         self.deckdraws=[]
         self.deckdiscard=[]
         self.deckpoints=[]
         self.playzone=[]
         
-        self.selection=deck.Deck(self.counter,id_deck="selection",visible=True)
         self.throws=[]
         
-        self.player_default=0
+        self.player_default=0 # jugador que toma el usuario por defecto (server o el k no es IA)
         self.playzone_default=0
         self.playzone_active=self.playzone_default
-        self.deckdiscard_active=0
+        self.deckdiscard_active=0 # TODO
         self.user = self.player_default
         
-        self.localeventlist=[]
+        self.localeventlist=[] # no se utiliza
         self.globaleventlist=[]
         
         try: self.keys_descriptions=self.rules.keys_descriptions
         except AttributeError: pass
-    
-    def get_counter(self):
-        ++self._counter
-        return self._counter
         
     def __getattr__(self,attr):
-        if attr=="counter":
-            ++self._counter
-            return self._counter
         if attr=="p":
             return self.players
         elif attr=="pwt":
@@ -92,16 +83,16 @@ class Gamezone:
     # Anyadir mazos
     def add_playzone(self,id_deck,cards=[[],[]],visible=False,maxcards=0,clickable=False,point=False):
         if point:
-            playzone=deck.Deck(self.counter,id_deck=id_deck,cards=cards,visible=visible,maxcards=maxcards,clickable=clickable,point=point)
+            playzone=deck.Deck(id_deck=id_deck,cards=cards,visible=visible,maxcards=maxcards,clickable=clickable,point=point)
         else:
-            playzone=deck.Deck(self.counter,id_deck=id_deck,cards=cards,visible=visible,maxcards=maxcards,clickable=clickable)
+            playzone=deck.Deck(id_deck=id_deck,cards=cards,visible=visible,maxcards=maxcards,clickable=clickable)
         self.playzone.append(playzone)
     
     def add_deckdraw(self,id_deck,cards=[[],[]],visible=False,maxcards=0,clickable=False,point=False):
         if point:
-            deckdraw=deck.Deck(self.counter,id_deck=id_deck,cards=cards,visible=visible,maxcards=maxcards,clickable=clickable,point=point)
+            deckdraw=deck.Deck(id_deck=id_deck,cards=cards,visible=visible,maxcards=maxcards,clickable=clickable,point=point)
         else:
-            deckdraw=deck.Deck(self.counter,id_deck=id_deck,cards=cards,visible=visible,maxcards=maxcards,clickable=clickable)
+            deckdraw=deck.Deck(id_deck=id_deck,cards=cards,visible=visible,maxcards=maxcards,clickable=clickable)
         self.deckdraws.append(deckdraw)
     
     
@@ -125,9 +116,9 @@ class Gamezone:
                 clickable=False
         
         if point:
-            player=deck.Deck(self.counter,id_deck=id_deck,cards=cards,visible=visible,maxcards=maxcards,clickable=clickable,point=point)
+            player=deck.Deck(id_deck=id_deck,cards=cards,visible=visible,maxcards=maxcards,clickable=clickable,point=point)
         else:
-            player=deck.Deck(self.counter,id_deck=id_deck,cards=cards,visible=visible,maxcards=maxcards,clickable=clickable)
+            player=deck.Deck(id_deck=id_deck,cards=cards,visible=visible,maxcards=maxcards,clickable=clickable)
         self.players.append(player)
         self.player=self.players[self.player_with_turn]
 
