@@ -21,6 +21,11 @@ class Actions:
         except AttributeError: pass
         self.gz.show()
     
+    #seleccionar con el raton
+    def select_card(self,user,card):
+        pass
+    
+    
     #entre mazos    
     def throw_cards(self,player=-1):
         self.player=player

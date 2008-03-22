@@ -112,10 +112,10 @@ class Game:
                     return True
             return False
             
-
+        """
     def new_turn(self):
         if self.gamezone.player_with_turn>0:
             self.actions.sort_by_points()
                 #last_throw=throws[len(throws)-1][0].number
        
-            
+        """

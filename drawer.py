@@ -7,24 +7,34 @@ import random
 from pickle import load, dump
 
 
-pars = {'theme':'default', 'rules':'culo'}
-try:pars = load(open('/tmp/mrcards.dump', 'rb'))
+#dump(pars, open('/tmp/mrcards.dump', 'w'))
+pars = {'theme':'default','rules':'culo','players':'player 1,player 2,player 3,player 4'}
+try:
+    pars2 = load(open('/tmp/mrcards.dump', 'rb'))
+    for key in pars2.keys():
+        pars[key]=pars2[key]
 except:pass
-print "\n\n\ncargado pars:", pars
+
+print "\n\n\ncargado pars:",pars
+
 
 class Zones:
     def __init__(self):
         self.counter=0
-        self.zones=[]
+        self.zones={}
     
     def create_color(self,item):
         self.counter+=1
-        return (self.counter,self.counter,self.counter)
         self.zones[self.counter]=item
+        return (self.counter,self.counter,self.counter)
+        
+        
+    def __getitem__(self, item):
+        return self.zones[item]
         
     def clear(self):
         self.counter=0
-        self.zones=[]
+        self.zones={}
 
 class Property:
     def __init__(self):
@@ -300,8 +310,6 @@ class Drawer:
         
         self.alt_screen.blit(surf, rect_surf)
         
-        
-        
     def show_text(self, text, zoom=False):
         image = self.font.render(text, True, (0,0,0))
         image=pygame.transform.rotate(image, degrees(atan2(*self.props.normal[text])) )
@@ -321,6 +329,16 @@ class Drawer:
         if not self.props.image.has_key(name):
             self.props.image[name] = pygame.image.load(os.path.join(os.path.dirname(sys.argv[0]), os.path.join( self.theme , str(name)+'.png') ) ).convert_alpha()
         return self.props.image[name].copy()
+        
+    def obtain_zone(self, (x, y)):
+        color=self.alt_screen.get_at((x,y))
+        if color[0]:
+            r=self.zones[color[0]]
+            print r
+            return r
+        else:
+            print None
+            return 0
 
 def prop(i, max1, max2):
     return (i * max2) / float(max1)
