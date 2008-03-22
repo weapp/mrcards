@@ -194,7 +194,7 @@ class Gamezone:
                     if event.button ==1:
                         print str(pygame.mouse.get_pos())
                         card=self.drawer.obtain_zone(pygame.mouse.get_pos())
-                        self.actions.select_card(self.user,card)
+                        self.actions.select_card(card)
                 
                 # Eventos de teclado
                 if event.type == pygame.KEYDOWN:

@@ -22,8 +22,13 @@ class Actions:
         self.gz.show()
     
     #seleccionar con el raton
-    def select_card(self,user,card):
-        pass
+    def select_card(self,card,player=-1):
+        self.player=player
+        self.player.select_card(card)
+        try: self.rules.select()
+        except AttributeError: pass
+        self.gz.show()
+        
     
     
     #entre mazos    
