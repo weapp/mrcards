@@ -57,8 +57,6 @@ class Property:
        
 class Propieties:
     def __init__(self):
-        self.ancho=50
-        self.alto=80
         self.random = Property()
         self.position = Property()
         self.normal = Property()

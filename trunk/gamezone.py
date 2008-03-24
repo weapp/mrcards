@@ -1,17 +1,17 @@
-import deck
-import drawer
+import os
 import sys
 import pygame
-import os
-import actions
+
+from deck import Deck
+from drawer import Drawer
+from actions import Actions
 
 class Gamezone:
     def __init__(self,rules=False,down_func={},up_func={}):
         self.show_layer_alternative=False
-        
-        self.actions=actions.Actions(self,rules)
+        self.actions=Actions(self,rules)
         self.rules=self.actions.rules
-        self.drawer=drawer.Drawer(self,caption=self.rules.caption)
+        self.drawer=Drawer(self,caption=self.rules.caption)
         self.keys_descriptions="Esc:Exit"
         self.down_func=down_func
         if not self.down_func.has_key(pygame.K_ESCAPE):
@@ -81,28 +81,24 @@ class Gamezone:
         self.up_func=up_func
 
     # Anyadir mazos
-    def add_playzone(self,id_deck,cards=[[],[]],visible=False,maxcards=0,clickable=False,point=False):
+    def add_playzone(self, id_deck, cards=[[], []], visible=False, maxcards=0, clickable=False, point=False):
         if point:
-            playzone=deck.Deck(id_deck=id_deck,cards=cards,visible=visible,maxcards=maxcards,clickable=clickable,point=point)
+            playzone = Deck(id_deck=id_deck, cards=cards, visible=visible, maxcards=maxcards, clickable=clickable, point=point)
         else:
-            playzone=deck.Deck(id_deck=id_deck,cards=cards,visible=visible,maxcards=maxcards,clickable=clickable)
+            playzone = Deck(id_deck=id_deck, cards=cards, visible=visible, maxcards=maxcards, clickable=clickable)
         self.playzone.append(playzone)
     
-    def add_deckdraw(self,id_deck,cards=[[],[]],visible=False,maxcards=0,clickable=False,point=False):
-        if point:
-            deckdraw=deck.Deck(id_deck=id_deck,cards=cards,visible=visible,maxcards=maxcards,clickable=clickable,point=point)
-        else:
-            deckdraw=deck.Deck(id_deck=id_deck,cards=cards,visible=visible,maxcards=maxcards,clickable=clickable)
+    def add_deckdraw(self, deckdraw):
         self.deckdraws.append(deckdraw)
     
     
-    def add_deckdiscard(self,deckdiscard):
+    def add_deckdiscard(self, deckdiscard):
         self.deckdiscard.append(deckdiscard)
     
-    def add_deckpoints(self,deckpoints):
+    def add_deckpoints(self, deckpoints):
         self.deckpoints.append(deckpoints)
     
-    def add_player(self,id_deck,cards=[[],[]],visible = None,maxcards=0,clickable=None,point=False):
+    def add_player(self, id_deck, cards=[[], []], visible = None, maxcards=0, clickable=None, point=False):
         if visible == None:
             if len(self.players)==self.user:
                 visible=True
@@ -116,15 +112,12 @@ class Gamezone:
                 clickable=False
         
         if point:
-            player=deck.Deck(id_deck=id_deck,cards=cards,visible=visible,maxcards=maxcards,clickable=clickable,point=point)
+            player=Deck(id_deck=id_deck,cards=cards,visible=visible,maxcards=maxcards,clickable=clickable,point=point)
         else:
-            player=deck.Deck(id_deck=id_deck,cards=cards,visible=visible,maxcards=maxcards,clickable=clickable)
+            player=Deck(id_deck=id_deck,cards=cards,visible=visible,maxcards=maxcards,clickable=clickable)
         self.players.append(player)
         self.player=self.players[self.player_with_turn]
 
-
-
-    
     def __str__(self):
         r="_________GAME_________"
         r+="\n\nDraw Decks:"
@@ -154,6 +147,10 @@ class Gamezone:
     def show(self):
         self.drawer.show()
         print self
+    
+    
+    def __iter__(self):
+        return iter([self.players, self.deckdraws, self.deckdiscard, self.deckpoints, self.playzone])
 
 
     # Bucle principal
@@ -161,7 +158,7 @@ class Gamezone:
         self.clock = pygame.time.Clock()
         
         while True:
-            self.clock.tick(40)
+            self.clock.tick(5)
                 
             # Control de eventos
             for event in pygame.event.get():
@@ -173,8 +170,7 @@ class Gamezone:
                     self.screen = pygame.display.set_mode(event.size, pygame.DOUBLEBUF | pygame.HWSURFACE |  pygame.RESIZABLE ) 
                     #print self.screen
                     self.show()
-                    
-
+                
                 # Si no es un evento de teclado o raton, lo ignoramos
                 if not hasattr(event,'button') and not hasattr(event,'key'):
                     continue
@@ -202,27 +198,24 @@ class Gamezone:
                             
                             if tmp_sco=="global":
                                 if self.user==self.pwt:
-                                    self.globaleventlist.append([self.user,tmp_fun])
+                                    self.globaleventlist.append( str(tmp_fun)+","+str(self.user) )
                             else:
                                 print eval(tmp_fun)
 
                             print self.globaleventlist
-                            
-                            for event in self.globaleventlist:
-                                if event[1][-2:-1]=="(":
-                                    eval (str(event[1][:-1])+"player="+str(event[0])+")")
-                                else:
-                                    eval (str(event[1][:-1])+",player="+str(event[0])+")")
-                                del self.globaleventlist[self.globaleventlist.index(event)]
+
                         else:
                             dic_func[event.key]()
- 
 
-            # Refresco de pantalla
-            pygame.display.flip()
+                # Eventos de la lista
+                for event in self.globaleventlist:
+                    string = event.split(",")
+                    string[-1] = "player=" + string[-1]
+                    function = string[0]
+                    args = ",".join(string[1:-1])
+                    eval(function + "(" + args + ")")
+                    del self.globaleventlist[self.globaleventlist.index(event)]
 
     def exit(self):
         sys.exit()
         
-    def __iter__(self):
-        return iter([self.players, self.deckdraws, self.deckdiscard, self.deckpoints, self.playzone])
