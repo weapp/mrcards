@@ -25,8 +25,6 @@ def main(options="mrcards"):
     
 class Mrcards:
     def __init__(self,options="mrcards"):
-        
-        
         self.options=options
         self.mrcards=("Start Game","Select Game","Players","Select Theme","Credits")
         self.games=self.rules()
@@ -60,7 +58,8 @@ class Mrcards:
         self.fondo=pygame.transform.scale(self.fondo, screen.get_size())
         
         self.update()
-        self.obj_menu.update()
+        self.obj_menu.update()        
+        self.kill_while = False
 
     def init_bucle(self):
         # reloj para controlar los frames por segundo
@@ -68,7 +67,8 @@ class Mrcards:
         # Bucle principal
         while True:
             clock.tick(40)
-                
+            if self.kill_while:
+                break   
             # control de eventos
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -144,6 +144,7 @@ class Mrcards:
     def seleccionar(self,n):
         if self.options=="mrcards":
             if n==0:
+                self.kill_while = True
                 __import__("initgame").main(players=pars["players"],rules=pars["rules"])
             if n==1:
                 #__import__("mrcards").main("games")
@@ -158,7 +159,11 @@ class Mrcards:
                 self.update()
                 self.obj_menu.update()
             if n==3:
-                __import__("mrcards").main("themes")
+                self.obj_menu.change_options(self.themes)
+                self.options="themes"
+                self.update()
+                self.obj_menu.update()
+                #__import__("mrcards").main("themes")
             if n==4:
                 credits=menu.Menu(("Author:","Weapp","weap88@gmail.com"),395,410, \
                 interlineado=3,letra=(20,dec("FFFFFF"),dec("FFFFFF")),color_selec=())

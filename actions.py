@@ -1,4 +1,5 @@
 #self.gz.p[self.gz.pwt]
+from deck import Deck
 
 class Actions:
     def __init__(self,gamezone,rules):
@@ -15,8 +16,9 @@ class Actions:
             del player[:]
         del self.gz.deckdraws[:]
         
-        for deck in self.rules.deckdraws:
-            self.gz.add_deckdraw(id_deck=deck["name"], cards=[deck["numbers"],deck["suits"]],visible=False,point=self.rules.points)
+        for ideck in self.rules.deckdraws:
+            
+            self.gz.add_deckdraw(Deck(id_deck=ideck["name"], cards=[ideck["numbers"],ideck["suits"]],visible=False,point=self.rules.points))
         self.rules.init()
         
     #seleccionar
@@ -54,10 +56,6 @@ class Actions:
             try: self.rules.throw_cards(selection)
             except AttributeError: pass
             self.gz.show()
-            
-            
-            
-            
     
     def throwable_selection(self,selection):
         try: r=self.rules.throwable_selection(selection)
@@ -169,6 +167,26 @@ class Actions:
     def show(self):
         self.gz.show()
         
+
+    def __getattr__(self, attr):
+        if attr=="player":
+            return self.gz.p[self.p]
+            
+    def __setattr__(self, attr, value):
+        if attr=="player" and value ==-1:
+            try: self.__dict__["p"] = self.gz.player_with_turn
+            except AttributeError:pass
+        elif attr=="player":
+            self.__dict__["p"] = value
+        else:
+            self.__dict__[attr] = value
+            
+    #acciones para las pruebas       
+    def prueba1(self):
+        pass
+    def prueba2(self):
+        pass
+        
     def F(self,f=0):
         for player in self.gz.players:
             for card in player.cards:
@@ -192,17 +210,3 @@ class Actions:
         self.F(3)
     def F12(self):
         self.F(10)
-        
-    
-    def __getattr__(self, attr):
-        if attr=="player":
-            return self.gz.p[self.p]
-            
-    def __setattr__(self, attr, value):
-        if attr=="player" and value ==-1:
-            try: self.__dict__["p"] = self.gz.player_with_turn
-            except AttributeError:pass
-        elif attr=="player":
-            self.__dict__["p"] = value
-        else:
-            self.__dict__[attr] = value
