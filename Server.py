@@ -23,11 +23,12 @@ class ControlCliente(threading.Thread):
         threading.Thread.__init__(self)
     def run(self):
         resp = self.server.sock[self.index].recv(1024)
+        print resp
         while resp[0:3] != "XIT":
             try:
                 if resp.find("\r\n")>0:
                     if resp[0:3]=="FUN":
-                        self.server.send_all_minus(str(self.index)+","+resp[0:resp.find("\r\n")+3], self.index)
+                        self.server.send_all_minus(str(self.index)+"#"+resp[0:resp.find("\r\n")+3], self.index)
                         resp = resp[resp.find("\r\n")+2:]
                         if resp != "":
                             continue

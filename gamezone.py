@@ -1,13 +1,14 @@
 import os
 import sys
 import pygame
+import socket
 
 from deck import Deck
 from drawer import Drawer
 from actions import Actions
 
 class Gamezone:
-    def __init__(self,rules=False,down_func={},up_func={}):
+    def __init__(self,rules=False,down_func={},up_func={}, netobj=None):
         self.show_layer_alternative=False
         self.actions=Actions(self,rules)
         self.rules=self.actions.rules
@@ -39,6 +40,8 @@ class Gamezone:
         
         self.localeventlist=[] # no se utiliza
         self.globaleventlist=[]
+
+        self.net = netobj
         
         try: self.keys_descriptions=self.rules.keys_descriptions
         except AttributeError: pass
@@ -178,7 +181,7 @@ class Gamezone:
                 # Eventos de raton
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     print "boton" + str(event.button)
-                    if event.button ==1:
+                    if event.button ==1 and self.player_with_turn == self.user:
                         print str(pygame.mouse.get_pos())
                         card=self.drawer.obtain_zone(pygame.mouse.get_pos())
                         self.actions.select_card(card)
@@ -190,15 +193,15 @@ class Gamezone:
                     dic_func=self.up_func
                             
                 if event.type == pygame.KEYDOWN or event.type == pygame.KEYUP:
-                    if dic_func.has_key(event.key):# and self.player_with_turn == self.user:
+                    if dic_func.has_key(event.key) and self.player_with_turn == self.user:
                         
                         if type(dic_func[event.key])==type([]):
                             tmp_fun=dic_func[event.key][0]
                             tmp_sco=dic_func[event.key][1] #scope:ambito:local,global
                             
                             if tmp_sco=="global":
-                                if self.user==self.pwt:
-                                    self.globaleventlist.append( str(tmp_fun)+","+str(self.user) )
+                                #if self.user==self.pwt:
+                                self.globaleventlist.append( str(tmp_fun)+","+str(self.user) )
                             else:
                                 print eval(tmp_fun)
 
@@ -207,14 +210,28 @@ class Gamezone:
                         else:
                             dic_func[event.key]()
 
+
                 # Eventos de la lista
                 for event in self.globaleventlist:
                     string = event.split(",")
                     string[-1] = "player=" + string[-1]
                     function = string[0]
-                    args = ",".join(string[1:-1])
+                    args = ",".join(string[1:])
                     eval(function + "(" + args + ")")
+                    self.net.send(function+':'+args)
                     del self.globaleventlist[self.globaleventlist.index(event)]
+
+            if self.player_with_turn != self.user:
+                # No es mi turno, tengo que esperar a que alguien
+                # envie algo
+                msg = self.net.read_non_blocking()
+                if msg:
+                    print msg
+                    sender, msg = msg.split('#')
+                    if msg[0:3] == 'FUN':
+                        print 'DEBUG ===========> ', msg
+                        function, args = msg[4:].split(':')
+                        eval(function + '(' + args + ')')
 
     def exit(self):
         sys.exit()
