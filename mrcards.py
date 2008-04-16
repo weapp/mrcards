@@ -6,6 +6,9 @@ import menu
 from menu import dec 
 import os
 from pickle import load, dump
+import gettext
+
+gettext.install('mrcards', './mo/', unicode=1)
 
 
 #dump(pars, open('/tmp/mrcards.dump', 'w'))
@@ -26,10 +29,13 @@ def main(options="mrcards"):
 class Mrcards:
     def __init__(self,options="mrcards"):
         self.options=options
-        self.mrcards=("Start Game","Select Game","Players","Select Theme","Credits")
+        self.mrcards=(_("Start Game"),_("Start Game Online"),_("Select Game"),_("Players"),_("Select Theme"),_("Credits"))
         self.games=self.rules()
         self.themes=self.themes()
-        self.players=['Volver','Anyadir Player','Eliminar Player']
+        self.onlineoptions=[_('Master'),_('Client')]
+        self.onlineoptionsmaster=[_('Back'),_('Server IP'),_('Server Port'),_('Nickname'),_('Number of Players'),_('Next')]
+        self.onlineoptionsclient=[_('Back'),_('Server IP'),_('Server Port'),_('Nickname'),_('Next')]
+        self.players=[_('Back'),_('Add Player'),_('Delete Player')]
         self.players.extend(iter(pars['players'].split(",")))
         options=eval('self.'+str(options))
         
@@ -42,7 +48,7 @@ class Mrcards:
         scrn_alto=480
         self.screen=screen=pygame.display.set_mode((scrn_anch, scrn_alto), pygame.DOUBLEBUF | pygame.HWSURFACE)
         # se asigna el nombre de la ventana
-        pygame.display.set_caption('Menu')
+        pygame.display.set_caption(_('Menu'))
 
         
 
@@ -80,7 +86,7 @@ class Mrcards:
                 
                 # Eventos de raton
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    print "boton" + str(event.button)
+                    print _("button") + str(event.button)
                 # Eventos de teclado
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
@@ -103,7 +109,7 @@ class Mrcards:
                             self.obj_menu.options[self.optioneditable] = self.obj_menu.options[self.optioneditable][:-1]
                             self.update()
                             self.obj_menu.update_options()
-                        elif pygame.key.name(event.key) in ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]:
+                        elif pygame.key.name(event.key) in ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9","."]:
                             keyname = pygame.key.name(event.key)
                             
                             mod = pygame.key.get_mods()
@@ -145,27 +151,31 @@ class Mrcards:
         if self.options=="mrcards":
             if n==0:
                 self.kill_while = True
-                __import__("initgame").main(players=pars["players"],rules=pars["rules"])
+                __import__("initgame").main(players=pars["players"],rules=pars["rules"],online=False)
             if n==1:
-                #__import__("mrcards").main("games")
+                self.obj_menu.change_options(self.onlineoptions)
+                self.options="onlineoptions"
+                self.update()
+                self.obj_menu.update()
+                #self.kill_while = True
+                #__import__("initgame").main(players=pars["players"],rules=pars["rules"],online=True)
+            if n==2:
                 self.obj_menu.change_options(self.games)
                 self.options="games"
                 self.update()
                 self.obj_menu.update()
-            if n==2:
-                #__import__("mrcards").main("players")
+            if n==3:
                 self.obj_menu.change_options(self.players)
                 self.options="players"
                 self.update()
                 self.obj_menu.update()
-            if n==3:
+            if n==4:
                 self.obj_menu.change_options(self.themes)
                 self.options="themes"
                 self.update()
                 self.obj_menu.update()
-                #__import__("mrcards").main("themes")
-            if n==4:
-                credits=menu.Menu(("Author:","Weapp","weap88@gmail.com"),395,410, \
+            if n==5:
+                credits=menu.Menu((_("Author")+":","Weapp","weap88@gmail.com"),395,410, \
                 interlineado=3,letra=(20,dec("FFFFFF"),dec("FFFFFF")),color_selec=())
                 credits.update()
                 
@@ -212,6 +222,33 @@ class Mrcards:
                 self.obj_menu.update_options()
                 self.update()
                 self.obj_menu.update()
+                
+        elif self.options=="onlineoptions":
+            if n==0:
+                self.obj_menu.change_options(self.onlineoptionsmaster)
+                self.options="onlineoptionsmaster"
+                self.update()
+                self.obj_menu.update()
+            if n==1:
+                self.obj_menu.change_options(self.onlineoptionsclient)
+                self.options="onlineoptionsclient"
+                self.update()
+                self.obj_menu.update()
+        elif self.options=="onlineoptionsmaster":
+            if n==0:
+                __import__("mrcards").main("mrcards")
+            elif 0<n and n<5:
+                self.editable=True
+                self.obj_menu.options[n]=''
+                self.optioneditable=n
+                self.obj_menu.update_options()
+                self.update()
+                self.obj_menu.update()
+            elif n==5:
+                self.kill_while = True
+                __import__("initgame").main(players=pars["players"],rules=pars["rules"],online=self.obj_menu.options[1:4])
+                #print self.obj_menu.options[1:4]
+                
             
     def update(self):
         self.screen,self.fondo

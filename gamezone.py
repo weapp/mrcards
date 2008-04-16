@@ -123,21 +123,22 @@ class Gamezone:
 
     def __str__(self):
         r="_________GAME_________"
-        r+="\n\nDraw Decks:"
+        r+="\n\n"+_("Draw Decks")+":"
         for deck in self.deckdraws:
             r+="\n    "+str(deck)
             
-        r+="\n\nPlayer Decks:"
+        r+="\n\n"+_("Player Decks")+":"
         for deck in self.players:
             r+="\n    "+str(deck)
-        r+="\n\nPlay Zone:"
+            
+        r+="\n\n"+_("Play Zone")+":"
         for deck in self.playzone:
             r+="\n    "+str(deck)
-        r+="\n\nSelection:"
+        r+="\n\n"+_("Selection")+":"
         r+="\n    "
         for card in self.players[self.user].selection:
             r+=" "+str(card)+""
-        r+="\n\nSelection (jug actual):"
+        r+="\n\n"+_("Selection")+" ("+_("player with turn")+"):"
         r+="\n    "
         for card in self.players[self.player_with_turn].get_selection_from_deck():
             r+=" "+str(card)+""
@@ -180,7 +181,7 @@ class Gamezone:
                 
                 # Eventos de raton
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    print "boton" + str(event.button)
+                    print "boton" + str(event.button) + str(pygame.mouse.get_pos())
                     if event.button ==1 and self.player_with_turn == self.user:
                         print str(pygame.mouse.get_pos())
                         card=self.drawer.obtain_zone(pygame.mouse.get_pos())
@@ -218,20 +219,22 @@ class Gamezone:
                     function = string[0]
                     args = ",".join(string[1:])
                     eval(function + "(" + args + ")")
-                    self.net.send(function+':'+args)
+                    if self.net:
+                        self.net.send(function+':'+args)
                     del self.globaleventlist[self.globaleventlist.index(event)]
-
-            if self.player_with_turn != self.user:
-                # No es mi turno, tengo que esperar a que alguien
-                # envie algo
-                msg = self.net.read_non_blocking()
-                if msg:
-                    print msg
-                    sender, msg = msg.split('#')
-                    if msg[0:3] == 'FUN':
-                        print 'DEBUG ===========> ', msg
-                        function, args = msg[4:].split(':')
-                        eval(function + '(' + args + ')')
+                    
+            if self.net:
+                if self.player_with_turn != self.user:
+                    # No es mi turno, tengo que esperar a que alguien
+                    # envie algo
+                    msg = self.net.read_non_blocking()
+                    if msg:
+                        print msg
+                        sender, msg = msg.split('#')
+                        if msg[0:3] == 'FUN':
+                            print 'DEBUG ===========> ', msg
+                            function, args = msg[4:].split(':')
+                            eval(function + '(' + args + ')')
 
     def exit(self):
         sys.exit()

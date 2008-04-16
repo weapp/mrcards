@@ -1,5 +1,7 @@
 #self.gz.p[self.gz.pwt]
 from deck import Deck
+"""funciones que interactuaran con los mazos y las cartas"""
+
 
 class Actions:
     def __init__(self,gamezone,rules):
@@ -11,6 +13,7 @@ class Actions:
         self.gz.pass_turns_counter=0 
         
     def new_round(self):
+        """Es llamada al crear el juego y cada vez que se empieza una nueva ronda"""
         self.gz.round+=1
         for player in self.gz.players:
             del player[:]
@@ -132,6 +135,8 @@ class Actions:
         
     #ordenar
     def sort_by_suit(self,player=-1):
+        """ordena el mazo del jugador cuyo indice se pasa por argumentos, en caso de no indicar cual utilizara
+    el jugador con el turno"""
         self.player=player
         self.player.sort_by_suit()
         self.gz.show()
@@ -146,7 +151,7 @@ class Actions:
         self.player.sort_by_points()
         self.gz.show()
         
-    def sort(self,by):
+    def sort(self,by,player):
         if by=="suit":
             self.gz.globaleventlist.append([self.gz.user,"self.actions.sort_by_suit()"])
         elif by=="number":
@@ -183,6 +188,7 @@ class Actions:
             
     #acciones para las pruebas       
     def prueba1(self):
+        self.gz.drawer.ancho *= 0.5
         pass
     def prueba2(self):
         pass

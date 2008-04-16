@@ -6,22 +6,23 @@ import gamezone
 import net
 
 
-def main(rules, players):
-    netobj = net.Net()
-    netobj.init_net(juego='culo', jugadores=2)
+def main(rules, players, online=False):
+    if online:
+        netobj = net.Net(options=False)
+        netobj.init_net(juego='culo', jugadores=2)
+        players = netobj.players
+        rules = netobj.juego
+        game=gamezone.Gamezone(rules=rules,netobj=netobj)#declaramos la zona de juegos y le anyadimos los jugadores y el mazo para robar
+        game.user = netobj.me
+        # TODO las cartas se reparten aleatoriamente, 
+        # Hay que hacer algo para que los distintos jugadores tengan las 
+        # jueguen con la misma baraja
 
-   #self.gamezone.show()
+    else:
+        players=players.replace('_'," ").split(",")
+        game=gamezone.Gamezone(rules=rules)#declaramos la zona de juegos y le anyadimos los jugadores y el mazo para robar
+      
     
-    #players=players.replace('_'," ").split(",")
-    players = netobj.players
-    rules = netobj.juego
-    
-    game=gamezone.Gamezone(rules=rules,netobj=netobj)#declaramos la zona de juegos y le anyadimos los jugadores y el mazo para robar
-
-    game.user = netobj.me
-    # TODO las cartas se reparten aleatoriamente, 
-    # Hay que hacer algo para que los distintos jugadores tengan las 
-    # jueguen con la misma baraja
 
     actions=game.actions
     rules=game.rules

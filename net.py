@@ -4,7 +4,7 @@ Este modulo es el encargado de gestionar el juego en red.
 import socket
 
 class Net:
-    def __init__(self):
+    def __init__(self,options=False):
         self.buffer = ''
         self.juego = ''
         self.jugadores = 0

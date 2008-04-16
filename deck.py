@@ -1,6 +1,6 @@
 import pygame
 import sys
-import card
+from card import Card
 from math import sin, cos,pi
 import random
 
@@ -13,24 +13,18 @@ class Deck:
         self.visible=visible
         self.max=maxcards
         self.clickable=clickable
-        self.cards = []
         self.point = point
-        
-        for num in cards[0]:
-            for suit in cards[1]:
-                self.cards.append(card.Card(card_id=str(num)+str(suit),owner=self.id,number=num,suit=suit,visible=visible,points=point(num,suit)))    
+        self.cards=[Card(card_id=str(num)+str(suit),owner=self.id,number=num,suit=suit,visible=visible,points=point(num,suit))
+                   for num in cards[0]
+                   for suit in cards[1]]
                 
-    def getx(self):
-        selected=[]
-        for card in self.cards:
-            if card.is_selected():
-                selected.append(card)
-        return selected
+    def getselected(self):
+        return [card for card in self if card.is_selected()]  #filtra las cartas seleccionadas
 
-    def setx(self, x):
+    def setselected(self, x):
         pass
 
-    selection = property(getx, setx)
+    selection = property(getselected, setselected)
         
 
     
@@ -64,8 +58,8 @@ class Deck:
         #for i in range(len(self)):
         for i in range(n):
             if len(deck)>0:
-                self.add_card(deck[0])
-                deck.rem_card(deck[0])
+                if self.add_card(deck[0]):
+                    deck.rem_card(deck[0])
         #pass#robar,si no se le indica nada se utilizara el mazo definido arriba.
     
     def send(self,deck):#la seleccion #eviar a un jugador o zona
@@ -73,15 +67,22 @@ class Deck:
         deck.add_cards(selection)
         self.clear_selection_from_deck()
         self.rem_cards(selection)
+        
     
     def add_card(self,card):
-        card.change_owner(self)
-        self.cards.append(card)
-        card.setVisibility(self.visible)
+        if self.max==0 or self.max>len(self):
+            card.change_owner(self)
+            self.cards.append(card)
+            card.setVisibility(self.visible)
+            return True
+        else: return False
         
     def add_cards(self,cards):
+        counter_cards=0
         for card in cards:
-            self.add_card(card)
+            if self.add_card(card):
+                counter_cards+=1
+        return counter_cards
     
     def rem_card(self,card):
         if card in self.cards:
@@ -93,7 +94,7 @@ class Deck:
     
     def count_points(self):
         points=0
-        for card in self.cards:
+        for card in self:
             point+=card.get_points()
         return points
                 
@@ -108,24 +109,19 @@ class Deck:
                 card.select_card()
             
     def clear_selection_from_deck(self):
-        for card in self.cards:
-            card.remove_from_selection()
+        [card.remove_from_selection() for card in self]
     
-    def get_selection_from_deck(self):        
-        selected=[]
-        for card in self.cards:
-            if card.is_selected():
-                selected.append(card)
-        return selected
+    def get_selection_from_deck(self):
+        return [card for card in self if card.is_selected()]
     
     ##funciones magicas        
     def __str__(self):
         if self.visible:
             r="< "
-            for i in range(len(self.cards)):
+            for i in range(len(self)):
                 if not i == 0:
                     r+=", "
-                r+=str(self.cards[i])
+                r+=str(self[i])
             r+=" >"
         else:
             r="#"

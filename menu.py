@@ -70,8 +70,11 @@ class Menu:
     
     def update(self):                
         #mostrar por terminal en que posicion "se enkuentra el cursor"
-        print self.position , ": " , self.options[self.position]
-            
+        try:
+            r=str(self.position) + ": " + repr(self.options[self.position])
+            print r
+        finally:pass
+           
         #pintar todos los rekuadros y el texto de las opciones
         
         for i in range(len(self.optionvisibles)):
