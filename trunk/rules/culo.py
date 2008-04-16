@@ -14,7 +14,7 @@ class Game:
         self.caption="Culo"
         self.decription="Game of Culo"
         self.playzone=True
-        self.deckdraws=[{"name":"Mazo para robar","numbers":["As",2,3,4,5,6,7,"J","Q","K"],"suits":["espadas","oros","bastos","copas"]}]
+        self.deckdraws=[{"name":"Mazo para robar","numbers":["As",2,3,4,5,6,7,"J","Q","K"],"suits":["spades","diamonds","clubs","hearts"]}]
         self.keys_descriptions="F5:Reload  Esc:Exit  Down:Toggle Fullscreen  D:Draw a card\n" + \
                               "[1-10]:Add to/Rem from Selection  Z:Clear Selection  T,Return:Throws \n" + \
                               "E:End Turn  S:Sort P:Pass Turn F1-4:Choose User  F12:None User"

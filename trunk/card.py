@@ -65,7 +65,7 @@ class Card:
     def __str__(self):
         if self.visible:
             #return "["+str(self.id) + ":" + str(self.number) + " de " + str(self.suit) + "("+str(self.points)+"p)]"
-            return "[" + str(self.number) + " " + str(self.suit) + "]"
+            return "[" + str(_(self.number)) + " " + str(_(self.suit)) + "]"
         else:
             return "#"
 
