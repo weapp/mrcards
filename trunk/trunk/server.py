@@ -1,20 +1,24 @@
 import sys
 import socket
+from comprobar import comprobar_error
 
 """
 Servidor para MRcard
  * servidor:
-    start: j,n;p,n;p,n;p  -> split(',') -> split(';')
-    player: j,n
+    you: ID 
+    player:nombre,ID,numero_cartas
+    cards: n,p;n,p;n,p;... Nuestras cartas -> split(';') -> split(',')
     turn: # directo a un jugador
     ack: confirmacion
     nack:msg
+    start: Empieza el juego
     win:
     lose:
     thrown:j,n;p,n;p...
 
  * cliente:
     syn:autenticacion
+    name: nombre del jugador
     pass: paso de turno
     throw:n;p,n;p ...
     exit:
@@ -33,7 +37,8 @@ class Server:
             try:
                 self.ss.bind(("",puerto))
             except:
-                return None
+                print "error tambien conectando al puert 12346"
+                sys.exit(-1)
         self.ss.listen(10)
         self.cn = 0 #numero de jugadores
         self.sock = {} #cada jugador escribira en un socket
@@ -42,39 +47,67 @@ class Server:
     def lanzar(self):
         print "Esperando conexion"
         self.player1, self.player1_addr = self.ss.accept()
-        syn = self.player1.recv(1024)
-        if syn.split(':')[0] == 'SYN':
-            print "usuario conectado", self.player1_addr, syn
-        else: sys.exit(-1)
+
+
+        #Mensaje para conectar
+        syn_m = self.player1.recv(1024)
+        comprobar_error(syn_m,"SYN")
+        print "usuario conectado", self.player1_addr
+
+        #Lo aceptamos
         self.player1.send("ACK:\r\n")
 
-        # las cartas del jugador y su id
-        self.player1.send("START:2,3;0,12;1,9;3\r\n")
+        #Recibimos algo para que no envie dos cosas en un mismo mensaje
+        self.player1.recv(1024)
+
+        # ID del jugador
+        self.player1.send("YOU:2\r\n")
+
+        name_m=self.player1.recv(1024)
+        comprobar_error(name_m,"NAME")
+        name=name_m.split(":")[1]
+        print "Nombre del jugador ",name
+
+        self.player1.send("CARDS:2,3;12,0;1,1;2,1")
+
+        #Recivimos algo para que no envie dos cosas en un mismo mensaje
+        self.player1.recv(1024)
 
         # los demas jugadores y su numero de cartas inicial
-        self.player1.send("PLAYER:0,3\r\n")
-        self.player1.send("PLAYER:1,3\r\n")
-        self.player1.send("PLAYER:3,3\r\n")
+        self.player1.send("PLAYER:unidob,0,3\r\n")
+        #Recibimos algo para que no envie dos cosas en un mismo mensaje
+        self.player1.recv(1024)
 
-        self.player1.send("GO:\r\n")
+        self.player1.send("PLAYER:weapp,1,3\r\n")
+        #Recibimos algo para que no envie dos cosas en un mismo mensaje
+        self.player1.recv(1024)
+
+        self.player1.send("PLAYER:bolera_net,3,3\r\n")
+        #Recibimos algo para que no envie dos cosas en un mismo mensaje
+        self.player1.recv(1024)
+
+        self.player1.send("START:\r\n")
+        #Recibimos algo para que no envie dos cosas en un mismo mensaje
+        self.player1.recv(1024)
         self.player1.send("TURN:\r\n")
-        
+
         # Esperar que el cliente diga algo
         comando = self.player1.recv(1024)
-        
+
         c1 = comando.split(':')
-        
+
         if c1[0] == "THROW":
             print "Carta enviada ", c1
         elif c1[0] == "PASS":
             print "Pasando ", c1
+        else:
+            print "Comando equivocado"
+            print ci
 
-        self.player1.send("ACK:\r\n")
-        
+        #self.player1.send("ACK:\r\n")
+
         self.player1.close()
         self.ss.close()
-
-        
 
     '''
     def close_all(self):
