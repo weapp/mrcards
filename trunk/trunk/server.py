@@ -47,6 +47,7 @@ class Server:
     def lanzar(self):
         print "Esperando conexion"
         self.player1, self.player1_addr = self.ss.accept()
+        print self.player1_addr
 
 
         #Mensaje para conectar
