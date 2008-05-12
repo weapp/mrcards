@@ -1,0 +1,15 @@
+TODOs
+
++ Capturar la excepcion en el cliente sí no conecta y salir
+    correctamente
++ Crear clase ServerNetworkBuffer (danigm)
++ Integrarlo con la clase Server actual (unidob)
+
+
+TODOs Realizados
+
+* Integrado NetworkBuffer con el cliente (unidob 13/5/08)
+* Creado NetworkBuffer para facilitar el manejo de mensajes
+    para el cliente (danigm 13/5/08)
+* Creado el primer cliente (unidob 12/5/08)
+* Creado el primer servidor (danigm 12/5/08)

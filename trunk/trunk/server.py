@@ -24,21 +24,17 @@ Servidor para MRcard
     exit:
 """
 class Server:
-    def __init__(self, puerto = 12345):
+    def __init__(self, port = 12345):
         """
         abre un puerto en la maquina local, y espera cn conexiones
         """
         self.ss = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         try:
-            self.ss.bind(("",puerto))
+            self.ss.bind(("",port))
         except:
-            puerto = puerto + 1
-            print "error al conectar en localhost, probando con puerto 12346"
-            try:
-                self.ss.bind(("",puerto))
-            except:
-                print "error tambien conectando al puert 12346"
-                sys.exit(-1)
+            print "error conectando al puerto 12345"
+            sys.exit(-1)
+
         self.ss.listen(10)
         self.cn = 0 #numero de jugadores
         self.sock = {} #cada jugador escribira en un socket
@@ -58,9 +54,6 @@ class Server:
         #Lo aceptamos
         self.player1.send("ACK:\r\n")
 
-        #Recibimos algo para que no envie dos cosas en un mismo mensaje
-        self.player1.recv(1024)
-
         # ID del jugador
         self.player1.send("YOU:2\r\n")
 
@@ -71,25 +64,15 @@ class Server:
 
         self.player1.send("CARDS:2,3;12,0;1,1;2,1")
 
-        #Recivimos algo para que no envie dos cosas en un mismo mensaje
-        self.player1.recv(1024)
-
         # los demas jugadores y su numero de cartas inicial
         self.player1.send("PLAYER:unidob,0,3\r\n")
-        #Recibimos algo para que no envie dos cosas en un mismo mensaje
-        self.player1.recv(1024)
 
         self.player1.send("PLAYER:weapp,1,3\r\n")
-        #Recibimos algo para que no envie dos cosas en un mismo mensaje
-        self.player1.recv(1024)
 
         self.player1.send("PLAYER:bolera_net,3,3\r\n")
-        #Recibimos algo para que no envie dos cosas en un mismo mensaje
-        self.player1.recv(1024)
 
         self.player1.send("START:\r\n")
-        #Recibimos algo para que no envie dos cosas en un mismo mensaje
-        self.player1.recv(1024)
+
         self.player1.send("TURN:\r\n")
 
         # Esperar que el cliente diga algo
@@ -103,7 +86,7 @@ class Server:
             print "Pasando ", c1
         else:
             print "Comando equivocado"
-            print ci
+            print c1
 
         #self.player1.send("ACK:\r\n")
 
