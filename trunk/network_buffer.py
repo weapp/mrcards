@@ -22,11 +22,8 @@ class Receiver(threading.Thread):
                 pass
             index = self.buffer.find(self.nb.separator)
             while index >= 0:
-                print index
-                print "antes", buffer
                 self.nb.fifo.append(self.buffer[0:index])
                 self.buffer = self.buffer[index + len(sep):]
-                print "dps", buffer
                 index = self.buffer.find(sep)
 
     def stop(self):
@@ -53,7 +50,6 @@ class NetworkBuffer:
         self.receiver_thread.start()
 
     def __del__(self):
-        print "destructor"
         self.receiver_thread.end = True
 
     def send_msg(self, msg):
@@ -77,14 +73,14 @@ class NetworkBuffer:
         '''
         return len(self.fifo)
 
-    def received_msg(self):
+    def recv_msg(self):
         '''
         Devuelve el primer elemento de la cola, si existe. Si no hay
         mensajes en la cola lanza la excepcion 
         '''
 
         if len(self.fifo) > 0:
-            return self.fifo.pop()
+            return self.fifo.pop(0)
         else:
             return ''
 
