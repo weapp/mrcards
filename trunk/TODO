@@ -8,7 +8,8 @@ TODOs
 
 TODOs Realizados
 
-* Integrado NetworkBuffer con el cliente (unidob 13/5/08)
+* Creada la clase game de la que deben de heredar todos los juegos (weapp 13/5/08)
+* Integrado NetworkBuffer con el cliente (unidob 12/5/08)
 * Creado NetworkBuffer para facilitar el manejo de mensajes
     para el cliente (danigm 13/5/08)
 * Creado el primer cliente (unidob 12/5/08)
