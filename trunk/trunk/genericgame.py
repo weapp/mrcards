@@ -1,4 +1,7 @@
 class GenericGame:
+    self.num_player=(0,0)
+    self.players=0
+    self.name=""
     def __init__(self):
         pass
 
