@@ -1,53 +1,73 @@
 import sys
 import socket
+import game
 from comprobar import comprobar_error
 
 """
-Servidor para MRcard
- * servidor:
-    you: ID 
-    player:nombre,ID,numero_cartas
-    cards: n,p;n,p;n,p;... Nuestras cartas -> split(';') -> split(',')
-    turn: # directo a un jugador
-    ack: confirmacion
-    nack:msg
-    start: Empieza el juego
-    win:
-    lose:
-    thrown:j,n;p,n;p...
+Protocolo para MRcard
+    #Conexion
+    SYN:version #C
+    ACK:        #S
 
- * cliente:
-    syn:autenticacion
-    name: nombre del jugador
-    pass: paso de turno
-    throw:n;p,n;p ...
-    exit:
+    #Vemos los jugadores y montones que hay
+    YOU:ID      #S
+    NAME:nombre #C
+    PLAYER:nombre,ID #S
+    ...
+    SET:nombre,ID   #S
+    ...
+
+    #Se reparten las cartas donde ID=O es el mazo inicial
+    START:  #S
+    MOVE:0,ID_a_donde_se_manda,numero_cartas    #S
+    ...
+    VMOVE:0,ID_a_donde_se_manda,n-p,n-p,n-p...  #S
+
+    #Los jugadores no tienen turno, si intentas tirar cartas
+    #cuando no es tu turno te da mensaje de error
+    #Sin embargo se mandan mensajes con quien es el turno
+    MSG:Turn ID     #S
+
+    THROW:ID,n-p,n-p,n-p   #C
+    MOVE:ID,ID,numero_cartas    #S
+    VMOVE:ID,ID,n-p,n-p,n-p...  #S
+
+    WIN:    #S
+    LOSE:   #S
 """
 class Server:
     def __init__(self, port = 12345):
+        self.create_game()
         """
-        abre un puerto en la maquina local, y espera cn conexiones
+        Abre un puerto en la maquina local, y espera cn conexiones
         """
+        #Creamos el socket
         self.ss = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         try:
+            #Asociamos el socket al puerto del ordenador
             self.ss.bind(("",port))
         except:
             print "error conectando al puerto 12345"
             sys.exit(-1)
-
+        #Hacemos que escuche el socket
         self.ss.listen(10)
-        self.cn = 0 #numero de jugadores
-        self.sock = {} #cada jugador escribira en un socket
-        self.addr = {} #direccion de cada jugador
+        #numero de jugadores
+        self.n_players = 0
+        #cada jugador escribira en un socket
+        self.sock = {}
+        #direccion de cada jugador
+        self.addr = {}
 
     def lanzar(self):
         print "Esperando conexion"
+        #Accept devuelve un socket (player1) y su direcion
         self.player1, self.player1_addr = self.ss.accept()
         print self.player1_addr
 
 
         #Mensaje para conectar
         syn_m = self.player1.recv(1024)
+        #comprobamos que sea SYN y si no se sale
         comprobar_error(syn_m,"SYN")
         print "usuario conectado", self.player1_addr
 
@@ -92,6 +112,12 @@ class Server:
 
         self.player1.close()
         self.ss.close()
+
+    def create_game()
+        self.game_name=culo
+        self.mod_game=__import__(self.game_name)
+        self.game=mod_game.Game()
+
 
     '''
     def close_all(self):

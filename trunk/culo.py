@@ -1,5 +1,11 @@
-class GenericGame:
+import genericgame
+
+class Game(genericgame.GenericGame):
+    self.num_player(2,8)
+    self.players=0
+    self.name"Culo"
     def __init__(self):
+        self.num
         pass
 
     def init_game(self):

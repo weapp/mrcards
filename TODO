@@ -4,10 +4,12 @@ TODOs
     correctamente
 + Crear clase ServerNetworkBuffer (danigm)
 + Integrarlo con la clase Server actual (unidob)
++ Empezar a integrar la clase card, deck, etc
 
 
 TODOs Realizados
 
+* Cambios de protocolo haciendolo mas generico (unidob 14/5/08)
 * Creada la clase game de la que deben de heredar todos los juegos (weapp 13/5/08)
 * Integrado NetworkBuffer con el cliente (unidob 12/5/08)
 * Creado NetworkBuffer para facilitar el manejo de mensajes

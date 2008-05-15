@@ -4,35 +4,51 @@ import network_buffer
 from comprobar import comprobar_error
 
 """
-Servidor para MRcard
- * servidor:
-    start: j,n;p,n;p,n;p  -> split(',') -> split(';')
-    player: j,n
-    turn: # directo a un jugador
-    ack: confirmacion
-    nack:msg
-    win:
-    lose:
-    thrown:j,n;p,n;p...
+Protocolo para MRcard
+    #Conexion
+    SYN:version #C
+    ACK:        #S
 
- * cliente:
-    syn:autenticacion
-    pass: paso de turno
-    throw:n;p,n;p ...
-    exit:
+    #Vemos los jugadores y montones que hay
+    YOU:ID      #S
+    NAME:nombre #C
+    PLAYER:nombre,ID #S
+    ...
+    SET:nombre,ID   #S
+    ...
+
+    #Se reparten las cartas donde ID=O es el mazo inicial
+    START:  #S
+    MOVE:0,ID_a_donde_se_manda,numero_cartas    #S
+    ...
+    VMOVE:0,ID_a_donde_se_manda,n-p,n-p,n-p...  #S
+
+    #Los jugadores no tienen turno, si intentas tirar cartas
+    #cuando no es tu turno te da mensaje de error
+    #Sin embargo se mandan mensajes con quien es el turno
+    MSG:Turn ID     #S
+
+    THROW:ID,n-p,n-p,n-p   #C
+    MOVE:ID,ID,numero_cartas    #S
+    VMOVE:ID,ID,n-p,n-p,n-p...  #S
+
+    WIN:    #S
+    LOSE:   #S
 """
+
 class Client:
     def __init__(self, port = 12345):
         """
-        Se conecta al puerto del servidor
+            Se conecta al puerto del servidor
         """
+        #Creamos socket y se inicaliza
         self.nb=network_buffer.NetworkBuffer(port)
 
     def lanzar(self):
         #Mandamos mensaje de conectar SYN
         self.nb.send_msg("SYN:")
 
-        #Comprobamos que todo ha ido bien
+        #Esperamos a que nos llegue algun mensaje
         while self.nb.number_msg() == 0:
             pass
         received_m=self.nb.recv_msg()
