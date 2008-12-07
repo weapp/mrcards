@@ -55,7 +55,7 @@ class Gamezone:
         return self.throws[len(self.throws)-1]
         
     def set_player(self,new_value):
-        self.app.objs['players'][self.player_with_turn]=new_value
+        self.app.objs['players'][self.player_with_turn]=value
         
     def set_down_func(self,down_func):
         self.down_func=down_func
