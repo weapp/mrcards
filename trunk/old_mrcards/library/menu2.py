@@ -9,10 +9,10 @@ import os
 def dec(s):
     return (int(s[0:2], 16),int(s[2:4], 16),int(s[4:6], 16))
 
+
 class Menu:
-    def __init__(self,options,margen_sup=0,margen_izq=0,interlineado=20,letra=(38,dec("5c3566"),dec("eff2f5")),color_base=(),color_selec=(213,213,213),menuEnBucle=True,only_text=False,nvisibles=7):
-        self.screen=pygame.display.get_surface()
-        
+    def __init__(self,surface,options,margen_sup=0,margen_izq=0,interlineado=20,letra=(38,dec("5c3566"),dec("eff2f5")),color_base=(),color_selec=(213,213,213),menuEnBucle=True,only_text=False,nvisibles=7,persistant=False,seleccionar=None):
+        self.surface=surface
         self.letra=letra
         self.options=options
         self.position=0
@@ -34,6 +34,12 @@ class Menu:
         self.ancho=0
         self.colorletra=(letra[1],letra[2])
         
+        self.activate=persistant
+        self.persistant=persistant
+        
+        self.editable=False
+        
+        if seleccionar: self.seleccionar=seleccionar
         
         for i in range(len(self.options)):
             self.surfont.append(self.font.render(self.options[i],True,letra[1]))
@@ -62,17 +68,10 @@ class Menu:
             self.maxvisible=self.position+self.nvisibles
             self.optionvisibles=self.options[self.minvisible:self.maxvisible]
     
-    def update_options(self,update=True):
-        self.optionvisibles=self.options[self.minvisible:self.maxvisible]
-        if update:
-            self.update()
-    
-    
-    def update(self):                
+    def draw(self):
         #mostrar por terminal en que posicion "se enkuentra el cursor"
         try:
             r=str(self.position) + ": " + repr(self.options[self.position])
-            print r
         finally:pass
            
         #pintar todos los rekuadros y el texto de las opciones
@@ -83,18 +82,18 @@ class Menu:
             
             if i==self.position-self.minvisible:
                 if len(self.color_selec):
-                    #pygame.draw.rect(self.screen, self.color_selec, rect)
+                    #pygame.draw.rect(self.surface, self.color_selec, rect)
                     theme=os.path.join('themes', 'default' )
                     
                     try:select = pygame.image.load( os.path.join(os.path.dirname(sys.argv[0]), os.path.join( theme ,'selectmenu.png') ) )
                     except:select = pygame.image.load( os.path.join(os.path.dirname(sys.argv[0]), os.path.join( 'default' ,'selectmenu.png') ) )
                     
-                    self.screen.blit(select, rect)
+                    self.surface.blit(select, rect)
 
                     
             else:
                 if len(self.color_base):
-                    pygame.draw.rect(self.screen, self.color_base, rect)
+                    pygame.draw.rect(self.surface, self.color_base, rect)
             
             rect=(self.margen_izq, self.margen_sup+self.interlineado*i+self.alto*i, self.ancho, self.alto)
                     
@@ -104,10 +103,14 @@ class Menu:
                 a=self.optionvisibles[i]
                 self.surfont[i]=self.font.render(a,True,self.colorletra[0])
 
-            self.screen.blit(self.surfont[i], rect)
+            self.surface.blit(self.surfont[i], rect)
     
         #pintar el rektangulo resaltado
-        #pygame.draw.rect(self.screen, self.color_selec, (self.margen_izq,  self.margen_sup+self.interlineado*self.position+self.alto*self.position, self.ancho, self.alto))
+        #pygame.draw.rect(self.surface, self.color_selec, (self.margen_izq,  self.margen_sup+self.interlineado*self.position+self.alto*self.position, self.ancho, self.alto))
+
+
+    def update(self):
+        self.optionvisibles=self.options[self.minvisible:self.maxvisible]
         
     def change_options(self,options):
         self.options=options
@@ -115,7 +118,6 @@ class Menu:
         self.minvisible=0
         self.maxvisible=self.nvisibles
         self.optionvisibles=self.options[self.minvisible:self.maxvisible]
-        self.update_options(update=False)
         self.surfont=[]
         for i in range(len(self.options)):
             self.surfont.append(self.font.render(self.options[i],True,self.letra[1]))
@@ -126,12 +128,50 @@ class Menu:
     def down(self):
         self.position+=1
         self.no_out()
-        self.update()
         
     def up(self):
         self.position-=1
         self.no_out()
-        self.update()
         
     def obtain_position(self):
         return self.position
+        
+    def editar(self,n):
+        self.editable=True
+        self.options[n]=''
+        self.optioneditable=n
+    
+    def new_event(self,event):
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                self.activate = not self.activate
+                return True
+            if self.activate or self.persistant:
+                if self.editable:
+                    if event.key== pygame.K_RETURN:
+                        self.editable=False
+                    elif event.key == pygame.K_SPACE:
+                        self.options[self.optioneditable] += " "
+                    elif event.key == pygame.K_BACKSPACE:
+                        self.options[self.optioneditable] = self.options[self.optioneditable][:-1]
+                    elif pygame.key.name(event.key) in ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9","."]:
+                        keyname = pygame.key.name(event.key)
+                        
+                        mod = pygame.key.get_mods()
+                                                    
+                        if mod in [pygame.KMOD_LSHIFT,pygame.KMOD_RSHIFT,pygame.KMOD_CAPS]:
+                            self.options[self.optioneditable] += keyname.upper()
+                        else:
+                            self.options[self.optioneditable] += keyname
+                        
+                else:
+                    if event.key == pygame.K_SPACE or event.key== pygame.K_RETURN:
+                        self.seleccionar(self.position)
+                    elif event.key == pygame.K_UP:
+                        self.up()
+                    elif event.key == pygame.K_DOWN:
+                        self.down()
+                return True
+    
+    def seleccionar(self,n):
+        pass
