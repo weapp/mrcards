@@ -143,6 +143,8 @@ class Gamezone:
         # Actualiza el screen para que cuando se cambie a pantalla completa se vea con la nueva resolucion
         if event.type == pygame.VIDEORESIZE:
             self.screen = pygame.display.set_mode(event.size, pygame.DOUBLEBUF | pygame.HWSURFACE |  pygame.RESIZABLE ) 
+            #self.screen = pygame.display.get_surface()
+            #self.screen.set_clip(0,0,*event.size)
             #print self.screen
             self.show()
         

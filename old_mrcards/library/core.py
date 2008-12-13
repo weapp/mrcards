@@ -1,9 +1,11 @@
 #!/usr/bin/env python
 #-*- coding:utf-8 -*-
 
-import singleton
-import pygame
 import sys
+
+import pygame
+
+import singleton
 import basic_app
 
 pygame.init()
@@ -11,7 +13,6 @@ pygame.init()
 #SCREEN_WIDTH, SCREEN_HEIGHT = 1200, 860
 #(640,480))#TODO cambiar (esta asi para que me entre en la pantalla
 SIZE=map(lambda x:int(x/1.5) , pygame.display.list_modes()[0] )
-
 TICKS = 40 #40 frames por segundo
 
 class Core:
@@ -22,10 +23,11 @@ class Core:
     """
     
     __metaclass__ = singleton.Singleton
-    def __init__(self,caption="",app=basic_app.Basic_app(),repeat=(90,90),size=SIZE):
     
+    def __init__(self,caption="",app=basic_app.Basic_app(),repeat=(90,90),size=SIZE):
+
         print "creando core", type(app).__name__
-            
+
         self.__app=app
         self.__running=False
         self.__clock = pygame.time.Clock()
