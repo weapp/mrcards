@@ -47,10 +47,17 @@ class Menu(menu2.Menu):
     def seleccionar(self,n):
         if self.opt=="mrcards":
             if n==0:
-                core.Core().stop()
+                #core.Core().stop()
                 #TODO borrar todos los datos del menu, convertir el juego en un modulo
-                import initgame
-                initgame.main(players=pars["players"],specific_rules=pars["rules"],online=False)
+                #import initgame
+                #initgame.main(players=pars["players"],specific_rules=pars["rules"],online=False)
+                core_=core.Core()
+                app=core_.get_app()
+                app.option="game"
+                app.options={'players': pars["players"],
+                            'specific_rules': pars["rules"],'online': False}
+                core_.stop()
+                pass
                 
             if n==1:
                 self.entrar_submenu('onlineoptions')

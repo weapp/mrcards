@@ -1,10 +1,14 @@
 #!/usr/bin/python
+
 import sys
-import pygame
-from library import menu2 as menu
-from game import main_menu
 import os
 import gettext
+import pdb
+
+import pygame
+
+from library import menu2 as menu
+from game import main_menu
 from library import core
 from pars import pars
 
@@ -12,12 +16,26 @@ gettext.install('mrcards', './mo/', unicode=1)
 
 def main(options="mrcards"):
     c=core.Core(_('Menu'),size=(640,480))
-    mc=Mrcards(c.get_screen(),options)
-    c.get_app().add(mc)
-    c.start()
+    app=c.get_app()
+    app.option = "menu"
+    while app.option:
+        if app.option=="menu":
+            #c=core.Core(_('Menu'),size=(640,480))
+            mc=MrcardsMenu(c.get_screen(),options)
+            c.get_app().add(mc)
+            c.start()
+            del mc
+        elif app.option=="game":
+            import initgame
+            initgame.main(**app.options)
+            
     
-class Mrcards:
+class MrcardsMenu:
     def __init__(self,surface,options="mrcards"):
+        print "-->",globals().keys(),"<--"
+        print "-->",dir(),"<--"
+        print "-->", __builtins__.vars().keys() ,"<--"
+        print "-->", vars().keys() ,"<--"
         self.surface=surface
         self.editable=False
         #Definir menu
