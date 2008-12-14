@@ -10,10 +10,13 @@ class GameApp(mvcapp.MVCApp):
         mvcapp.MVCApp.__init__(self)
         
         
-        self.sub_app.update({'players': basicapp.BasicApp(), \
+        self.m.update({'players': basicapp.BasicApp(), \
                             'deckdraws': basicapp.BasicApp(), \
                             'playzone': basicapp.BasicApp(), \
                             'deckdiscard': basicapp.BasicApp(), \
                             'deckpoints': basicapp.BasicApp()})
         self.m['rules']=rules.get_module('genericgame').Game()
         self.sub_app['gamezone']=gamezone.Gamezone(rules=self.m['rules'])
+        
+    def add(self,name,obj,kind='sub_app'):
+        getattr(self,kind)[name]=obj

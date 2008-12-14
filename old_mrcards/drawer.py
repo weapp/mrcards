@@ -201,7 +201,7 @@ class Drawer:
         self.app=self.core.get_app()
         
         self.playersnames=[]
-        for player in self.app.objs['players']:
+        for player in self.app.m['players']:
             self.playersnames.append(player.id)
     
         size = self.screen.get_size()
@@ -229,28 +229,31 @@ class Drawer:
         
         
         #situamos los mazos
-        self.place_in_circle(self.app.objs['players'])
-        self.place_in_circle(self.app.objs['deckdraws'], radio=0.25, start=0.75 - 1.0 / len(self.app.objs['players']) / 2 )
-        self.place_in_circle(self.app.objs['playzone'], radio=0)
+        self.place_in_circle(self.app.m['players'])
+        self.place_in_circle(self.app.m['deckdraws'], radio=0.25, start=0.75 - 1.0 / len(self.app.m['players']) / 2 )
+        self.place_in_circle(self.app.m['playzone'], radio=0)
         
         #alineamos las mazos
-        for deck in self.app.objs['players']:
+        for deck in self.app.m['players']:
             self.align(deck,align_vertical="bottom")
-        for deck in self.app.objs['deckdraws']:
+        for deck in self.app.m['deckdraws']:
             self.align(deck,align_vertical="center")
-        for deck in self.app.objs['playzone']:
+        for deck in self.app.m['playzone']:
             self.align(deck,align_vertical="center")
             
         #situamos cartas
-        for deck in self.app.objs['players']:
+        for deck in self.app.m['players']:
             self.place_in_line(deck, center=self.props.position[deck], normal=self.props.normal[deck])
-        for deck in self.app.objs['deckdraws']:
+        for deck in self.app.m['deckdraws']:
             self.place_in_line(deck, center=self.props.position[deck], normal=self.props.normal[deck], margin=1)
-        for deck in self.app.objs['playzone']:
+        for deck in self.app.m['playzone']:
             self.place_in_random(deck, center=self.props.position[deck], normal=self.props.normal[deck], margin=35)
         
         #pintamos las cartas
-        for decks in self.app.objs.values():
+        list_of_decks = [self.app.m['players'], self.app.m['deckdraws'], self.app.m['playzone'], self.app.m['deckdiscard'], self.app.m['deckpoints']]
+        
+        for decks in list_of_decks:
+            print "-.-.-.-.-.-.-.-.-.-.-.-.-.--.-.-",decks,".-.-.-..-."
             for deck in decks:
                 for card in deck:
                     self.show_card(card)

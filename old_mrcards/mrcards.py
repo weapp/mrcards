@@ -26,7 +26,7 @@ def main(options="mrcards"):
         if app.option=="menu":
             #c=core.Core(_('Menu'),size=(640,480))
             mc=MrcardsMenu(c.get_screen(),options)
-            c.get_app().add(mc)
+            c.get_app().add('mc',mc)
             c.start()
             del mc
         elif app.option=="game":

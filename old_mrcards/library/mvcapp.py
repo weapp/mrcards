@@ -34,7 +34,7 @@ class MVCApp(basicapp.BasicApp):
         map(lambda x: x.update(),dic.itervalues())
 
     def update(self):
-        self.__update(self.m)
+        #self.__update(self.m)
         self.__update(self.c)
         self.__update(self.sub_app)
 
@@ -46,10 +46,11 @@ class MVCApp(basicapp.BasicApp):
             except:
                 raise Exception("Draw method of " + repr(obj) + " is not avalible")
         """
-        map(lambda obj: obj.draw(),dic.items())
+        map(lambda obj: obj.draw(),dic.itervalues())
 
     def draw(self):
         self.__draw(self.v)
+        self.__draw(self.sub_app)
 
     def updated(self):
         return True
