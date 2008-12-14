@@ -37,16 +37,16 @@ def main(specific_rules, players, online=False):
     game.rules=rules.get_module(specific_rules).Game()
 
     for player in players:
-        game.objs['players'].append(deck.Deck(id_deck=player))
+        game.m['players'].append(deck.Deck(id_deck=player))
 
     if game.rules.playzone:
-        game.objs['playzone'].append(deck.Deck(id_deck="playzone",visible=True))
+        game.sub_app['playzone'].append(deck.Deck(id_deck="playzone",visible=True))
 
-    game.gamezone.new_round()
+    game.sub_app['gamezone'].new_round()
 
-    game.gamezone.set_down_func(game.rules.down_func)
+    game.sub_app['gamezone'].set_down_func(game.rules.down_func)
 
-    game.gamezone.show()
+    game.sub_app['gamezone'].show()
 
     core.Core().start()
 

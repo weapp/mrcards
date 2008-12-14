@@ -46,7 +46,7 @@ class Gamezone:
 
     
     def get_player(self):
-        return self.app.objs['players'][self.player_with_turn]
+        return self.app.sub_app['players'][self.player_with_turn]
     
     def get_terminable_turn(self):
         return self.rules.terminable_turn()
@@ -55,7 +55,7 @@ class Gamezone:
         return self.throws[len(self.throws)-1]
         
     def set_player(self,new_value):
-        self.app.objs['players'][self.player_with_turn]=new_value
+        self.app.sub_app['players'][self.player_with_turn]=new_value
         
     def set_down_func(self,down_func):
         self.down_func=down_func
@@ -85,13 +85,13 @@ class Gamezone:
     
     def add_player(self, id_deck, cards=[[], []], visible = None, maxcards=0, clickable=None, point=False):
         if visible == None:
-            if len(self.app.objs['players'])==self.user:
+            if len(self.app.sub_app['players'])==self.user:
                 visible=True
             else:
                 visible=False
                 
         if clickable == None:
-            if len(self.app.objs['players'])==self.user:
+            if len(self.app.sub_app['players'])==self.user:
                 clickable=True
             else:
                 clickable=False
@@ -100,8 +100,8 @@ class Gamezone:
             player=Deck(id_deck=id_deck,cards=cards,visible=visible,maxcards=maxcards,clickable=clickable,point=point)
         else:
             player=Deck(id_deck=id_deck,cards=cards,visible=visible,maxcards=maxcards,clickable=clickable)
-        self.app.objs['players'].append(player)
-        self.player=self.app.objs['players'][self.player_with_turn]
+        self.app.sub_app['players'].append(player)
+        self.player=self.app.sub_app['players'][self.player_with_turn]
 
     def __repr__(self):
         return 'repr DE GAMEZONE'
@@ -109,23 +109,23 @@ class Gamezone:
     def __str__(self):
         r="_________GAME_________"
         r+="\n\n"+("Draw Decks")+":"
-        for deck in self.app.objs['deckdraws']:
+        for deck in self.app.m['deckdraws']:
             r+="\n    "+str(deck)
             
         r+="\n\n"+("Player Decks")+":"
-        for deck in self.app.objs['players']:
+        for deck in self.app.m['players']:
             r+="\n    "+str(deck)
             
         r+="\n\n"+("Play Zone")+":"
-        for deck in self.app.objs['playzone']:
+        for deck in self.app.m['playzone']:
             r+="\n    "+str(deck)
         r+="\n\n"+("Selection")+":"
         r+="\n    "
-        for card in self.app.objs['players'][self.user].selection:
+        for card in self.app.m['players'][self.user].selection:
             r+=" "+str(card)+""
         r+="\n\n"+("Selection")+" ("+("player with turn")+"):"
         r+="\n    "
-        for card in self.app.objs['players'][self.player_with_turn].get_selection_from_deck():
+        for card in self.app.m['players'][self.player_with_turn].get_selection_from_deck():
             r+=" "+str(card)+""
         r+="\n\n______________________"
         r+="\n"+self.keys_descriptions
@@ -139,7 +139,7 @@ class Gamezone:
     
     
     def __iter__(self):
-        return self.app.objs.values()
+        return self.app.sub_app.values()
 
 
     def new_event(self,event):
@@ -218,9 +218,9 @@ class Gamezone:
         self.core=core.Core()
         self.app=self.core.get_app()
         self.round+=1
-        for player in self.app.objs['players']:
+        for player in self.app.m['players']:
             del player[:]
-        del self.app.objs['deckdraws'][:]
+        del self.app.m['deckdraws'][:]
         
         for ideck in self.rules.deckdraws:
             
