@@ -79,3 +79,6 @@ class Game:
         
     def get_points(self, selection):
         pass
+        
+    def update(self):
+        pass
