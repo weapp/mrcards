@@ -13,7 +13,7 @@ pygame.init()
 #SCREEN_WIDTH, SCREEN_HEIGHT = 1200, 860
 #(640,480))#TODO cambiar (esta asi para que me entre en la pantalla
 SIZE=map(lambda x:int(x/1.5) , pygame.display.list_modes()[0] )
-FLAGS = pygame.DOUBLEBUF | pygame.HWSURFACE
+FLAGS = pygame.DOUBLEBUF | pygame.HWSURFACE | pygame.RESIZABLE
 TICKS = 40 #40 frames por segundo
 
 class Core:
@@ -31,7 +31,6 @@ class Core:
 
     def __init__(self):
         self.__size=SIZE
-        self.__app=basicapp.BasicApp()
         self.__running=False
         self.__clock = pygame.time.Clock()
 
@@ -55,7 +54,6 @@ class Core:
 
     def stop(self):
         del self.__app
-        self.__app=basicapp.BasicApp()
         self.__running=False
 
     def start(self): #TODO cambiar los ticks dar prioridad a los logicos
