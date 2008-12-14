@@ -8,14 +8,18 @@ import pdb
 import pygame
 
 from library import menu2 as menu
-from game import main_menu
+from game import main_menu,gameapp
 from library import core
 from pars import pars
 
 gettext.install('mrcards', './mo/', unicode=1)
 
 def main(options="mrcards"):
-    c=core.Core(_('Menu'),size=(640,480))
+    c=core.Core()
+    c.set_caption(_('Menu'))
+    c.set_size((640,480))
+    c.set_repeat(90,90)
+    c.set_app(gameapp.GameApp())
     app=c.get_app()
     app.option = "menu"
     while app.option:
@@ -28,8 +32,8 @@ def main(options="mrcards"):
         elif app.option=="game":
             import initgame
             initgame.main(**app.options)
-            
-    
+
+
 class MrcardsMenu:
     def __init__(self,surface,options="mrcards"):
         print "-->",globals().keys(),"<--"
@@ -47,9 +51,10 @@ class MrcardsMenu:
         self.update()
         self.obj_menu.update()
         self.kill_while = False
-    
+
     def new_event(self,event):
         self.obj_menu.new_event(event)
+        self.repeat=(90,90)
         # si no es un evento de teclado o raton, lo ignoramos
         if not hasattr(event,'button') and not hasattr(event,'key'):
             return None
@@ -61,7 +66,7 @@ class MrcardsMenu:
 
     def update(self):
         self.obj_menu.update()
-    
+
     def draw(self):
         self.surface.blit(self.fondo, self.fondo.get_rect())
         self.obj_menu.draw()

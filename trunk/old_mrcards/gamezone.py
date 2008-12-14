@@ -103,6 +103,9 @@ class Gamezone:
         self.app.objs['players'].append(player)
         self.player=self.app.objs['players'][self.player_with_turn]
 
+    def __repr__(self):
+        return 'repr DE GAMEZONE'
+        
     def __str__(self):
         r="_________GAME_________"
         r+="\n\n"+("Draw Decks")+":"

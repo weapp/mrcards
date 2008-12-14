@@ -1,11 +1,14 @@
 #!/usr/bin/python
-import pygame
+
 import sys
+
+import pygame
+
 import deck
 import gamezone
 import net
-from library import core,basic_app
-from game import game_app
+from library import core
+from game import gameapp
 import rules
 
 def inicializa(specific_rules,players,online):
@@ -16,37 +19,37 @@ def inicializa(specific_rules,players,online):
         specific_rules = netobj.juego
         game=gamezone.Gamezone(rules=specific_rules,netobj=netobj)#declaramos la zona de juegos y le anyadimos los jugadores y el mazo para robar
         game.user = netobj.me
-        # TODO las cartas se reparten aleatoriamente, 
-        # Hay que hacer algo para que los distintos jugadores tengan las 
+        # TODO las cartas se reparten aleatoriamente,
+        # Hay que hacer algo para que los distintos jugadores tengan las
         # jueguen con la misma baraja
     else:
         players=players.replace('_'," ").split(",")
-        app=game_app.Game_app()
+        app=gameapp.GameApp()
         c=core.Core()
         c.set_app(app)
-        
-        #game.add(basic_app.Basic_app())
+
+        #game.add(basicapp.BasicApp())
         #setattr(game,'add_player',game[0].add)
-    return players,app    
+    return players,app
 
 def main(specific_rules, players, online=False):
     players,game=inicializa(specific_rules,players,online)
     game.rules=rules.get_module(specific_rules).Game()
-    
+
     for player in players:
         game.objs['players'].append(deck.Deck(id_deck=player))
-    
+
     if game.rules.playzone:
         game.objs['playzone'].append(deck.Deck(id_deck="playzone",visible=True))
-    
+
     game.gamezone.new_round()
-    
+
     game.gamezone.set_down_func(game.rules.down_func)
-    
+
     game.gamezone.show()
-    
+
     core.Core().start()
-    
+
 if __name__ == "__main__":
     options={
     "rules":"culo", \
