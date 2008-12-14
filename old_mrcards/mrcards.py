@@ -11,66 +11,71 @@ from library import menu2 as menu
 from game import main_menu,gameapp
 from library import core
 from pars import pars
+import deck
+import gamezone
+import net
+import rules
 
 gettext.install('mrcards', './mo/', unicode=1)
 
-def main(options="mrcards"):
+def main():
     c=core.Core()
-    c.set_caption(_('Menu'))
-    c.set_size((640,480))
-    c.set_repeat(90,90)
-    c.set_app(gameapp.GameApp())
-    app=c.get_app()
+    app = gameapp.GameApp()
+    c.set_app(app)
     app.option = "menu"
     while app.option:
         if app.option=="menu":
-            #c=core.Core(_('Menu'),size=(640,480))
-            mc=MrcardsMenu(c.get_screen(),options)
-            c.get_app().add('mc',mc)
+            c.set_caption(_('Menu'))
+            c.set_size((640,480))
+            c.set_repeat(90,90)
+            app.add('mc',main_menu.Menu('mrcards',c.get_screen()))
             c.start()
-            del mc
+            del app.sub_app['mc']
         elif app.option=="game":
-            import initgame
-            initgame.main(**app.options)
+            specific_rules = app.options['specific_rules']
+            players = app.options['players']
+            online = app.options['online']
+            
+            if online:
+                netobj = net.Net(options=False)
+                netobj.init_net(juego='culo', jugadores=2)
+                players = netobj.players
+                specific_rules = netobj.juego
+                game=gamezone.Gamezone(rules=specific_rules,netobj=netobj)#declaramos la zona de juegos y le anyadimos los jugadores y el mazo para robar
+                game.user = netobj.me
+                # TODO las cartas se reparten aleatoriamente,
+                # Hay que hacer algo para que los distintos jugadores tengan las
+                # jueguen con la misma baraja
+            else:
+                players=players.replace('_'," ").split(",")
+                
+            
+            app.rules=rules.get_module(specific_rules).Game()
 
+            for player in players:
+                app.m['players'].append(deck.Deck(id_deck=player))
 
-class MrcardsMenu:
-    def __init__(self,surface,options="mrcards"):
-        print "-->",globals().keys(),"<--"
-        print "-->",dir(),"<--"
-        print "-->", __builtins__.vars().keys() ,"<--"
-        print "-->", vars().keys() ,"<--"
-        self.surface=surface
-        self.editable=False
-        #Definir menu
-        self.obj_menu=main_menu.Menu(options,self.surface,110,30,interlineado=8,nvisibles=7,persistant=True)
-        self.theme=os.path.join('themes',pars['theme'])
-        try:self.fondo = pygame.image.load( os.path.join(os.path.dirname(sys.argv[0]), os.path.join( self.theme ,'menu.png') ) ).convert()
-        except:self.fondo = pygame.image.load( os.path.dirname(sys.argv[0])+os.sep+'themes'+os.sep+'default'+os.sep+'menu.png' ).convert()
-        self.fondo=pygame.transform.scale(self.fondo, surface.get_size())
-        self.update()
-        self.obj_menu.update()
-        self.kill_while = False
+            if app.rules.playzone:
+                app.sub_app['playzone'].append(deck.Deck(id_deck="playzone",visible=True))
 
-    def new_event(self,event):
-        self.obj_menu.new_event(event)
-        self.repeat=(90,90)
-        # si no es un evento de teclado o raton, lo ignoramos
-        if not hasattr(event,'button') and not hasattr(event,'key'):
-            return None
-        # Eventos de raton
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            print _("button") + str(event.button)
-        if event.type == pygame.KEYDOWN and self.editable and event.key== pygame.K_RETURN:
-            self.editable=False
+            app.sub_app['gamezone'].new_round()
 
-    def update(self):
-        self.obj_menu.update()
+            app.sub_app['gamezone'].set_down_func(app.rules.down_func)
 
-    def draw(self):
-        self.surface.blit(self.fondo, self.fondo.get_rect())
-        self.obj_menu.draw()
+            app.sub_app['gamezone'].show()
+
+            core.Core().start()
+
 
 
 # Esto es para que lance el main cuando se ejecute el fichero
 if __name__ == "__main__": main()
+
+
+
+"""
+print "-->",globals().keys(),"<--"
+print "-->",dir(),"<--"
+print "-->", __builtins__.vars().keys() ,"<--"
+print "-->", vars().keys() ,"<--"
+"""

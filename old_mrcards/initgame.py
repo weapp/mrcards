@@ -1,5 +1,7 @@
 #!/usr/bin/python
 
+#obsoleto en siguientes versiones
+
 import sys
 
 import pygame

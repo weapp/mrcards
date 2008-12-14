@@ -8,6 +8,7 @@ from library import core
 
 class Gamezone:
     def __init__(self,rules=False,down_func={},up_func={}, netobj=None):
+        self.core=core.Core()
         self.show_layer_alternative=False
         self.rules=rules
         self.drawer=Drawer(self,caption=self.rules.caption)
@@ -76,7 +77,6 @@ class Gamezone:
     def add_deckdraw(self, deckdraw):
         self.deckdraws.append(deckdraw)
     
-    
     def add_deckdiscard(self, deckdiscard):
         self.deckdiscard.append(deckdiscard)
     
@@ -89,43 +89,44 @@ class Gamezone:
                 visible=True
             else:
                 visible=False
-                
         if clickable == None:
-            if len(self.app.sub_app['players'])==self.user:
-                clickable=True
+            if len(self.app.sub_app['players']) == self.user:
+                clickable = True
             else:
-                clickable=False
-        
+                clickable = False
         if point:
-            player=Deck(id_deck=id_deck,cards=cards,visible=visible,maxcards=maxcards,clickable=clickable,point=point)
+            player=Deck(id_deck=id_deck, cards=cards, visible=visible, \
+                        maxcards=maxcards, clickable=clickable, point=point)
         else:
-            player=Deck(id_deck=id_deck,cards=cards,visible=visible,maxcards=maxcards,clickable=clickable)
+            player=Deck(id_deck=id_deck, cards=cards, visible=visible, \
+                        maxcards=maxcards, clickable=clickable)
         self.app.sub_app['players'].append(player)
-        self.player=self.app.sub_app['players'][self.player_with_turn]
+        self.player = self.app.sub_app['players'][self.player_with_turn]
 
     def __repr__(self):
         return 'repr DE GAMEZONE'
         
     def __str__(self):
+        players = self.app.m['players']
         r="_________GAME_________"
         r+="\n\n"+("Draw Decks")+":"
         for deck in self.app.m['deckdraws']:
             r+="\n    "+str(deck)
             
         r+="\n\n"+("Player Decks")+":"
-        for deck in self.app.m['players']:
+        for deck in players:
             r+="\n    "+str(deck)
             
         r+="\n\n"+("Play Zone")+":"
-        for deck in self.app.m['playzone']:
+        for deck in players:
             r+="\n    "+str(deck)
         r+="\n\n"+("Selection")+":"
         r+="\n    "
-        for card in self.app.m['players'][self.user].selection:
+        for card in players[self.user].selection:
             r+=" "+str(card)+""
         r+="\n\n"+("Selection")+" ("+("player with turn")+"):"
         r+="\n    "
-        for card in self.app.m['players'][self.player_with_turn].get_selection_from_deck():
+        for card in players[self.player_with_turn].get_selection_from_deck():
             r+=" "+str(card)+""
         r+="\n\n______________________"
         r+="\n"+self.keys_descriptions
@@ -143,9 +144,11 @@ class Gamezone:
 
 
     def new_event(self,event):
-        # Actualiza el screen para que cuando se cambie a pantalla completa se vea con la nueva resolucion
+        # Actualiza el screen para que cuando se cambie a pantalla
+        # completa se vea con la nueva resolucion
         if event.type == pygame.VIDEORESIZE:
-            self.screen = pygame.display.set_mode(event.size, pygame.DOUBLEBUF | pygame.HWSURFACE |  pygame.RESIZABLE ) 
+            self.core.set_size(event.size)
+            self.screen = self.core.get_screen() 
             #self.screen = pygame.display.get_surface()
             #self.screen.set_clip(0,0,*event.size)
             #print self.screen
@@ -215,7 +218,6 @@ class Gamezone:
         
     def new_round(self):
         """Es llamada al crear el juego y cada vez que se empieza una nueva ronda"""
-        self.core=core.Core()
         self.app=self.core.get_app()
         self.round+=1
         for player in self.app.m['players']:

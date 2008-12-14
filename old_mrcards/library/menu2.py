@@ -166,7 +166,7 @@ class Menu:
                         
                 else:
                     if event.key == pygame.K_SPACE or event.key== pygame.K_RETURN:
-                        self.seleccionar(self.position)
+                        self.seleccionar()
                     elif event.key == pygame.K_UP:
                         self.up()
                     elif event.key == pygame.K_DOWN:
