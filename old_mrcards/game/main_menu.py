@@ -1,12 +1,13 @@
-from library import menu2
+from library.stdmodules.menu import menu2
 import os
 import sys
 from pars import pars
 from pickle import load, dump
-from library import core, images
+from library import core
+from library.resources import images
 import pygame
 
-images.SKIN='../themes/default'
+images.SKIN='../../themes/default'
 
 class DefMenu:
     def __init__(self, dic):

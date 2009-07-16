@@ -3,11 +3,13 @@ import sys
 from card import Card
 from math import sin, cos,pi
 import random
+from library.stdmodules.apps.basicapp import BasicApp
+
 
 def point1(num,suit):
     return 1
 
-class Deck:
+class Deck(BasicApp):
     def __init__(self,id_deck,cards=[[],[]],visible=False,maxcards=10,clickable=False,point=point1):
         self.id=id_deck
         self.visible=visible
