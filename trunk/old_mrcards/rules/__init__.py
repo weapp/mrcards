@@ -1,9 +1,6 @@
 import glob, os
 
-def get_module(name):
-    return __import__('rules'+os.sep+name)
 
-"""
 path=__path__[0]+os.sep
 for infile in glob.glob(path+"*.py"):
     filename, ext = os.path.splitext(infile)
@@ -12,4 +9,8 @@ for infile in glob.glob(path+"*.py"):
         __builtins__['vars']()[filename]=os.path.splitext(infile)[0]
 del path,ext,filename,glob,os,infile
 
-"""
+
+def get_module(name):
+    i=__import__('rules.'+name)
+    return getattr(i,name) #on windows
+    return __import__('rules'+os.sep+name) #on linux
