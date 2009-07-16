@@ -47,7 +47,7 @@ class Gamezone:
 
     
     def get_player(self):
-        return self.app.sub_app['players'][self.player_with_turn]
+        return self.app['players'][self.player_with_turn]
     
     def get_terminable_turn(self):
         return self.rules.terminable_turn()
@@ -56,7 +56,7 @@ class Gamezone:
         return self.throws[len(self.throws)-1]
         
     def set_player(self,new_value):
-        self.app.sub_app['players'][self.player_with_turn]=new_value
+        self.app['players'][self.player_with_turn]=new_value
         
     def set_down_func(self,down_func):
         self.down_func=down_func
@@ -85,12 +85,12 @@ class Gamezone:
     
     def add_player(self, id_deck, cards=[[], []], visible = None, maxcards=0, clickable=None, point=False):
         if visible == None:
-            if len(self.app.sub_app['players'])==self.user:
+            if len(self.app['players'])==self.user:
                 visible=True
             else:
                 visible=False
         if clickable == None:
-            if len(self.app.sub_app['players']) == self.user:
+            if len(self.app['players']) == self.user:
                 clickable = True
             else:
                 clickable = False
@@ -100,8 +100,8 @@ class Gamezone:
         else:
             player=Deck(id_deck=id_deck, cards=cards, visible=visible, \
                         maxcards=maxcards, clickable=clickable)
-        self.app.sub_app['players'].append(player)
-        self.player = self.app.sub_app['players'][self.player_with_turn]
+        self.app['players'].append(player)
+        self.player = self.app['players'][self.player_with_turn]
 
     def __repr__(self):
         return 'repr DE GAMEZONE'
@@ -140,7 +140,7 @@ class Gamezone:
     
     
     def __iter__(self):
-        return self.app.sub_app.values()
+        return self.app.values()
 
 
     def new_event(self,event):

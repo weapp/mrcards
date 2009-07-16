@@ -7,7 +7,7 @@ import pdb
 
 import pygame
 
-from library import menu2 as menu
+from library.stdmodules.menu import menu2 as menu
 from game import main_menu,gameapp
 from library import core
 from pars import pars
@@ -30,7 +30,7 @@ def main():
             c.set_repeat(90,90)
             app.add('mc',main_menu.Menu('mrcards',c.get_screen()))
             c.start()
-            del app.sub_app['mc']
+            del app['mc']
         elif app.option=="game":
             specific_rules = app.options['specific_rules']
             players = app.options['players']
@@ -56,13 +56,13 @@ def main():
                 app.m['players'].append(deck.Deck(id_deck=player))
 
             if app.rules.playzone:
-                app.sub_app['playzone'].append(deck.Deck(id_deck="playzone",visible=True))
+                app['playzone'].append(deck.Deck(id_deck="playzone",visible=True))
 
-            app.sub_app['gamezone'].new_round()
+            app['gamezone'].new_round()
 
-            app.sub_app['gamezone'].set_down_func(app.rules.down_func)
+            app['gamezone'].set_down_func(app.rules.down_func)
 
-            app.sub_app['gamezone'].show()
+            app['gamezone'].show()
 
             core.Core().start()
 

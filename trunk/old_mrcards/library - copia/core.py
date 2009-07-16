@@ -1,10 +1,12 @@
 #!/usr/bin/env python
 #-*- coding:utf-8 -*-
 
+import sys
+
 import pygame
 
-from general import singleton
-from stdmodules.apps import basicapp
+import singleton
+import basicapp
 
 pygame.init()
 
@@ -13,8 +15,6 @@ pygame.init()
 SIZE=map(lambda x:int(x/1.5) , pygame.display.list_modes()[0] )
 FLAGS = pygame.DOUBLEBUF | pygame.HWSURFACE | pygame.RESIZABLE
 TICKS = 40 #40 frames por segundo
-
-pygame.display.init()
 
 class Core:
     """
@@ -28,12 +28,12 @@ class Core:
 
     set_caption=pygame.display.set_caption
     set_repeat=pygame.key.set_repeat
-    
+
     def __init__(self):
         self.__size=SIZE
         self.__running=False
-        self.clock = pygame.time.Clock()
-        
+        self.__clock = pygame.time.Clock()
+
     def set_size(self, size):
         self.__size = size
         if hasattr(self,'_Core__screen'):
@@ -45,25 +45,17 @@ class Core:
         return self.__app
 
     def set_app(self, app):
-        if hasattr(self,'_Core__app'):
-            del self.__app
         self.__app = app
-    
-    
+
     def get_screen(self):
         return self.__screen if hasattr(self,'_Core__screen') \
                else pygame.display.set_mode(self.__size, FLAGS)
-               
-    def init_video(self):
-        if not hasattr(self,'_Core__screen'):
-            pygame.display.set_mode(self.__size, FLAGS)
-        
-               
     def pause(self):self.__running=False
 
     def stop(self):
+        del self.__app
         self.__running=False
-        
+
     def start(self): #TODO cambiar los ticks dar prioridad a los logicos
         """
         Inicia el bucle. En cada paso se de manejar los ticks y llama en cada
@@ -76,27 +68,20 @@ class Core:
         """
         self.__running=True
         while self.__running:
-            self.clock.tick(TICKS)
+            self.__clock.tick(TICKS)
             #control de eventos
             for event in pygame.event.get():
                 if self.get_app().new_event(event):
                     continue
                 if (event.type == pygame.KEYDOWN and \
-                  event.key == pygame.K_ESCAPE) or event.type == pygame.QUIT:
-                    self.stop()
+                   event.key == pygame.K_ESCAPE) or event.type == pygame.QUIT:
+                    sys.exit()
             #actualizado
             self.get_app().update()
             #pintado
             self.get_app().draw()
             if self.get_app().updated():
                 pygame.display.flip()
-
-        del self.__app
-        print "Parece que todo fue correctamente. :D"
-        
-    def change_scene(self,new):return self.set_app(new)
-    def run(self):return self.start()
-
 
 #esto es para que lance el main cuando se ejecute el fichero
 if __name__ == "__main__":

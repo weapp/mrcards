@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #-*- coding:utf-8 -*-
-from library import singleton
+from library.general import singleton
 
 class Game:
     __metaclass__ = singleton.Singleton
