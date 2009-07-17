@@ -4,6 +4,7 @@ import module
 
 class MVCModule (module.Module):
     def __init__(self,ModuleData=None,ModuleView=None,ModuleController=None):
+        module.Module.__init__(self)
         self.m=ModuleData
         self.v=ModuleView
         self.c=ModuleController

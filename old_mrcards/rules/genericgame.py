@@ -1,10 +1,12 @@
 #!/usr/bin/env python
 #-*- coding:utf-8 -*-
 from library.general import singleton
+from library.stdmodules import module
 
-class Game:
+class Game(module.Module,object):
     __metaclass__ = singleton.Singleton
     def __init__(self):
+        module.Module.__init__(self)
         self.num_player=(0,0)
         self.players=0
         self.name=""

@@ -32,8 +32,7 @@ class Menu(menu2.Menu):
         }
         self.menus['players'].extend(pars['players'].split(", "))
         menu2.Menu.__init__(self, surf, self.menus[opt], 110, 30, interlineado=8, nvisibles=7, persistant=True)
-        
-        
+
         
     def rules(self):
         archivos=os.listdir(self.dir_rules)

@@ -32,8 +32,9 @@ class Core:
     def __init__(self):
         self.__size=SIZE
         self.__running=False
+        self.stopped=False
         self.clock = pygame.time.Clock()
-        
+		        
     def set_size(self, size):
         self.__size = size
         if hasattr(self,'_Core__screen'):
@@ -59,12 +60,15 @@ class Core:
             pygame.display.set_mode(self.__size, FLAGS)
         
                
-    def pause(self):self.__running=False
-
+    def pause(self):
+        self.__running=False
+		
     def stop(self):
         self.__running=False
+        self.stopped=True
         
     def start(self): #TODO cambiar los ticks dar prioridad a los logicos
+        self.stopped=False
         """
         Inicia el bucle. En cada paso se de manejar los ticks y llama en cada
         paso a:
@@ -91,8 +95,9 @@ class Core:
             if self.get_app().updated():
                 pygame.display.flip()
 
-        del self.__app
-        print "Parece que todo fue correctamente. :D"
+        if self.stopped:
+            del self.__app
+            print "Parece que todo fue correctamente. :D"
         
     def change_scene(self,new):return self.set_app(new)
     def run(self):return self.start()

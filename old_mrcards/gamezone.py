@@ -220,10 +220,11 @@ class Gamezone:
         """Es llamada al crear el juego y cada vez que se empieza una nueva ronda"""
         self.app=self.core.get_app()
         self.round+=1
-        for player in self.app.m['players']:
+        for player in self.app.m['players'].values():
             del player[:]
-        del self.app.m['deckdraws'][:]
-        
+        #del self.app.m['deckdraws'][:]
+        self.app.m.clear
+		
         for ideck in self.rules.deckdraws:
             
             self.add_deckdraw(Deck(id_deck=ideck["name"], cards=[ideck["numbers"],ideck["suits"]],visible=False,point=self.rules.points))

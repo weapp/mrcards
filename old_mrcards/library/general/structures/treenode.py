@@ -3,12 +3,23 @@
 
 class TreeNode:
     def __init__(self,):
-        parent=None
-        childs=[]
+        self.parent=None
+        self.childs=[]
 
     def set_parent(self,module):
-        parent=module
-        
+        try:
+            self.parent.remove(self)
+        except:
+            pass
+        self.parent=module
+        self.parent.childs.append(self)
+
+    def add_child(self,child):
+        try:
+            child.set_parent(self)
+        except:
+            pass
+			
     """
     def add_parent(self,module):
         if not hasattr(self,'parents'):

@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 #-*- coding:utf-8 -*-
 
-from library.general.structures import sdwak
+from library.general.structures import tsdwak
 from library.stdmodules import module
 
-class BasicApp(sdwak.SDWAK,module.Module):
+class BasicApp(tsdwak.TSDWAK,module.Module):
     def new_event(self,event):
         b=False
         self.reverse()
@@ -31,11 +31,3 @@ class BasicApp(sdwak.SDWAK,module.Module):
 
     def updated(self):
         return True
-
-    def add(self,module):
-        sdwak.SDWAK.add(self,module)
-        module.set_parent(self)
-        
-    def append(self,module):
-        sdwak.SDWAK.add(self,module)
-        module.set_parent(self)
