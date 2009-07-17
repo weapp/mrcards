@@ -201,7 +201,7 @@ class Drawer:
         self.app=self.core.get_app()
         
         self.playersnames=[]
-        for player in self.app.m['players']:
+        for player in self.app.m['players'].values():
             self.playersnames.append(player.id)
     
         size = self.screen.get_size()
@@ -233,21 +233,21 @@ class Drawer:
         self.place_in_circle(self.app.m['playzone'], radio=0)
         
         #alineamos las mazos
-        for deck in self.app.m['players']:
+        for deck in self.app.m['players'].values():
             self.align(deck,align_vertical="bottom")
-        for deck in self.app.m['deckdraws']:
+        for deck in self.app.m['deckdraws'].values():
             self.align(deck,align_vertical="center")
-        for deck in self.app.m['playzone']:
+        for deck in self.app.m['playzone'].values():
             self.align(deck,align_vertical="center")
             
         #situamos cartas
-        for deck in self.app.m['players']:
+        for deck in self.app.m['players'].values():
             self.place_in_line(deck, center=self.props.position[deck], \
                                normal=self.props.normal[deck])
-        for deck in self.app.m['deckdraws']:
+        for deck in self.app.m['deckdraws'].values():
             self.place_in_line(deck, center=self.props.position[deck], \
                                normal=self.props.normal[deck], margin=1)
-        for deck in self.app.m['playzone']:
+        for deck in self.app.m['playzone'].values():
             self.place_in_random(deck, center=self.props.position[deck], \
                                  normal=self.props.normal[deck], margin=35)
         
@@ -255,7 +255,7 @@ class Drawer:
         list_of_decks = [self.app.m['players'], self.app.m['deckdraws'], self.app.m['playzone'], self.app.m['deckdiscard'], self.app.m['deckpoints']]
         
         for decks in list_of_decks:
-            for deck in decks:
+            for deck in decks.values():
                 for card in deck:
                     self.show_card(card)
         

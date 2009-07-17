@@ -11,6 +11,7 @@ def point1(num,suit):
 
 class Deck(BasicApp):
     def __init__(self,id_deck,cards=[[],[]],visible=False,maxcards=10,clickable=False,point=point1):
+        BasicApp.__init__(self)
         self.id=id_deck
         self.visible=visible
         self.max=maxcards
