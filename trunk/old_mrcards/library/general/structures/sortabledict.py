@@ -3,7 +3,7 @@
 import sortablelist
 
 class SortableDict(dict):
-
+    new_always_in_top=False
     def __init__(self):
         self.__keys=sortablelist.SortableList()
 
@@ -20,8 +20,12 @@ class SortableDict(dict):
         self.__keys.down_elem(x)
 
     def __setitem__(self,key,value):
-        if key in self.__keys: self.__keys.remove(key)
-        self.__keys.append(key)
+        if SortableDict.new_always_in_top:
+            if key in self.__keys: self.__keys.remove(key)
+            self.__keys.append(key)
+        else:
+            if not key in self:
+                self.__keys.append(key)
         dict.__setitem__(self,key,value)
 
     def __iter__(self):

@@ -10,4 +10,6 @@ except:pass
 
 print "\n\n\ncargado pars:",pars
 
+name_players=pars['players'].split(',')
+
 #os.environ['HOME']

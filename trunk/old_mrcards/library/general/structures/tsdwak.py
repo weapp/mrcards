@@ -36,12 +36,18 @@ class TSDWAK(sdwak.SDWAK, treenode.TreeNode):
         self.actualize_childs()
 
     def append(self,x):
-        sdwak.SDWAK.append(self,x)
+        if x.id:
+            self[x.id]=x
+        else:
+            key=sdwak.SDWAK.append(self,x)
+            x.id=key
         treenode.TreeNode.add_child(self,x)
 
     def actualize_childs(self):
         self.childs=[]
-        map(self.add_child, self.itervalues())
+        for key,value in self.iteritems():
+            value.id=key
+            self.add_child(value)
 
     add=append
     

@@ -32,6 +32,7 @@ def main():
             c.start()
             del app['mc']
         elif app.option=="game":
+            app.option=False
             specific_rules = app.options['specific_rules']
             players = app.options['players']
             online = app.options['online']
@@ -65,7 +66,9 @@ def main():
             app['gamezone'].show()
 
             core.Core().start()
-
+			
+        else:
+            app.option=False
 
 
 # Esto es para que lance el main cuando se ejecute el fichero
