@@ -3,7 +3,6 @@
 import sys
 import os
 import gettext
-import pdb
 
 import pygame
 
@@ -13,7 +12,6 @@ from library import core
 from pars import pars
 import deck
 import gamezone
-import net
 import rules
 
 gettext.install('mrcards', './mo/', unicode=1)
