@@ -5,6 +5,7 @@ import socket
 from deck import Deck
 from drawer import Drawer
 from library import core
+from pars import name_players
 
 class Gamezone:
     def __init__(self,rules=False,down_func={},up_func={}, netobj=None):
@@ -122,11 +123,12 @@ class Gamezone:
             r+="\n    "+str(deck)
         r+="\n\n"+("Selection")+":"
         r+="\n    "
-        for card in players[self.user].selection:
+		
+        for card in players[name_players[self.user]].selection:
             r+=" "+str(card)+""
         r+="\n\n"+("Selection")+" ("+("player with turn")+"):"
         r+="\n    "
-        for card in players[self.player_with_turn].get_selection_from_deck():
+        for card in players[name_players[self.player_with_turn]].get_selection_from_deck():
             r+=" "+str(card)+""
         r+="\n\n______________________"
         r+="\n"+self.keys_descriptions

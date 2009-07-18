@@ -227,7 +227,7 @@ class Drawer:
             self.show_text(player)
         
         #situamos los mazos
-        self.place_in_circle(self.app.m['players'])
+        self.place_in_circle(self.app.m['players'].values())
         self.place_in_circle(self.app.m['deckdraws'], radio=0.25, \
                             start=0.75 - 1.0 / len(self.app.m['players']) / 2 )
         self.place_in_circle(self.app.m['playzone'], radio=0)

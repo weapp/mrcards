@@ -15,6 +15,8 @@ class GameApp(mvcapp.MVCApp):
         self.m.update_items(decks)
         self.m['rules']=rules.get_module('genericgame').Game()
         self['gamezone']=gamezone.Gamezone(rules=self.m['rules'])
+		
+        self['playzone']=basicapp.BasicApp()
         
     def add(self,name,obj,kind='sub_app'):
         if kind=='sub_app':
