@@ -62,9 +62,11 @@ def main():
             app['gamezone'].new_round()
 
             app['gamezone'].set_down_func(app.rules.down_func)
-
+			
             app['gamezone'].show()
 
+            app.rules.init_game() #TODO aqui ya deberian estar creados los mazos
+			
             core.Core().start()
 			
         else:

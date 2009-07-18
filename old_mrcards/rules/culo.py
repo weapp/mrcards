@@ -1,140 +1,140 @@
-#!/usr/bin/env python
-#-*- coding:utf-8 -*-
-
-from rules import genericgame
-from library import core
 import pygame
 import sys
+from library import core
+import genericgame
 
-class AI:
-    def __init__(self):
-        pass
+c=core.Core()
+from actions import Actions as actions
+gamezone=c.get_app()['gamezone']
 
 class Game(genericgame.Game):
     def __init__(self):
-        genericgame.Game.__init__(self)
-        self.num_player=(2,8)
-        self.players=0
-        self.name="Culo"
-        self.caption="Titulo de la Ventana (Culo)"
-        self.num=0
-        self.c=core.Core()
-
-        self.caption="Culo"
+        self.gamezone=gamezone
+        self.actions=actions
+        self.throws=[]
         self.ai=AI()
-        self.game=self.c.get_app()['gamezone']
-        #self.deckdraws=[{"name":"Mazo para robar","numbers":["As",2,3,4,5,6,7,"J","Q","K"],"suits":["espadas","oros","bastos","copas"]}]
-        #self.playzone=True
-        
-        #self.throws=[]
-
-        actions=type('actions', (), {
-		'select':lambda *a,**k:None,
-		'clear_selection':lambda *a,**k:None,
-		'throw_cards':lambda *a,**k:None,
-		'end_turn':lambda *a,**k:None,
-		'sort_by_points':lambda *a,**k:None,
-		'draw_a_card':lambda *a,**k:None,
-		'pass_turn':lambda *a,**k:None,})
-		
+        self.caption="Culo"
+        self.decription="Game of Culo"
+        self.playzone=True
+        self.deckdraws=[{"name":"Mazo para robar","numbers":["As",2,3,4,5,6,7,"J","Q","K"],"suits":["spades","diamonds","clubs","hearts"]}]
+        self.keys_descriptions="F5:Reload  Esc:Exit  Down:Toggle Fullscreen  D:Draw a card\n" + \
+                              "[1-10]:Add to/Rem from Selection  Z:Clear Selection  T,Return:Throws \n" + \
+                              "E:End Turn  S:Sort P:Pass Turn F1-4:Choose User  F12:None User"
         self.down_func={
-            pygame.K_DOWN   :   [pygame.display.toggle_fullscreen,[]] , \
-            pygame.K_ESCAPE :   sys.exit, \
-            pygame.K_F5     :   self.game.show, \
-            pygame.K_1      :   [actions.select,0], \
-            pygame.K_2      :   [actions.select,1], \
-            pygame.K_3      :   [actions.select,2], \
-            pygame.K_4      :   [actions.select,3], \
-            pygame.K_5      :   [actions.select,4], \
-            pygame.K_6      :   [actions.select,5], \
-            pygame.K_7      :   [actions.select,6], \
-            pygame.K_8      :   [actions.select,7], \
-            pygame.K_9      :   [actions.select,8], \
-            pygame.K_0      :   [actions.select,9], \
-            pygame.K_x      :   [actions.select,10], \
-            pygame.K_c      :   [actions.select,11], \
-            pygame.K_v      :   [actions.select,12], \
-            pygame.K_b      :   [actions.select,13], \
-            pygame.K_n      :   [actions.select,14], \
-            pygame.K_m      :   [actions.select,15], \
-            pygame.K_l      :   [actions.select,16], \
-            pygame.K_k      :   [actions.select,17], \
-            pygame.K_j      :   [actions.select,18], \
-            pygame.K_h      :   [actions.select,19], \
-            pygame.K_g      :   [actions.select,20], \
-            pygame.K_f      :   [actions.select,21], \
-            pygame.K_z      :   actions.clear_selection, \
-            pygame.K_t      :   actions.throw_cards, \
-            pygame.K_RETURN :   actions.throw_cards, \
-            pygame.K_e      :   actions.end_turn, \
-            pygame.K_s      :   actions.sort_by_points, \
-            pygame.K_d      :   actions.draw_a_card, \
-            pygame.K_p      :   actions.pass_turn
+            pygame.K_DOWN   :   ["pygame.display.toggle_fullscreen()","local"] , \
+            pygame.K_ESCAPE :   ["self.actions.exit()","local"], \
+            pygame.K_F5     :   ["self.actions.show()","local"], \
+            pygame.K_UP     :   ["self.actions.showalt()","local"], \
+            pygame.K_z      :   ["self.actions.clear_selection","global"], \
+            pygame.K_t      :   ["self.actions.throw_cards","global"], \
+            pygame.K_RETURN :   ["self.actions.throw_cards","global"], \
+            pygame.K_e      :   ["self.actions.end_turn()","global"], \
+            pygame.K_s      :   ["self.actions.sort('points')","local"], \
+            pygame.K_d      :   ["self.actions.draw_a_card","global"], \
+            pygame.K_p      :   ["self.actions.pass_turn","global"], \
+
+            pygame.K_1       :   actions.prueba1, \
+            pygame.K_2       :   actions.prueba2, \
+            
+            pygame.K_F1      :   actions.F1, \
+            pygame.K_F2      :   actions.F2, \
+            pygame.K_F3      :   actions.F3, \
+            pygame.K_F4      :   actions.F4, \
+            pygame.K_F12     :   actions.F12, \
+
         }
-
-    def init_game(self):
-        pass
-
-    def init_round(self):
-        """
-        crea mazos, y reparte las cartas entre los jugadores
-        """
-        pass
-
-    def is_round_finished(self):
-        pass
         
-    def end_of_round(self):
-        pass
-    
-    def init_turn(self):
-        pass
 
-    def terminable_turn(self):
-        pass
+    def points(self,number,suit):
+        if number=="As":
+            r=14
+        elif number=="J":
+            r=11
+        elif number=="Q":
+            r=12
+        elif number=="K":
+            r=13
+        else:
+            r=number
+        return r
+        
+    def init_game(self):
+        print self.gamezone.deckdraws # no se han creado los mazos... esto deberia estar creado ya
+        self.gamezone.deckdraws[0].shuffle()
+        self.actions.deal(60) #repartir cartas    
         
     def pass_turn(self):
-        pass
-    
-    def end_turn(self):
-        pass
-    
-    def ending_turn():
-        pass
-        
-    def throw_cards(self):
-        pass
-        
+        if self.gamezone.pass_turns_counter==len(self.gamezone.players)-1:
+            #dar el turno al jugador que tiro la ultima carta, no hace falta porque casualmente es el siguiente
+            #self.gamezone.players.index( self.throws[len(self.throws)-1][0].previous_owner)
+            
+            self.actions.clear_playzone()
+            del self.throws[:]
+
+    def throw_cards(self,selection):
+        self.actions.ending_turn()
+        self.throws.append(selection)
+            
     def throwable_selection(self,selection):
-        pass
+        #tiene que haber algo seleccionado
+        if len(selection)==0:return False
         
-    def select(self):
-        """
-        esta funcion se llamará tras producirse la seleccion.
-        consejos de uso: en un juego donde solo se pueda tirar una carta
-        al seleccionarse con esta funcion se puede hacer que se mande
-        automaticamente
-        """
-        pass
+        #obtenemos el numero y todos han de ser iguales
+        number=selection[0].number
+        for card in selection:
+            if not card.number==number: return False
         
-    def clear_selection(self):
-        """
-        se llama tras limpiar la seleccion, por si el juego tuviera
-        algun contador de cartas seleccionadas o algun otro tipo de registro
-        """
-        pass
+        #si se cumple lo anterior y no ha habido tiradas, cualquiera es valida
+        if len(self.throws)==0:
+            return True
         
-    def draw_a_card(self):
+        #si ya hay tiradas entonces tendran que comprobarse mas parametros 
+        else:
+            last_throw=self.throws[len(self.throws)-1]
+            if len(selection)==len(last_throw):
+                if selection[0].points>last_throw[0].points:
+                    return True
+            return False
+            
         """
-        roba una carta del mazo correspondiente
+    def new_turn(self):
+        if self.gamezone.player_with_turn>0:
+            self.actions.sort_by_points()
+                #last_throw=throws[len(throws)-1][0].number
+                
+                
+                
+                
+            pygame.K_1      :   ["self.actions.select(0)","global"], \
+            pygame.K_2      :   ["self.actions.select(1)","global"], \
+            pygame.K_3      :   ["self.actions.select(2)","global"], \
+            pygame.K_4      :   ["self.actions.select(3)","global"], \
+            pygame.K_5      :   ["self.actions.select(4)","global"], \
+            pygame.K_6      :   ["self.actions.select(5)","global"], \
+            pygame.K_7      :   ["self.actions.select(6)","global"], \
+            pygame.K_8      :   ["self.actions.select(7)","global"], \
+            pygame.K_9      :   ["self.actions.select(8)","global"], \
+            pygame.K_0      :   ["self.actions.select(9)","global"], \
+            pygame.K_x      :   ["self.actions.select(10)","global"], \
+            pygame.K_c      :   ["self.actions.select(11)","global"], \
+            pygame.K_v      :   ["self.actions.select(12)","global"], \
+            pygame.K_b      :   ["self.actions.select(13)","global"], \
+            pygame.K_n      :   ["self.actions.select(14)","global"], \
+            pygame.K_m      :   ["self.actions.select(15)","global"], \
+            pygame.K_l      :   ["self.actions.select(16)","global"], \
+            pygame.K_k      :   ["self.actions.select(17)","global"], \
+            pygame.K_j      :   ["self.actions.select(18)","global"], \
+            pygame.K_h      :   ["self.actions.select(19)","global"], \
+            pygame.K_g      :   ["self.actions.select(20)","global"], \
+            pygame.K_f      :   ["self.actions.select(21)","global"], \
+                
+                
+                
+                
+       
         """
-        pass
-        
-    def deal(self):
-        pass
-        
-    def data_for_results(self, rounds):
-        pass
-        
-    def get_points(self, selection):
+
+
+class AI:
+    def __init__(self):
         pass
