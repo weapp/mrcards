@@ -1,28 +1,30 @@
 #!/usr/bin/env python
 #-*- coding:utf-8 -*-
+import re
 
-        
 class TreeNode:
-    def __init__(self,):
-        self.id=None
-        self.kind=[]
+    def __init__(self,id=None,kind=None):
+        self.id=id
+        if kind is None:
+            self.kind=[]
+        else:
+            self.kind=kind
         self.parent=None
         self.childs=[]
 
-    def set_parent(self,module):
-        try:
-            self.parent.childs.remove(self)
-        except:
-            pass
-        self.parent=module
-        if not self in self.parent.childs:
-            self.parent.childs.append(self)
+    def set_parent(self,parent):
+        if not (self.parent is parent):
+            try:
+                self.parent.childs.remove(self)
+            finally:
+                self.parent=parent
+                self.parent.add_child(self)
 
     def add_child(self,child):
-        try:
-            child.set_parent(self)
-        except:
-            pass
+        if not child in self.childs:
+            self.childs.append(child)
+            try: child.set_parent(self)
+            except: pass
             
     """
     def add_parent(self,module):
@@ -36,102 +38,135 @@ class TreeNode:
         self.parents.remove(module)
     """
     
-    def filter_objects(self, filter=lambda x:True):
-        r=[]
-        for obj in self.childs:
-            if isinstance(obj, TreeNode):
-                if filter(obj):
-                    r.append(obj)
-                r.extend(obj.filter_objects(filter))
+    def filter_objects(self, filter_,deep=True):
+        childs=filter_by_isinstance(TreeNode,self.childs)
+        r=filter_(childs)
+        if deep:
+            for obj in childs:
+                r.extend(obj.filter_objects(filter_))
         return r
         
-    def get_by_tagname(self,name):
-        return self.filter_objects(filter=filter_by_tagname(name))
+    def get_by_type(self,name):
+        return self.filter_objects(filter_=filter_by_type(name))
         
     def get_by_kind(self,name):
-        return self.filter_objects(filter=filter_by_kind(name))
+        return self.filter_objects(filter_=filter_by_kind(name))
         
     def get_by_id(self,id):
-        r=self.filter_objects(filter=filter_by_id(id))
+        r=self.filter_objects(filter_=filter_by_id(id))
         return [r[0]] if r else []
         
     def get(self,expresion):
-        expr=expresion.split(' ')
-        exp=expr[0]
-        resultados=self.filter_objects(filter=filter_completo(exp))
-        
-        if len(expr)>1:
+        expresion=expresion.split(' ')
+        exp=expresion.pop(0)
+        if exp==">": #comprueba que solo queramos de la primera capa de hijos, si es asi obtenemos la siguiente expresion
+            exp=expresion.pop(0)
+            resultados=self.filter_objects(filter_=filter_completo(exp), deep=False)
+        else:
+            resultados=self.filter_objects(filter_=filter_completo(exp))
+            
+        if expresion:
             r=[]
             for result in resultados:
-                r.extend(result.get(' '.join(expr[1:])))
+                r.extend(result.get(' '.join(expresion)))
             resultados=r
         return resultados
+
+
+def filter_by_isinstance(param, lista):
+    def filter_(obj):
+        return isinstance(obj,param)
+    return filter(filter_,lista)
+
+def filter_by_type(param):
+    def filter__(lista):
+        def filter_(obj):
+            return obj.__class__.__name__==param
+        return filter(filter_,lista)
+    return filter__
     
+def filter_by_id(param):
+    def filter__(lista):
+        def filter_(obj):
+            return obj.id==param if hasattr(obj,'id') else False
+        return filter(filter_,lista)
+    return filter__
 
-class filter_by_id:
-    def __init__(self, id):
-        self.id=id
-    def __call__(self, obj):
-        if hasattr(obj,'id'):
-            return obj.id==self.id
-        else:
-            return False
-
-class filter_by_kind:
-    def __init__(self, name):
-        self.name=name
-    def __call__(self, obj):
-        if hasattr(obj,'kind'):
-            return self.name in obj.kind
-        else:
-            return False
-
-class filter_by_type:
-    def __init__(self, name):
-        self.name=name
-    def __call__(self, obj):
-        return type(obj).__name__==self.name
-
-class filter_completo:
-    def __init__(self,exp):
-        dic=self.parsear_exp(exp)
-        self.filters=[]
-        if dic.has_key('type'):
-            self.filters.append(filter_by_tagname(dic['type']))
-        if dic.has_key('id'):
-            self.filters.append(filter_by_id(dic['id']))
-        if dic.has_key('kind'):
-            self.filters.append(filter_by_kind(dic['kind']))
+def filter_by_kind(param):
+    def filter__(lista):
+        def filter_(obj):
+            return param in obj.kind if hasattr(obj,'kind') else False
+        return filter(filter_,lista)
+    return filter__
     
-    def __call__(self,obj):
-        r=True
-        for filter in self.filters:
-            r &= filter(obj)
-        return r
-
-    def parsear_exp(self,exp):
-        pnt=exp.find('.')
-        shr=exp.find('#')
-        if exp.startswith('#'):
-            if pnt!=-1:
-                r={'id':exp[1:pnt]}
-                r['kind']=self.parsear_exp(exp[pnt:])['kind']
-            else:
-                r={'id':exp[1:]}
-        elif exp.startswith('.'):
-            if shr!=-1:
-                r={'kind':exp[1:shr]}
-                r['id']=self.parsear_exp(exp[shr:])['id']
-            else:
-                r={'kind':exp[1:]}
+class filter_especial:
+    def __init__(self,param):
+        self.param=param
+            
+    def __call__(self,lista):
+        if self.param=='even':
+            r = [lista[i] for i in range(len(lista)) if ((i+1)%2)]
+        elif self.param=='first' and lista:
+            r = [lista[0]]
+        elif self.param=='last' and lista:
+            r = [lista[-1]]
         else:
-            if max(shr, pnt)==-1:#no tiene # ni .
-                r={'type':exp}
-            else:#tiene al menos # o .
-                if min(shr, pnt)!=-1:#tiene # y .
-                    r={'tag':exp[:min(shr, pnt)]}
-                    r.update(self.parsear_exp(exp[min(shr, pnt):]))
-                else: #solo tiene uno de los dos
-                    r={'tag':exp[:max(shr, pnt)]}
-                    r.update(self.parsear_exp(exp[max(shr, pnt):]))
+            r = []
         return r
+            
+
+def filter_completo(param):
+    def filter_(lista):
+        for elem in re.findall(r'[#\.:]?[a-zA-Z0-9]*',param):
+            if elem.startswith('#'):
+                lista=filter_by_id(elem[1:])(lista)
+            elif elem.startswith('.'):
+                lista=filter_by_kind(elem[1:])(lista)
+            elif elem.startswith(':'):
+                lista=filter_especial(elem[1:])(lista)
+            elif elem:
+                lista=filter_by_type(elem)(lista)
+        return lista
+    return filter_
+
+
+if __name__ == "__main__":
+    t=TreeNode('prin')
+    a=TreeNode('a')
+    b=TreeNode('b',['lalala'])
+    c=TreeNode('c',['lalala'])
+    d=TreeNode('d')
+    e=TreeNode('e')
+    
+    t.add_child(a)
+    t.add_child(c)
+    a.add_child(b)
+    b.add_child(e)
+    
+    """
+    t
+        a
+            b
+                e
+        c
+    """
+    assert t.get('#prin')                           == []
+    assert t.get('#a')                              == [a]
+    assert t.get_by_id('a')                         == [a]
+    assert t.get('#a #b')                           == [b]
+    assert t.get('#a #c')                           == []
+    assert t.get('#prin')                           == []
+    assert t.get_by_kind('lalala')                  == t.get('.lalala')
+    assert t.get('> TreeNode')                      == [a,c]
+    assert t.get('> .lalala')                       == [c]
+    assert t.get('.lalala > TreeNode')              == [e]
+    assert t.get('.lalala')                         == [c, b]
+    assert t.get('#c.lalala')                       == [c]
+    assert t.get_by_type('TreeNode')                == t.get('TreeNode')
+    assert t.get('TreeNode')                        == [a, c, b , e]
+    assert t.get('TreeNode TreeNode TreeNode#e')    == [e]
+    assert t.get('TreeNode:even')                   == [a, b, e]
+    assert t.get('> TreeNode:first TreeNode')       == [b, e]
+    assert t.get('TreeNode:last')                   == [c, b, e]
+    
+    raw_input("works")
