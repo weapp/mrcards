@@ -14,7 +14,6 @@ class SDWAK(sortabledict.SortableDict):
         sortabledict.SortableDict.__setitem__(self,key,value)
         if isinstance(key,int):
             self.last_int=key
-            print key
     
     def append(self,x):
         self.last_int=self.next_index()

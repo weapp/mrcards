@@ -2,10 +2,10 @@
 #-*- coding:utf-8 -*-
 
 import basicapp
-import mvcapp
+from library.stdmodules import scenemanager
 
 class ExtendedApp(basicapp.BasicApp):
-    def __init__(self):
+    def __init__(self, factory):
         basicapp.BasicApp.__init__(self)
-        self[general]=mvc.MVCApp()
-        self[SceneManager]=scenemanager.SceneManager
+        self['General']=basicapp.BasicApp()
+        self['SceneManager']=scenemanager.SceneManager(factory)

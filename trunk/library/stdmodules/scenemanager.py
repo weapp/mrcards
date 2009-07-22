@@ -12,7 +12,8 @@ class SceneManager (module.Module):
         module.Module.__init__(self)
         self.scenes=sdwak.SDWAK()
         self.scene=sceneapp.SceneApp()
-		self.nextScene=False #TODO pausar el motor... y cuando termine el ciclo volver a reactivarlo con la nueva escena
+        self.childs.append(self.scene)
+        self.nextScene=False #TODO pausar el motor... y cuando termine el ciclo volver a reactivarlo con la nueva escena
         self.factory=factory
         
     def charge_scene(self, name_scene, xmlfilename):
@@ -25,6 +26,7 @@ class SceneManager (module.Module):
     def change_scene(self, name_scene):
         self.scene.end_scene()
         self.scene=sceneapp.SceneApp()
+        self.childs[0]=self.scene
         xmlconfig.cargar_estado(self.scenes[name_scene],self.scene.add,self.factory)
         self.scene.start_scene()
                 
