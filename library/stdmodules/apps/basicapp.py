@@ -17,7 +17,8 @@ class BasicApp(tsdwak.TSDWAK,module.Module):
         return b
 
     def update(self):
-        map(lambda x: x.update(),self.values())
+        for x in self.values():
+            x.update()
 
     def draw(self):
         """

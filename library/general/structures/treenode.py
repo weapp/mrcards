@@ -56,7 +56,7 @@ class TreeNode:
         r=self.filter_objects(filter_=filter_by_id(id))
         return [r[0]] if r else []
         
-    def get(self,expresion):
+    def __get_childs(self,expresion='> *'):
         expresion=expresion.split(' ')
         exp=expresion.pop(0)
         if exp==">": #comprueba que solo queramos de la primera capa de hijos, si es asi obtenemos la siguiente expresion
@@ -68,10 +68,17 @@ class TreeNode:
         if expresion:
             r=[]
             for result in resultados:
-                r.extend(result.get(' '.join(expresion)))
+                r.extend(result.__get_childs(' '.join(expresion)))
             resultados=r
         return resultados
-
+		
+    def get_childs(self,*args,**kws):
+        list_=self.__get_childs(*args,**kws)
+        nodup=[]
+        for elem in list_:
+            if elem not in nodup:
+                nodup.append(elem)
+        return nodup
 
 def filter_by_isinstance(param, lista):
     def filter_(obj):
@@ -113,10 +120,11 @@ class filter_especial:
         else:
             r = []
         return r
-            
 
 def filter_completo(param):
     def filter_(lista):
+        if param=="*":
+            return lista
         for elem in re.findall(r'[#\.:]?[a-zA-Z0-9]*',param):
             if elem.startswith('#'):
                 lista=filter_by_id(elem[1:])(lista)
@@ -150,23 +158,24 @@ if __name__ == "__main__":
                 e
         c
     """
-    assert t.get('#prin')                           == []
-    assert t.get('#a')                              == [a]
-    assert t.get_by_id('a')                         == [a]
-    assert t.get('#a #b')                           == [b]
-    assert t.get('#a #c')                           == []
-    assert t.get('#prin')                           == []
-    assert t.get_by_kind('lalala')                  == t.get('.lalala')
-    assert t.get('> TreeNode')                      == [a,c]
-    assert t.get('> .lalala')                       == [c]
-    assert t.get('.lalala > TreeNode')              == [e]
-    assert t.get('.lalala')                         == [c, b]
-    assert t.get('#c.lalala')                       == [c]
-    assert t.get_by_type('TreeNode')                == t.get('TreeNode')
-    assert t.get('TreeNode')                        == [a, c, b , e]
-    assert t.get('TreeNode TreeNode TreeNode#e')    == [e]
-    assert t.get('TreeNode:even')                   == [a, b, e]
-    assert t.get('> TreeNode:first TreeNode')       == [b, e]
-    assert t.get('TreeNode:last')                   == [c, b, e]
+    assert t.get_childs()                                  == t.childs
+    assert t.get_childs('#prin')                           == []
+    assert t.get_childs('#a')                              == [a]
+    assert t.get_by_id('a')                                == [a]
+    assert t.get_childs('#a #b')                           == [b]
+    assert t.get_childs('#a #c')                           == []
+    assert t.get_childs('#prin')                           == []
+    assert t.get_by_kind('lalala')                         == t.get_childs('.lalala')
+    assert t.get_childs('> TreeNode')                      == [a,c]
+    assert t.get_childs('> .lalala')                       == [c]
+    assert t.get_childs('.lalala > TreeNode')              == [e]
+    assert t.get_childs('.lalala')                         == [c, b]
+    assert t.get_childs('#c.lalala')                       == [c]
+    assert t.get_by_type('TreeNode')                       == t.get_childs('TreeNode')
+    assert t.get_childs('TreeNode')                        == [a, c, b , e]
+    assert t.get_childs('TreeNode TreeNode TreeNode#e')    == [e]
+    assert t.get_childs('TreeNode:even')                   == [a, b, e]
+    assert t.get_childs('> TreeNode:first TreeNode')       == [b, e]
+    assert t.get_childs('TreeNode:last')                   == [c, b, e]
     
     raw_input("works")
