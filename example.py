@@ -1,6 +1,8 @@
 import sys
 import threading
 
+import pygame
+
 from library import core
 from library.stdmodules.apps import extendedapp
 from library.stdmodules import module
@@ -33,7 +35,7 @@ class obj(module.Module):
 		self.i = (self.i + 1) % 60
 		
 		if self.char == "X":
-			raise 
+			raise
 		
 class factory(object):
 	def __init__(self):
@@ -51,6 +53,7 @@ def th():
 
 threading.Timer(3.0, th).start()
 
+"""
 def th():
 	print
 	print "---"
@@ -59,6 +62,9 @@ def th():
 	print
 
 threading.Timer(4.1, th).start()
+"""
 
+core.FLAGS ^= pygame.RESIZABLE
+c.set_size((150,150))
 c.set_app(app)
 c.start()

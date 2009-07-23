@@ -51,9 +51,13 @@ class Core:
         self.__app = app
     
     def get_screen(self):
-        return self.__screen if hasattr(self,'_Core__screen') \
-               else pygame.display.set_mode(self.__size, FLAGS)
-               
+        self.__make_screen()
+        return self.__screen
+    
+    def __make_screen(self):
+        if not hasattr(self,'_Core__screen'):
+            self.__screen=pygame.display.set_mode(self.__size, FLAGS)
+	
     def init_video(self):
         if not hasattr(self,'_Core__screen'):
             pygame.display.set_mode(self.__size, FLAGS)
@@ -92,7 +96,7 @@ class Core:
             #pintado
             self.get_app().draw()
             if self.get_app().updated():
-                self.get_screen()
+                self.__make_screen()
                 pygame.display.flip()
 
         if self.stopped:
