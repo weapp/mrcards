@@ -90,11 +90,17 @@ def __parsear_parametro(elem,loader):
             if obj.nodeType == xml.dom.minidom.Node.ELEMENT_NODE:
                 return __parsear_objeto(obj,loader)
     else:
-        return elem.firstChild.data.strip()
+        return "".join(node.data for node in elem.childNodes).strip()
 
 def __hasElementNodes(node):
     for elem in node.childNodes:
         if elem.nodeType == xml.dom.minidom.Node.ELEMENT_NODE:
+            return True
+    return False
+	
+def __hasCDATA(node):
+    for elem in node.childNodes:
+        if elem.nodeType == xml.dom.minidom.Node.CDATA_SECTION_NODE:
             return True
     return False
 
