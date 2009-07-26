@@ -5,6 +5,7 @@ import pygame
 
 from general import singleton
 from stdmodules.apps import basicapp
+import threading 
 
 pygame.init()
 
@@ -102,7 +103,11 @@ class Core:
         if self.stopped:
             del self.__app
             print "Parece que todo fue correctamente. :D"
-        
+            for trhead in threading.enumerate():
+                if trhead.name == 'MainThread':
+                     print #TODO terminar todos los threads abiertos
+				 
+            
     def change_scene(self,new):return self.set_app(new)
     def run(self):return self.start()
 

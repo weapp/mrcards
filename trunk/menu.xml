@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<state>
+    <obj type="Menu">
+        <param>
+			<obj type="list">
+				<param>
+					<obj type="ItemMenu">
+						<param>
+							Inicio
+						</param>
+						<param>
+							<![CDATA[print "x"]]>
+						</param>
+					</obj>
+				</param>
+				<param>
+					<obj type="ItemMenu">
+						<param>
+							Opciones
+						</param>
+						<param>
+							<![CDATA[print "x"]]>
+						</param>
+					</obj>
+				</param>
+				<param>
+					<obj type="ItemMenu">
+						<param>
+							Creditos
+						</param>
+						<param>
+							<![CDATA[print "x"]]>
+						</param>
+					</obj>
+				</param>
+				<param>
+					<obj type="ItemMenu">
+						<param>
+							Exit
+						</param>
+						<param>
+							<![CDATA[print "x"]]>
+						</param>
+					</obj>
+				</param>
+			</obj>
+		</param>
+    </obj>
+</state>
