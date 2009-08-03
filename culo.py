@@ -165,27 +165,29 @@ if __name__ == "__main__":
 		print
 		print "Estos son los que ya terminaron:"
 		print " ".join(map(str,vision[2]))
+		return raw_input('Num.:Seleccionar una carta. T:Lanzar. E:Salir.\n')
 	
 	endgame = False
 	while not endgame:
 		endturn = False
 		while not endturn:
-			p()
+			foo = p()
 			sms = ""
-			foo = raw_input('selecciona una carta o escribe T para lanzar: ')
 			if foo in ('t','T'):
 				sms = pc.throw()
 				if sms is None:
 					sms = ""
 					endturn=True
 					
-			if foo.isdigit():
+			elif foo.isdigit():
 				pc.select_n(int(foo))
 			
-			if foo.startswith('change:'):
+			elif foo.startswith('change:'):
 				n = foo[len('change:'):]
 				if n.isdigit():
 					sms = 'cambiado al jugador: %s' % n
 					pc = cg.get_player_controller(int(n)-1)
 			
-			
+			elif foo in ('e','E'):
+				endturn = True
+				endgame = True
