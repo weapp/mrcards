@@ -132,3 +132,41 @@ class Animation:
                 image = image.convert_alpha ()
     
         return image, image.get_rect ()
+        
+        
+        
+        
+'''
+
+
+class Boom(pygame.sprite.Sprite):
+    """Representa una explosion de alguna nave."""
+
+    def __init__(self, x, y):
+        pygame.sprite.Sprite.__init__(self)
+        self._load_images()
+        self.step = 0
+        self.delay = 2
+        (self.image, self.rect) = load_image('boom/1.png', True)
+        self.rect.center = (x, y)
+
+    def _load_images(self):
+        """Carga la lista 'self.frames' con todos los cuadros de animacion"""
+
+        self.frames = []
+
+        for n in range(1, 8):
+            path = 'boom/%d.png'
+            new_image = load_image(path % n, True)[0]
+            self.frames.append(new_image)
+
+    def update(self):
+        self.image = self.frames[self.step]
+
+        if self.delay < 0:
+            self.delay = 2
+            self.step += 1
+
+            if self.step > 6:
+                self.kill()
+'''
