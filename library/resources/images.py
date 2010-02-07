@@ -26,3 +26,23 @@ def loadImage(name, force=False):
 def getImage(name):
     cacheImage(name)
     return cache[str(name)]
+
+"""
+def load_image(file_name, colorkey=None):
+  full_name = os.path.join('data', file_name)
+
+  try:
+    image = pygame.image.load(full_name)
+  except pygame.error, message:
+    print 'Cannot load image:', full_name
+    raise SystemExit, message
+
+  image = image.convert()
+
+  if colorkey is not None:
+    if colorkey is -1:
+      colorkey = image.get_at((0,0))
+    image.set_colorkey(colorkey, RLEACCEL)
+
+  return image, image.get_rect()
+"""
