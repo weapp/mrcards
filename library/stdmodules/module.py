@@ -1,9 +1,9 @@
+#!/usr/bin/env python
+#-*- coding:utf-8 -*-
+
+from library.general.structures import treenode
 import types
 import library
-import sys
-import moduledata
-import moduleview
-import modulecontroller
 
 def deco_verboso(name,nmethod,method):
     if nmethod == "__init__":
@@ -41,15 +41,11 @@ class Meta_Verboso(type):
         print "args: ",args
         print "kw:   ",kw
         cls.__init__(*args,**kw)""" #no funciona
-        
-        
-class Module(moduledata.ModuleData, moduleview.ModuleView, \
-             modulecontroller.ModuleController):
+
+class Module(treenode.TreeNode):
     #__metaclass__ = Meta_Verboso
     def __init__(self) :
-        moduledata.ModuleData.__init__(self)
-        moduleview.ModuleView.__init__(self)
-        modulecontroller.ModuleController.__init__(self)
+        treenode.TreeNode.__init__(self)
         if type(self) is Module:
             raise AbstractClassException
         else:
@@ -63,9 +59,23 @@ class Module(moduledata.ModuleData, moduleview.ModuleView, \
         
     def update(self):
         pass
-        
+
     def draw(self):
         pass
+        
+    def _send_event(self,event):
+        pass
+    
+    def _event_to_red(self,event):
+        pass
+
+    #def send_to_red(self,name,*args,**kw): #TODO mandar una funcion con el resultado
+    
+    #def get_from_red(self,name,*args,**kw): #TODO pedir al servidor el resultado de una funcion
+    
+    def event_to_red(self,name,*args,**kw):
+        print "se esta ejecutando:", name, ", con los parametros:", args, kw
+        getattr(self,name)(*args,**kw)
         
 class AbstractClassException(Exception) :
     def __str__(self):
