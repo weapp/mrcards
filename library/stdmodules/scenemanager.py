@@ -5,7 +5,6 @@ from library.stdmodules import module
 from library.general.structures import sdwak
 from apps import sceneapp
 from library.general import xmlconfig
-
 class SceneManager (module.Module):
 
     def __init__(self, factory):

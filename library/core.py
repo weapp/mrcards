@@ -19,7 +19,6 @@ class Core:
     te devolvera la misma instancia.
     """
     __metaclass__ = singleton.Singleton
-    ticks = 40 #40 frames por segundo
     video = video.Video()
         
     set_caption = pygame.display.set_caption
@@ -30,6 +29,7 @@ class Core:
         self.stopped = False
         self.clock  =  pygame.time.Clock()
         self.__app = None
+        self.selfticks = 40 #40 frames por segundo
         
     def get_app(self):
         return self.__app
@@ -57,7 +57,7 @@ class Core:
         self.stopped = False
         self.__running = True
         while self.__running:
-            self.clock.tick(Core.ticks)
+            self.clock.tick(self.ticks)
             #control de eventos
             for event in pygame.event.get():
                 if self.__app.new_event(event):
@@ -83,7 +83,4 @@ class Core:
     def init(self):return self.start()
 
 
-#esto es para que lance el main cuando se ejecute el fichero
-if __name__ == "__main__":
-    m = Core()
-    m.start()
+core = Core()

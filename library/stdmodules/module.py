@@ -27,7 +27,7 @@ class Meta_Verboso(type):
     def __init__(cls, name, bases, dct):
         print 'Inicializando la clase', name
         type.__init__(cls, name, bases, dct)
-        #setattr(cls,'app',core.Core().get_app())
+        #setattr(cls,'app',core.core.get_app())
     """
 
         methods = [x for x in dct if isinstance(dct[x], types.FunctionType)] 
@@ -55,7 +55,7 @@ class Module(moduledata.ModuleData, moduleview.ModuleView, \
         else:
             #constructor por defecto de las subclases
             from library import core
-            self.core=core.Core()
+            self.core=core.core
             self.app=self.core.get_app()
             
     def new_event(self,event):

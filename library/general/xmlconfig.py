@@ -9,7 +9,7 @@ el parser ejecutaria una simulacion de:
 #cabecera, siempre igual
 import stateload as s
 import core
-c=core.Core()
+c=core.core
 m=c.get_app().get_model()
 
 #cuerpo
