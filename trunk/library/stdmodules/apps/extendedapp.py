@@ -9,3 +9,4 @@ class ExtendedApp(basicapp.BasicApp):
         basicapp.BasicApp.__init__(self)
         self['General']=basicapp.BasicApp()
         self['SceneManager']=scenemanager.SceneManager(factory)
+	
