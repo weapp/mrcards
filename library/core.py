@@ -8,6 +8,8 @@ from stdmodules.apps import basicapp
 import threading 
 import video
 
+import time
+
 pygame.init()
 pygame.display.init()
 
@@ -29,17 +31,21 @@ class Core:
         self.stopped = False
         self.clock  =  pygame.time.Clock()
         self.__app = None
-        self.selfticks = 40 #40 frames por segundo
+        self.ticks = 40 #40 frames por segundo
+        self.__time=time.time()
+        self.delay = 0
+        self.velocity = 10
+        self.vdelay = 0
         
     def get_app(self):
         return self.__app
 
     def set_app(self, app):
         self.__app = app
-		       
+               
     def pause(self):
         self.__running = False
-		
+        
     def stop(self):
         self.__running = False
         self.stopped = True
@@ -57,7 +63,13 @@ class Core:
         self.stopped = False
         self.__running = True
         while self.__running:
+            #actualizar relojes
             self.clock.tick(self.ticks)
+            self.time = time.time()
+            self.delay = self.time - self.__time
+            self.vdelay = self.velocity * self.delay
+            self.__time = self.time
+            
             #control de eventos
             for event in pygame.event.get():
                 if self.__app.new_event(event):
@@ -78,9 +90,20 @@ class Core:
             for trhead in threading.enumerate():
                 if trhead.name == 'MainThread':
                      print #TODO terminar todos los threads abiertos
-				 
+                 
     def run(self):return self.start()
     def init(self):return self.start()
 
 
 core = Core()
+
+get_app = core.get_app
+set_app = core.set_app
+pause = core.pause
+stop = core.stop
+start = core.start
+run = core.run
+init = core.init
+set_size = core.video.set_size
+set_caption = core.set_caption
+set_repeat = core.set_repeat

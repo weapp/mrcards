@@ -6,6 +6,7 @@ from library.stdmodules import module
 
 class Fps (module.Module):
     def __init__(self, surface, clock):
+        module.Module.__init__(self)
         self.surface = surface
         self.clock = clock
         self.font = pygame.font.Font(None, 16)

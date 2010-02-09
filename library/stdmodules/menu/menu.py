@@ -5,6 +5,7 @@ import os
 
 class Menu(module.Module):
     def __init__(self, screen, options,margen_sup=0,margen_izq=0,interlineado=20,letra=("Akbar",90,(0,125,255),(0,225,255)),color_base=(113,113,113),color_selec=(213,213,213)):
+        module.Module.__init__(self)
         pygame.font.init()
         self.options=options
         self.position=0
