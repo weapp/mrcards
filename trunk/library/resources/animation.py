@@ -97,13 +97,13 @@ class Animation:
     def tile_image (self, image, rows, cols):
         "Genera una lista con los cuadros de animación en una grilla"
     
-        tile_w = image.get_width () / cols
-        tile_h = image.get_height () / rows
+        tile_w = image.get_width() / cols
+        tile_h = image.get_height() / rows
         tiles = []
     
         for c in xrange (cols):
             for r in xrange (rows):
-                rect = c * (tile_w - 1) + c , r * (tile_h - 1) , tile_w, tile_h
+                rect = c * (tile_w) , r * (tile_h) , tile_w, tile_h
                 tiles.append (image.subsurface(rect).copy ())
     
         return tiles

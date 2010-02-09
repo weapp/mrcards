@@ -45,6 +45,7 @@ def cortar_a(string,num):
 
 class Sidebar(module.Module):
     def __init__(self,surface):
+        module.Module.__init__(self)
         self.surface=surface
         self.rect=self.surface.get_rect()
         self.background=getImage('bar_izq')

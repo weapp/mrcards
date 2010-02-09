@@ -1,6 +1,7 @@
 import pygame
 import sys
 import os
+from library.stdmodules import module
 
 #    font = pygame.font.SysFont("Akbar",30)
 #    surfont = font.render("Eggs are good for you, but not on the eiffel tower",True,(0,255,255))
@@ -10,8 +11,9 @@ def dec(s):
     return (int(s[0:2], 16),int(s[2:4], 16),int(s[4:6], 16))
 
 
-class Menu:
+class Menu(module.Module):
     def __init__(self,surface,options,margen_sup=0,margen_izq=0,interlineado=20,letra=(38,dec("5c3566"),dec("eff2f5")),color_base=(),color_selec=(213,213,213),menuEnBucle=True,only_text=False,nvisibles=7,persistant=False,seleccionar=None):
+        module.Module.__init__(self)
         self.surface=surface
         self.letra=letra
         self.options=options
