@@ -14,6 +14,9 @@ class SceneApp(basicapp.BasicApp):
         
     def end_scene(self):
         self.__is_started = False
-        
+        for elem in self.values():
+            try:elem.unbind_()
+            except:pass        
+		
     def is_started():
         return self.__is_started

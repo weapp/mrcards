@@ -2,47 +2,8 @@
 #-*- coding:utf-8 -*-
 
 from library.general.structures import treenode
-import types
-import library
 
-def deco_verboso(name,nmethod,method):
-    if nmethod == "__init__":
-        def method2(*args,**kw):
-            print "Creando objeto: %s(%s, %s)" % (name, ", ".join(map(repr,args)), repr(kw) )
-            return method(*args,**kw)
-        return method2
-    else:
-        def method2(*args,**kw):
-            print "Llamando a: %s.%s(%s, %s)" % (name , nmethod , ", ".join(map(repr,args)), repr(kw) )
-            return method(*args,**kw)
-        return method2
-
-    #lambda self,*args,**kw: not dct[method](self,*args,**kw)
- 
-class Meta_Verboso(type):
-    def __new__(meta, name, bases, dct):
-        print 'Creando la clase', name
-        return type.__new__(meta, name, bases, dct)
-
-    def __init__(cls, name, bases, dct):
-        print 'Inicializando la clase', name
-        type.__init__(cls, name, bases, dct)
-        #setattr(cls,'app',core.core.get_app())
-    """
-
-        methods = [x for x in dct if isinstance(dct[x], types.FunctionType)] 
-        for method in methods:
-            if method not in ['update','draw','new_event']:
-                setattr(cls, method, deco_verboso(name,method,dct[method]))
-    """            
-    
-    """def __call__(cls,*args,**kw):
-        print cls.__name__
-        print "args: ",args
-        print "kw:   ",kw
-        cls.__init__(*args,**kw)""" #no funciona
-
-class Module(treenode.TreeNode):
+class Module(treenode.TreeNode, object):
     #__metaclass__ = Meta_Verboso
     def __init__(self) :
         treenode.TreeNode.__init__(self)
@@ -51,9 +12,41 @@ class Module(treenode.TreeNode):
         else:
             #constructor por defecto de las subclases
             from library import core
-            self.core=core.core
-            self.app=self.core.get_app()
-            
+            self.core = core.core
+            self._binds = {}
+        
+    def get_main_app(self):
+        return self.core.get_app()
+    
+    main_app = property(get_main_app)
+    
+    def __get_bindings(self):
+        if hasattr(self.core, "BindingManager"):
+            return self.core.BindingManager
+        else:
+            r = self.main_app.find("#BindingManager")
+            if r is None:
+                raise Exception()
+            else:
+                return r
+                
+    bindings = property(__get_bindings)
+    
+    def bind(self, *args):
+        self.bindings.bind(self, *args)
+    
+    def one(self, *args):
+        self.bindings.one(self, *args)
+    
+    def trigger(self, *args):
+        self.bindings.trigger(self, *args)
+    
+    def toggle(self, *args):
+        self.bindings.toggle(self, *args)
+    
+    def unbind_(self, *args):
+        self.bindings.unbind(self, *args)
+        
     def new_event(self,event):
         return False
         
@@ -61,7 +54,7 @@ class Module(treenode.TreeNode):
         pass
 
     def draw(self):
-        pass
+        pass #not implemented now
         
     def _send_event(self,event):
         pass

@@ -1,12 +1,11 @@
 #!/usr/bin/env python
 #-*- coding:utf-8 -*-
-
 from library.general.structures import tsdwak
 from library.stdmodules import module
 
-class BasicApp(tsdwak.TSDWAK,module.Module):
+class BasicApp(tsdwak.TSDWAK, module.Module):
     def new_event(self,event):
-        b=False
+        b = False
         self.reverse()
         for obj in self.values():
             if obj.new_event(event):
