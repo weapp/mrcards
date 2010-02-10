@@ -1,19 +1,39 @@
 #!/usr/bin/env python
 #-*- coding:utf-8 -*-
 
-class Sortable_list(list):
-    def add(self,x):
-        self.append(x)
+import UserList
+import traceback
+
+class Sortable_list(UserList.UserList):
+    add = UserList.UserList.append
         
-    def top(self,x):
-        self.append(self.pop(x))
+    def top(self, x):
+        if -len(self) <= x < len(self):
+            self.append(self.pop(x))
+        else:
+            traceback.extract_stack()
+            raise IndexError("list index out of range")
         
-    def bottom(self,x):
-        self.insert(0,self.pop(x))
+    def bottom(self, x):
+        if -len(self) <= x < len(self):
+            self.insert(0, self.pop(x))
+        else:
+            traceback.extract_stack()
+            raise IndexError("list index out of range")
         
-    def up(self,x):
-        self.insert(x+1,self.pop(x))
+    def up(self, x):
+        if -len(self) <= x < len(self):
+            self.insert(x+1, self.pop(x))
+        else:
+            traceback.extract_stack()
+            raise IndexError("list index out of range")
         
-    def down(self,x):
-        if x>0:
-            self.insert(x-1,self.pop(x))
+    def down(self, x):
+        if -len(self) <= x < len(self):
+            self.insert(x-1, self.pop(x))
+        else:
+            traceback.extract_stack()
+            raise IndexError("list index out of range")
+
+			
+#raw_input()

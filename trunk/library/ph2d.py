@@ -26,14 +26,14 @@ class Ph2D:
 		self.__displacement[0] = self.displacement[0] - int(self.displacement[0]) 
 		self.__displacement[1] = self.displacement[1] - int(self.displacement[1])
 		
-	def go_down(self):  self.veloc[1]+=1
-	def go_up(self):    self.veloc[1]-=1
-	def go_right(self):  self.veloc[0]+=1
-	def go_left(self):    self.veloc[0]-=1
+	def go_down(self, *args):  self.veloc[1]+=1
+	def go_up(self, *args):    self.veloc[1]-=1
+	def go_right(self, *args):  self.veloc[0]+=1
+	def go_left(self, *args):    self.veloc[0]-=1
 
-	def not_go_down(self):  self.veloc[1]-=1
-	def not_go_up(self):    self.veloc[1]+=1
-	def not_go_right(self):  self.veloc[0]-=1
-	def not_go_left(self):    self.veloc[0]+=1
+	def not_go_down(self, *args):  self.veloc[1]-=1
+	def not_go_up(self, *args):    self.veloc[1]+=1
+	def not_go_right(self, *args):  self.veloc[0]-=1
+	def not_go_left(self, *args):    self.veloc[0]+=1
 	
-	def jump(self):  self.velc_z = 35 if (self.velc_z == 0) else self.velc_z;
+	def jump(self, *args):  self.velc_z = 35 if (self.velc_z == 0) else self.velc_z;

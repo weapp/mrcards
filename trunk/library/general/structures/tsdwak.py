@@ -11,14 +11,16 @@ class TSDWAK(sdwak.SDWAK, treenode.TreeNode):
         sdwak.SDWAK.__init__(self)
         treenode.TreeNode.__init__(self)
 
-    def __setitem__(self,key,value):
+    def __setitem__(self, key, value):
+        try: self.__del_child(key)
+        except: pass
         sdwak.SDWAK.__setitem__(self,key,value)
-        self.actualize_childs()
+        self.__add_child(key, value)
     
-    def __delitem__(self,x):
-        sdwak.SDWAK.__delitem__(self,x)
-        self.actualize_childs()
-	
+    def __delitem__(self, key):
+        self.__del_child(key)
+        sdwak.SDWAK.__delitem__(self, key)
+    
     def clear(self):
         sdwak.SDWAK.clear(self)
         self.actualize_childs()
@@ -35,29 +37,33 @@ class TSDWAK(sdwak.SDWAK, treenode.TreeNode):
         sdwak.SDWAK.update(self,*args,**kw)
         self.actualize_childs()
 
-    def append(self,x):
-        if x.id:
-            self[x.id]=x
+    def append(self, value):
+        if hasattr(value, 'id') and not value.id is None:
+            key = value.id
+            self[key] = value #no hace fallta  _add_child, se realiza en setitem
         else:
-            key=sdwak.SDWAK.append(self,x)
-            x.id=key
-        treenode.TreeNode.add_child(self,x)
+            key = sdwak.SDWAK.append(self, value)
+            value.id = key
+            self.__add_child(key, value)
+        return key
 
     def actualize_childs(self):
         t = self.childs
         del self.childs[:]
         assert t is self.childs
         for key,value in self.iteritems():
-            try:
-                value.id=key
-            except:
-                try:
-                    print value
-                except:
-                    pass				
-                pass
+            if (not hasattr(value, 'id')) or value.id is None:
+                value.id = key
             self.add_child(value)
-
+            
+    def __add_child(self, key, value):
+        if (not hasattr(value, 'id')) or value.id is None:
+            value.id = key
+        self.add_child(value)
+    
+    def __del_child(self, key):
+        self.del_child(self[key])
+    
     add=append
     
 if __name__ == '__main__':

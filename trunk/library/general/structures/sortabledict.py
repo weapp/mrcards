@@ -1,10 +1,12 @@
 #!/usr/bin/env python
 #-*- coding:utf-8 -*-
 import sortablelist
+import UserDict
 
-class SortableDict(dict):
+class SortableDict(UserDict.UserDict):
     new_always_in_top=False
     def __init__(self):
+        UserDict.UserDict.__init__(self)
         self.__keys=sortablelist.SortableList()
 
     def top(self,x):
@@ -26,7 +28,7 @@ class SortableDict(dict):
         else:
             if not key in self:
                 self.__keys.append(key)
-        dict.__setitem__(self,key,value)
+        UserDict.UserDict.__setitem__(self,key,value)
 
     def __iter__(self):
         return self.__keys.__iter__()
@@ -42,11 +44,11 @@ class SortableDict(dict):
         return map(lambda key:self[key],self.__keys[:])
 
     def __delitem__(self,x):
-        dict.__delitem__(self,x)
+        UserDict.UserDict.__delitem__(self,x)
         self.__keys.remove(x)
 
     def clear(self):
-        dict.clear(self)
+        UserDict.UserDict.clear(self)
         self.__keys=sortable_list.Sortable_list()
 
     def iterkeys(self):
@@ -62,13 +64,13 @@ class SortableDict(dict):
 
     def pop(self,x):
         self.__keys.remove(x)
-        return dict.pop(self,x)
+        return UserDict.UserDict.pop(self,x)
 
     def popitem(self):
-        return dict.pop(self,self.__keys.pop())
+        return UserDict.UserDict.pop(self,self.__keys.pop())
 
     def update(self,*args,**kw):
-        dict.update(self,*args,**kw)
+        UserDict.UserDict.update(self,*args,**kw)
         if args:
             if type(args[0]) == dict:
                 for key in args[0]:
@@ -86,13 +88,13 @@ class SortableDict(dict):
 
     def copy(self):
         a = Sortable_dict()
-        a.update(dict.copy(self))
+        a.update(UserDict.UserDict.copy(self))
         return a
     
     def reverse(self):
         self.__keys.reverse()
 
     update_items=update
-	
+
 if __name__ == '__main__':
     pass
