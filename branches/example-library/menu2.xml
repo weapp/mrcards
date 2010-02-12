@@ -1,0 +1,35 @@
+<state>
+    <obj type="binds" />
+    <obj type="background">
+        <param>back</param>
+    </obj>
+	
+    <obj type="libmenu2">
+		<param>Preferences</param>
+		<param>Controllers</param>
+		<param>Exit</param>
+    </obj>
+    
+	
+    <obj type="menu">
+        <param>
+            <obj type="pos"><param>20</param><param>20</param></obj>
+        </param>
+        <param>
+            <obj type="itemmenu">
+                <param>1. Ir al Menu 1</param>
+                <param>menu</param>
+            </obj>
+        </param>
+        <param>
+            <obj type="itemmenu">
+                <param>2. Ir al Menu 2 (este mismo)</param>
+                <param>menu2</param>
+            </obj>
+        </param>
+    </obj>
+    <obj type="fps" />
+	
+	
+	
+</state>
