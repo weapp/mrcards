@@ -1,49 +1,42 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <state>
-    <obj type="Menu">
-        <param>
-			<obj type="list">
-				<param>
-					<obj type="ItemMenu">
-						<param>
-							Inicio
-						</param>
-						<param>
-							<![CDATA[print "x"]]>
-						</param>
-					</obj>
-				</param>
-				<param>
-					<obj type="ItemMenu">
-						<param>
-							Opciones
-						</param>
-						<param>
-							<![CDATA[print "x"]]>
-						</param>
-					</obj>
-				</param>
-				<param>
-					<obj type="ItemMenu">
-						<param>
-							Creditos
-						</param>
-						<param>
-							<![CDATA[print "x"]]>
-						</param>
-					</obj>
-				</param>
-				<param>
-					<obj type="ItemMenu">
-						<param>
-							Exit
-						</param>
-						<param>
-							<![CDATA[print "x"]]>
-						</param>
-					</obj>
-				</param>
-			</obj>
-		</param>
+    <obj type="binds" />
+
+    <obj type="background">
+        <param>image</param>
     </obj>
+	
+    <obj type="libmenu">
+		<param>item 1 de libmenu</param>
+		<param>item 2 de libmenu</param>
+    </obj>
+	
+	<obj type="menu">
+        <param>
+            <obj type="pos"><param>100</param><param>440</param></obj>
+        </param>
+        <param>
+            <obj type="itemmenu">
+                <param>1. Ir al Menu 3</param>
+                <param>menu3</param>
+            </obj>
+        </param>
+        <param>
+            <obj type="itemmenu">
+                <param>2. Ir al Menu 2</param>
+                <param>menu2</param>
+            </obj>
+        </param>
+    </obj>
+
+    <obj type="sidebar" />
+    <obj type="toogle_fullscreen" />
+    <obj type="fps" />
+	
+	
+    <obj type="character">
+		<param>vx_chara01_b.png</param>
+		<param>2</param>
+	</obj>
+	
+	
 </state>

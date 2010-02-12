@@ -40,11 +40,11 @@ class Menu(module.Module):
 	def draw(self):
 		os.system('cls')
 		print "\n".join(map(str,self.opciones))
-		time.sleep(1)
+		#time.sleep(1)
 
 class ControllerMenu(module.Module):
 	def __init__(self, data, drawer):
-		
+			pass
 
 class ItemMenu(module.Module):
 	def __init__(self, name, option, *args, **kws):
@@ -81,10 +81,10 @@ class factory(object):
 	def Menu(self,*args,**kws):
 		return Menu(*args,**kws)
 	
-c=core.Core()
+c=core.core
 app=extendedapp.ExtendedApp(factory())
-app.get_childs('#SceneManager')[0].charge_and_change_scene('scena1', 'menu.xml')
-core.FLAGS ^= pygame.RESIZABLE
-c.set_size((150,150))
+app.get_childs('#SceneManager')[0].charge_and_change_scene('scena1', 'juego.xml')
+c.video.flags ^= pygame.RESIZABLE
+c.video.set_size((150,150))
 c.set_app(app)
 c.start()

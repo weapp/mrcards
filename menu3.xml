@@ -1,0 +1,26 @@
+<state>
+
+    <obj type="background">
+        <param>yo</param>
+    </obj>
+	
+    <obj type="binds" />
+	
+    <obj type="menu">
+        <param>
+            <obj type="pos"><param>20</param><param>20</param></obj>
+        </param>
+        <param>
+            <obj type="itemmenu">
+                <param>Volver</param>
+                <param>menu</param>
+            </obj>
+        </param>
+    </obj>
+	
+    <obj type="fps" />
+    <obj type="character">
+		<param>vx_chara01_b.png</param>
+		<param>0</param>
+	</obj>
+</state>
