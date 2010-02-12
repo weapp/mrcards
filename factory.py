@@ -130,7 +130,7 @@ class VxCharset:
 		
 
 class character(module.Module, ph2d.Ph2D):
-	def __init__(self, filename, num):
+	def __init__(self, filename, num, up, down, left, right,  jump):
 		module.Module.__init__(self)
 		ph2d.Ph2D.__init__(self)
 		self.animation = VxCharset(filename, int(num))		
@@ -140,11 +140,11 @@ class character(module.Module, ph2d.Ph2D):
 		self.g = pygame.sprite.GroupSingle()
 		self.g.add(self.spr)
 		
-		self.bind("keypress.down", self.go_down, self.not_go_down)
-		self.bind("keypress.up", self.go_up, self.not_go_up)
-		self.bind("keypress.right", self.go_right, self.not_go_right)
-		self.bind("keypress.left", self.go_left, self.not_go_left)
-		self.bind("keydown.space", self.jump)
+		self.bind("keypress.%s" % up, self.go_up, self.not_go_up)
+		self.bind("keypress.%s" % down, self.go_down, self.not_go_down)
+		self.bind("keypress.%s" % left, self.go_left, self.not_go_left)
+		self.bind("keypress.%s" % right, self.go_right, self.not_go_right)
+		self.bind("keydown.%s" % jump, self.jump)
 		
 		def prin(x):print x
 		#self.toggle("keydown.space", (lambda event: prin(1), lambda event: prin(2), lambda event: prin(3), lambda event: prin(4))      )

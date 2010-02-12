@@ -4,7 +4,16 @@
         <param>yo</param>
     </obj>
 	
-    <obj type="binds" />
+    <obj type="libmenu">
+		<param>item 1 de libmenu</param>
+		<param>item 2 de libmenu</param>
+    </obj>
+	
+
+    <obj type="sidebar" />
+    <obj type="toogle_fullscreen" />
+    <obj type="fps" />
+	
 	
     <obj type="menu">
         <param>
@@ -22,5 +31,10 @@
     <obj type="character">
 		<param>vx_chara01_b.png</param>
 		<param>0</param>
+		<param name="up">up</param>
+		<param name="down">down</param>
+		<param name="left">left</param>
+		<param name="right">right</param>
+		<param name="jump">space</param>
 	</obj>
 </state>
