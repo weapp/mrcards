@@ -64,17 +64,23 @@ class BindingManager(module.Module):
 		t = type_.split(".")
 		if type_ == 'mousemotion':
 			self.pos = event.pos
+
+			for elem in self.objects:
+				if elem._binds.has_key('mousemotion'):
+					self.execute(elem._binds['mousemotion'], event)
+
 			for elem in self.onhover_elems:
-				self.trigger(elem, 'mousemotion', event)
 				self.trigger(elem, 'onhover', event)
+
 			for elem in self.offhover_elems:
 				self.trigger(elem, 'offhover', event)
+				#self.execute(elem._binds['mousemotion'], event)
 			
 		elif type_ == 'onhover':
-			self.execute(obj._binds['onhover'], event)
+			self.execute(obj._binds.get('onhover', []), event)
 			
 		elif type_ == 'offhover':
-			self.execute(obj._binds['offhover'], event)
+			self.execute(obj._binds.get('offhover', []), event)
 			
 			
 		elif t[0] == 'keydown':
@@ -146,6 +152,9 @@ class BindingManager(module.Module):
 			self.__bind(obj,'mousedown',func1)
 		elif type_ == "mouseup":
 			self.__bind(obj,'mousedown',func1)
+			
+		elif type_ == "mousemotion":
+			self.__bind(obj,'mousemotion',func1)
 	
 	def unbind(self, obj, type_=None, func1=None):
 		if not type_ and not func1:

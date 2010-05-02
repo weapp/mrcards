@@ -1,7 +1,7 @@
 import pygame
 from os import path
 
-SKIN='../../game/images'
+SKIN='data'
 FORMATS = ['png', 'jpg']
 
 cache={}
@@ -16,7 +16,7 @@ def loadImage(name, force=False): #TODO eliminar try y catch
     #fullname = path.dirname(__file__) + path.sep +'..' + path.sep + 'images' + path.sep + name + '.png'
     cargado = False
     for FORMAT in FORMATS:
-        fullname = path.dirname(__file__) + path.sep + SKIN + path.sep + str(name) + '.' + FORMAT
+        fullname = path.join (SKIN, str(name) + '.' + FORMAT)
         try:
             image = pygame.image.load(fullname)
             cargado = True
