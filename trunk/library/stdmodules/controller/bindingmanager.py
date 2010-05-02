@@ -20,11 +20,9 @@ class BindingManager(module.Module):
 		'''
 	
 	def execute(self, funcs, event):
+		funcs = [func for func in funcs if func]
 		for func in funcs:
-			if func:
-				func(event)
-			else:
-				funcs.remove(func)
+			func(event)
 	
 	def update_hover(self, pos):
 		self.__pos = pos
