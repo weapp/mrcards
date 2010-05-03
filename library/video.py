@@ -11,7 +11,7 @@ class Video:
     
     def get_screen(self):
         self.__make_screen()
-        return self.__screen
+        return pygame.display.get_surface()
 
     def set_size(self, size):
         self.size = size

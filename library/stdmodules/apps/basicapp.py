@@ -4,6 +4,10 @@ from library.general.structures import tsdwak
 from library.stdmodules import module
 
 class BasicApp(tsdwak.TSDWAK, module.Module):
+    def __init__(self):
+        module.Module.__init__(self)
+        tsdwak.TSDWAK.__init__(self)
+
     def new_event(self,event):
         b = False
         self.reverse()

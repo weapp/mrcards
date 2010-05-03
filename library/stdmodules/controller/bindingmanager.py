@@ -76,6 +76,12 @@ class BindingManager(module.Module):
 				self.trigger(elem, 'offhover', event)
 				#self.execute(elem._binds['mousemotion'], event)
 			
+		elif type_ == 'videoresize':
+			for elem in self.objects:
+				if elem._binds.has_key('videoresize'):
+					self.execute(elem._binds['videoresize'], event)
+					print elem
+					
 		elif type_ == 'onhover':
 			self.execute(obj._binds.get('onhover', []), event)
 			
@@ -89,9 +95,9 @@ class BindingManager(module.Module):
 			self.execute(obj._binds.get('keyup', {}).get(t[1], []), event)
 			
 		elif type_ == "mouseup":
-			self.execute(obj._binds['mouseup'], event)
+			self.execute(obj._binds.get('mouseup', []), event)
 		elif type_ == "mousedown":
-			self.execute(obj._binds['mousedown'], event)
+			self.execute(obj._binds.get('mousedown', []), event)
 			
 			
 	
@@ -120,7 +126,8 @@ class BindingManager(module.Module):
 		elif event.type == pygame.JOYHATMOTION:pass
 		elif event.type == pygame.JOYBUTTONUP:pass
 		elif event.type == pygame.JOYBUTTONDOWN:pass
-		elif event.type == pygame.VIDEORESIZE:pass
+		elif event.type == pygame.VIDEORESIZE:
+			self.trigger(self, 'videoresize', event)
 		elif event.type == pygame.VIDEOEXPOSE:pass
 		elif event.type == pygame.USEREVENT:pass
 	
@@ -155,6 +162,9 @@ class BindingManager(module.Module):
 			
 		elif type_ == "mousemotion":
 			self.__bind(obj,'mousemotion',func1)
+			
+		elif type_ == "videoresize":
+			self.__bind(obj,'videoresize',func1)
 	
 	def unbind(self, obj, type_=None, func1=None):
 		if not type_ and not func1:
