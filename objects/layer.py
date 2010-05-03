@@ -9,7 +9,8 @@ class layer(basicapp.BasicApp):
 		for elem in args:
 			self.append(elem)
 		
-		self.bind("videoresize", self.update_position)
+		
+		core.core.get_app().search("#BindingManager")[0].videoresize.bind(self.update_position)
 		
 	def update_position(self,*args):
 		if args:

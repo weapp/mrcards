@@ -1,6 +1,7 @@
 from library.stdmodules import module
 from library import core
 import pygame
+from library.stdmodules.controller import event
 
 class button(pygame.sprite.Sprite, module.Module):
 	def __init__(self, name, func):
@@ -19,11 +20,22 @@ class button(pygame.sprite.Sprite, module.Module):
 		self.g = pygame.sprite.Group()
 		self.g.add(self)
 		
-		#self.bind( "hover", self.change, self.change2 )
-		self.bind( "click", self.onclick, self.upclick)
-		self.bind( "hover", self.onhover, self.offhover)
-		#self.bind( "click", self.onclick2, self.onclick3 )
+		self.mousebuttondown = event.Event("mousebuttondown")
+		self.mousebuttonup = event.Event("mousebuttonup")
+		self.click = event.EventPack(self.mousebuttondown, self.mousebuttonup)
+		core.core.get_app().search("#BindingManager")[0].mousebuttondown.bind(self.__mousebuttondown)
+		core.core.get_app().search("#BindingManager")[0].mousebuttonup.bind(self.__mousebuttonup)
+		self.click.bind(self.onclick, self.upclick)
+		#self.bind( "hover", self.onhover, self.offhover)
 				
+	def __mousebuttondown(self, event, data):
+		if hasattr(self,'rect') and self.rect.collidepoint(data['pos']):
+			self.mousebuttondown(**data)
+		
+	def __mousebuttonup(self, event, data):
+		if hasattr(self,'rect') and self.rect.collidepoint(data['pos']):
+			self.mousebuttonup(**data)
+			
 	def update(self):
 		self.g.draw(core.core.video.get_screen())
 		

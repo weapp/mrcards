@@ -25,7 +25,7 @@ class div(pygame.sprite.Sprite, module.Module):
 		self.border_color = map(int, re.match("\[(\d+),(\d+),(\d+),(\d+)\]", border_color).groups())
 		self.border_width = int(border_width)
 		
-		self.bind("videoresize", self.update_position)
+		##self.bind("videoresize", self.update_position)
 
 		self.f = pygame.font.Font("data/font.ttf", 12)
 		self.surface_content = self.f.render(self.content, True, (0, 0, 0))
