@@ -1,66 +1,40 @@
 from library.stdmodules import module
 import pygame
+from event import Event, EventPack, EventDic, EventPackDic
 
 class BindingManager(module.Module):
 	def __init__(self):
 		module.Module.__init__(self)
-		self.__hover = set()
-		self.hover = set()
-		self.objects = set()
-		self.binds = {}
-		self.__pos = (0,0)
+		self.quit = Event("quit")
+		self.activeevent = Event("activeevent")
+		self.keydown = EventDic("keydown")
+		self.keyup = EventDic("keyup")
+		self.keypress = EventPackDic(self.keydown, self.keyup)
+		self.mousemotion = Event("mousemotion")
+		self.mousebuttonup = Event("mousebuttonup")
+		self.mousebuttondown = Event("mousebuttondown")
+		self.videoresize = Event("videoresize")
 		
-		'''
-		self.keydown = {}
-		self.keyup = {}
-		self.onhover = {}
-		self.offhover = {}
-		self.mousedown = {}
-		self.mouseup = {}
-		'''
-	
-	def execute(self, funcs, event):
-		funcs = [func for func in funcs if func]
-		for func in funcs:
-			func(event)
-	
-	def update_hover(self, pos):
-		self.__pos = pos
-		self.__hover = self.hover
-		self.hover = set()
-		for elem in self.get_hover_elems():
-			self.hover.add(elem)
 		
-	def get_hover_elems(self):
-		for elem in self.objects:
-			if hasattr(elem,'rect') and elem.rect.collidepoint(self.__pos):
-				yield elem
-	
-	def get_onhover_elems(self):
-		for elem in self.hover.difference(self.__hover):
-			yield elem
-	
-	def get_offhover_elems(self):
-		for elem in self.__hover.difference(self.hover):
-			yield elem
 		
-	def get_pos(self): return self.__pos
-	
-	hover_elems = property(get_hover_elems)
-	onhover_elems = property(get_onhover_elems)
-	offhover_elems = property(get_offhover_elems)
-	pos = property(get_pos, update_hover)
-	
+	def new_event(self, event):
+		if event.type == pygame.QUIT: self.quit()
+		elif event.type == pygame.ACTIVEEVENT: self.activeevent(gain=event.gain, state=event.state)
+		elif event.type == pygame.KEYDOWN: self.keydown[pygame.key.name(event.key)](unicode=event.unicode, key=event.key, mod=event.mod)
+		elif event.type == pygame.KEYUP: self.keyup[pygame.key.name(event.key)](key=event.key, mod=event.mod)
+		elif event.type == pygame.MOUSEMOTION: self.mousemotion(pos=event.pos, rel=event.rel, buttons=event.buttons)
+		elif event.type == pygame.MOUSEBUTTONUP: self.mousebuttonup(pos=event.pos, button=event.button)
+		elif event.type == pygame.MOUSEBUTTONDOWN: self.mousebuttondown(pos=event.pos, button=event.button)		
+		elif event.type == pygame.JOYAXISMOTION:pass
+		elif event.type == pygame.JOYBALLMOTION:pass
+		elif event.type == pygame.JOYHATMOTION:pass
+		elif event.type == pygame.JOYBUTTONUP:pass
+		elif event.type == pygame.JOYBUTTONDOWN:pass
+		elif event.type == pygame.VIDEORESIZE: self.videoresize(size=event.size, w=event.w, h=event.h)
+		elif event.type == pygame.VIDEOEXPOSE:pass
+		elif event.type == pygame.USEREVENT:pass
+		
 	def trigger(self, obj, type_ , event=None):
-		'''
-		self.keydown = {}
-		self.keyup = {}
-		self.onhover = {}
-		self.offhover = {}
-		self.mousedown = {}
-		self.mouseup = {}
-		'''
-		
 		t = type_.split(".")
 		if type_ == 'mousemotion':
 			self.pos = event.pos
@@ -99,42 +73,13 @@ class BindingManager(module.Module):
 		elif type_ == "mousedown":
 			self.execute(obj._binds.get('mousedown', []), event)
 			
-			
-	
-	def new_event(self, event):
-		if event.type == pygame.QUIT: pass
-		elif event.type == pygame.ACTIVEEVENT: pass
-		elif event.type == pygame.KEYDOWN:
-			for elem in self.objects:
-				self.trigger(elem, 'keydown.%s' % pygame.key.name(event.key), event)
-		elif event.type == pygame.KEYUP:
-			for elem in self.objects:
-				self.trigger(elem, 'keyup.%s' % pygame.key.name(event.key), event)
-		elif event.type == pygame.MOUSEMOTION:
-			self.trigger(self, 'mousemotion', event)
-		elif event.type == pygame.MOUSEBUTTONUP:
-			for elem in self.objects:
-				if hasattr(elem, 'rect') and elem.rect.collidepoint(event.pos):
-					self.trigger(elem, 'mouseup', event)
-		elif event.type == pygame.MOUSEBUTTONDOWN:
-			for elem in self.objects:
-				if hasattr(elem, 'rect') and elem.rect.collidepoint(event.pos):
-					self.trigger(elem, 'mousedown', event)
-		
-		elif event.type == pygame.JOYAXISMOTION:pass
-		elif event.type == pygame.JOYBALLMOTION:pass
-		elif event.type == pygame.JOYHATMOTION:pass
-		elif event.type == pygame.JOYBUTTONUP:pass
-		elif event.type == pygame.JOYBUTTONDOWN:pass
-		elif event.type == pygame.VIDEORESIZE:
-			self.trigger(self, 'videoresize', event)
-		elif event.type == pygame.VIDEOEXPOSE:pass
-		elif event.type == pygame.USEREVENT:pass
 	
 	def __bind(self, obj, type_, func):
 		obj._binds.setdefault(type_, []).append(func)
 		
 	def bind(self, obj, type_, func1, func2 = None):
+		print "\nself:%s\nobj:%s\ntype:%s\nfunc:%s\n" % (self, obj, type_, func1)
+		exit()
 		self.objects.add(obj)
 		t = type_.split(".")
 		if t[0] == "keypress":
