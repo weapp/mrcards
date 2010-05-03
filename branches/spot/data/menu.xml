@@ -1,0 +1,102 @@
+<state>
+    <obj type="background">
+        <param>image</param>
+    </obj>
+
+	<obj type="layer">
+	
+		<param>
+			<obj type="div">
+				<param name="content"></param>
+				<param name="width">0</param>
+				<param name="height">0</param>
+				<param name="vertical_alignment"></param>
+				<param name="horizontal_alignment"></param>
+				<param name="margin">[15,15,15,15]</param>
+				<param name="background">[120,120,120,0]</param>
+				<param name="border_color">[100,100,100,200]</param>
+				<param name="border_width">5</param>
+			</obj>
+		</param>
+		
+		<param>
+			<obj type="div">
+				<param name="content">Content</param>
+				<param name="width">75</param>
+				<param name="height">23</param>
+				<param name="vertical_alignment"></param>
+				<param name="horizontal_alignment"></param>
+				<param name="margin">[170,20,20,20]</param>
+				<param name="background">[120,120,120,200]</param>
+				<param name="border_color">[100,100,100,200]</param>
+				<param name="border_width">0</param>
+			</obj>
+		</param>
+		
+		<param>
+			<obj type="div">
+				<param name="content">Button</param>
+				<param name="width">150</param>
+				<param name="height">40</param>
+				<param name="vertical_alignment">bottom</param>
+				<param name="horizontal_alignment">right</param>
+				<param name="margin">[0,0,30,30]</param>
+				<param name="background">[130,130,130,255]</param>
+				<param name="border_color">[100,100,100,255]</param>
+				<param name="border_width">2</param>
+			</obj>
+		</param>
+		
+		
+		<param>
+			<obj type="div">
+				<param name="content">Menu</param>
+				<param name="width">150</param>
+				<param name="height">0</param>
+				<param name="vertical_alignment"></param>
+				<param name="horizontal_alignment">left</param>
+				<param name="margin">[20,20,0,20]</param>
+				<param name="background">[130,130,175,200]</param>
+				<param name="border_color">[100,100,100,125]</param>
+				<param name="border_width">0</param>
+			</obj>
+		</param>
+		
+	</obj>
+	
+    <obj type="dragable">
+        <param>ad</param>
+    </obj>
+<!--
+	<obj type="gfxobj">
+		<param>1. Ir al Menu 3</param>
+		<param>menu</param>
+	</obj>
+-->	
+	<obj type="button">
+		<param>1. Ir al Menu 3</param>
+		<param>menu</param>
+	</obj>
+
+    <obj type="character">
+		<param>vx_chara01_b.png</param>
+		<param>4</param>
+		<param name="up">w</param>
+		<param name="down">s</param>
+		<param name="left">a</param>
+		<param name="right">d</param>
+		<param name="jump">e</param>
+	</obj>
+	
+	<obj type="character">
+		<param>vx_chara01_b.png</param>
+		<param>2</param>
+		<param name="up">up</param>
+		<param name="down">down</param>
+		<param name="left">left</param>
+		<param name="right">right</param>
+		<param name="jump">space</param>
+	</obj>
+	
+	
+</state>
