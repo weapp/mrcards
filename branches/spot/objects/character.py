@@ -48,18 +48,12 @@ class character(module.Module, ph2d.Ph2D):
         self.g = pygame.sprite.GroupSingle()
         self.g.add(self.spr)
         
-        self.bind("keypress.%s" % up, self.go_up, self.not_go_up)
-        self.bind("keypress.%s" % down, self.go_down, self.not_go_down)
-        self.bind("keypress.%s" % left, self.go_left, self.not_go_left)
-        self.bind("keypress.%s" % right, self.go_right, self.not_go_right)
-        self.bind("keydown.%s" % jump, self.jump)
-        
-        def prin(x):print x
-        #self.toggle("keydown.space", (lambda event: prin(1), lambda event: prin(2), lambda event: prin(3), lambda event: prin(4))      )
-        self.bind("keydown.space", lambda event: prin(1))
-        
-        #def prin(x):print x
-        #self.bind("keypress.space", lambda event: prin("blu"), lambda event: prin("blu2") )
+        core.core.get_app().search("#BindingManager")[0].keydown[jump].bind(self.jump)
+        core.core.get_app().search("#BindingManager")[0].keypress[up].bind(self.go_up, self.not_go_up)
+        core.core.get_app().search("#BindingManager")[0].keypress[down].bind(self.go_down, self.not_go_down)
+        core.core.get_app().search("#BindingManager")[0].keypress[left].bind(self.go_left, self.not_go_left)
+        core.core.get_app().search("#BindingManager")[0].keypress[right].bind(self.go_right, self.not_go_right)
+
         
         self.spr.rect.move_ip(random.gauss(50, 20),random.gauss(50, 20))
 		
