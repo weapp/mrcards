@@ -3,11 +3,14 @@ from library import core
 import pygame
 from library.resources.images import getImage
 from library.stdmodules.controller import event
+import clickable
 
-class dragable(pygame.sprite.Sprite, module.Module):
+class dragable(pygame.sprite.Sprite, module.Module, clickable.Clickable):
 	def __init__(self, filename):
 		module.Module.__init__(self)
 		pygame.sprite.Sprite.__init__(self)
+		clickable.Clickable.__init__(self)
+		
 		self.image = getImage(filename)
 		self.rect = self.image.get_rect()
 		self.g = pygame.sprite.Group()
@@ -15,25 +18,11 @@ class dragable(pygame.sprite.Sprite, module.Module):
 		
 		#self.bind( "click", self.clickdown, self.clickup )
 		
-		
-		self.mousebuttondown = event.Event("mousebuttondown")
-		self.mousebuttonup = event.Event("mousebuttonup")
-		self.click = event.EventPack(self.mousebuttondown, self.mousebuttonup)
-		core.core.get_app().search("#BindingManager")[0].mousebuttondown.bind(self.__mousebuttondown)
-		core.core.get_app().search("#BindingManager")[0].mousebuttonup.bind(self.__mousebuttonup)
 		self.click.bind(self.clickdown, self.clickup)
 		core.core.get_app().search("#BindingManager")[0].mousemotion.bind(self.motion )
 		self.rect.move_ip(300, 300)
 		
 		self.mousedown=0
-	
-	def __mousebuttondown(self, event, data):
-		if hasattr(self,'rect') and self.rect.collidepoint(data['pos']):
-			self.mousebuttondown(**data)
-		
-	def __mousebuttonup(self, event, data):
-		if hasattr(self,'rect') and self.rect.collidepoint(data['pos']):
-			self.mousebuttonup(**data)
 	
 	def update(self):
 		self.g.draw(core.core.video.get_screen())
