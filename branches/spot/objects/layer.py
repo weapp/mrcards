@@ -12,11 +12,8 @@ class layer(basicapp.BasicApp):
 		
 		core.core.get_app().search("#BindingManager")[0].videoresize.bind(self.update_position)
 		
-	def update_position(self,*args):
-		if args:
-			h = args[0].h
-			w = args[0].w
-			self.rect = pygame.Rect(0,0,w,h)		
+	def update_position(self,event, data):
+		self.rect = pygame.Rect(0,0,data['w'],data['h'])		
 		for child in self.get_all_childs():
 			child.update_position()
 			
