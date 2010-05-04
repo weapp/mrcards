@@ -2,13 +2,13 @@ from library.stdmodules import module
 from library import core
 import pygame
 from library.stdmodules.controller import event
-import clickable
+import pressable
 
-class button(pygame.sprite.Sprite, module.Module, clickable.Clickable):
+class button(pygame.sprite.Sprite, module.Module, pressable.Pressable):
 	def __init__(self, name, func):
 		module.Module.__init__(self)
 		pygame.sprite.Sprite.__init__(self)
-		clickable.Clickable.__init__(self)
+		pressable.Pressable.__init__(self)
 		
 		f = pygame.font.Font("data/font.ttf", 12)
 		
@@ -19,32 +19,22 @@ class button(pygame.sprite.Sprite, module.Module, clickable.Clickable):
 		self.image.blit(self.image2, (6,6))
 		
 		self.func = func
-		
 		self.g = pygame.sprite.Group()
 		self.g.add(self)
 				
-		self.click.bind(self.onclick, self.upclick)
-		#self.bind( "hover", self.onhover, self.offhover)
-				
+		self.press.bind(self.__onpress, self.__unpress)
+		self.mousebuttonup.bind(self.__click)
 			
 	def update(self):
 		self.g.draw(core.core.video.get_screen())
 		
-	def onclick(self,*args):
+	def __onpress(self, event, data):
 		self.image.fill((128,128,128))
 		self.image.blit(self.image2, (6,8))
-		
-	def upclick(self,*args):
-		self.image.fill((128,128,128))
-		self.image.blit(self.image2, (6,6))
+	
+	def __click(self, event, data):
 		print "click!"
-	
-	def offhover(self, *args):
+		
+	def __unpress(self, event, data):
 		self.image.fill((128,128,128))
 		self.image.blit(self.image2, (6,6))
-	
-	def onhover(self, *args):
-		if pygame.mouse.get_pressed()[0]:
-			self.image.fill((128,128,128))
-			self.image.blit(self.image2, (6,6))
-		
