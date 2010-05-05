@@ -7,6 +7,7 @@ from general import singleton
 from stdmodules.apps import basicapp
 import threading 
 import video
+import event
 
 import time
 
@@ -22,6 +23,7 @@ class Core:
     """
     __metaclass__ = singleton.Singleton
     video = video.Video()
+    event = event.EventManager()
         
     set_caption = pygame.display.set_caption
     set_repeat = pygame.key.set_repeat
@@ -72,7 +74,7 @@ class Core:
             
             #control de eventos
             for event in pygame.event.get():
-                if self.__app.new_event(event):
+                if self.event.new_event(event):
                     continue
                 if (event.type == pygame.KEYDOWN and \
                   event.key == pygame.K_ESCAPE) or event.type == pygame.QUIT:
