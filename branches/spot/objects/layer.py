@@ -10,7 +10,7 @@ class layer(basicapp.BasicApp):
 			self.append(elem)
 		
 		
-		core.core.get_app().search("#BindingManager")[0].videoresize.bind(self.update_position)
+		core.core.event.videoresize.bind(self.update_position)
 		
 	def update_position(self,event, data):
 		self.rect = pygame.Rect(0,0,data['w'],data['h'])		

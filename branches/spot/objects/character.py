@@ -48,11 +48,11 @@ class character(module.Module, ph2d.Ph2D):
         self.g = pygame.sprite.GroupSingle()
         self.g.add(self.spr)
         
-        core.core.get_app().search("#BindingManager")[0].keydown[jump].bind(self.jump)
-        core.core.get_app().search("#BindingManager")[0].keypress[up].bind(self.go_up, self.not_go_up)
-        core.core.get_app().search("#BindingManager")[0].keypress[down].bind(self.go_down, self.not_go_down)
-        core.core.get_app().search("#BindingManager")[0].keypress[left].bind(self.go_left, self.not_go_left)
-        core.core.get_app().search("#BindingManager")[0].keypress[right].bind(self.go_right, self.not_go_right)
+        core.core.event.keydown[jump].bind(self.jump)
+        core.core.event.keypress[up].bind(self.go_up, self.not_go_up)
+        core.core.event.keypress[down].bind(self.go_down, self.not_go_down)
+        core.core.event.keypress[left].bind(self.go_left, self.not_go_left)
+        core.core.event.keypress[right].bind(self.go_right, self.not_go_right)
 
         
         self.spr.rect.move_ip(random.gauss(50, 20),random.gauss(50, 20))

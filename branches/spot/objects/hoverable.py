@@ -1,12 +1,12 @@
 from library import core
-from library.stdmodules.controller import event
+from library import event
 
 class Hoverable:
 	def __init__(self):
 		self.onhover = event.Event("onhover")
 		self.offhover = event.Event("offhover")
 		self.hover = event.EventPack(self.onhover, self.offhover)
-		core.core.get_app().search("#BindingManager")[0].mousemotion.bind(self.__mousemotion)
+		core.core.event.mousemotion.bind(self.__mousemotion)
 		self.__prev_pos = (-1,-1)
 		
 	def __mousemotion(self, event, data):

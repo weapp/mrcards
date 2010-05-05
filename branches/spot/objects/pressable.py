@@ -1,5 +1,5 @@
 from library import core
-from library.stdmodules.controller import event
+from library import event
 import clickable
 import hoverable
 import pygame
