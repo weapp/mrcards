@@ -20,36 +20,6 @@ class Module(treenode.TreeNode, object):
     
     main_app = property(get_main_app)
     
-    def __get_bindings(self):
-        if hasattr(self.core, "BindingManager"):
-            return self.core.BindingManager
-        else:
-            r = self.main_app.find("#BindingManager")
-            if r is None:
-                raise Exception()
-            else:
-                return r
-                
-    bindings = property(__get_bindings)
-    
-    def bind(self, *args):
-        self.bindings.bind(self, *args)
-    
-    def one(self, *args):
-        self.bindings.one(self, *args)
-    
-    def trigger(self, *args):
-        self.bindings.trigger(self, *args)
-    
-    def toggle(self, *args):
-        self.bindings.toggle(self, *args)
-    
-    def unbind_(self, *args):
-        self.bindings.unbind(self, *args)
-        
-    def new_event(self,event):
-        return False
-        
     def update(self):
         pass
 

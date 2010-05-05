@@ -5,17 +5,6 @@ from library.general.structures import sortablelist
 import pygame
 
 class Dirty_app(sortablelist.SortableList):
-    def new_event(self,event):        
-        b=False
-        self.reverse()
-        for obj in self:
-            if obj.new_event(event):
-                b=True
-                #print "evento[", repr(event.unicode) ,"]terminado por el objeto de tipo:", obj.__class___, ":",repr(objeto)
-                break
-        self.reverse()
-        return b
-    
     def update(self):
         updates=[]
         for obj in self:
