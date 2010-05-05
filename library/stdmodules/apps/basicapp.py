@@ -8,17 +8,6 @@ class BasicApp(tsdwak.TSDWAK, module.Module):
         module.Module.__init__(self)
         tsdwak.TSDWAK.__init__(self)
 
-    def new_event(self,event):
-        b = False
-        self.reverse()
-        for obj in self.values():
-            if obj.new_event(event):
-                b=True
-                #print "evento[", repr(event.unicode) ,"]terminado por el objeto de tipo:", obj.__class___, ":",repr(objeto)
-                break
-        self.reverse()
-        return b
-
     def update(self):
         for x in self.values():
             x.update()
