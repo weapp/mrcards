@@ -33,19 +33,19 @@ class EventManager:
 		self.videoresize = videoresize
 		
 	def new_event(self, event):
-		if   event.type == pygame.QUIT: self.quit()
-		elif event.type == pygame.ACTIVEEVENT: self.activeevent(gain=event.gain, state=event.state)
-		elif event.type == pygame.KEYDOWN: self.keydown(keyname=pygame.key.name(event.key), unicode=event.unicode, key=event.key, mod=event.mod)
-		elif event.type == pygame.KEYUP: self.keyup(keyname=pygame.key.name(event.key), key=event.key, mod=event.mod)
-		elif event.type == pygame.MOUSEMOTION: self.mousemotion(pos=event.pos, rel=event.rel, buttons=event.buttons)
-		elif event.type == pygame.MOUSEBUTTONUP: self.mousebuttonup(pos=event.pos, button=event.button)
-		elif event.type == pygame.MOUSEBUTTONDOWN: self.mousebuttondown(pos=event.pos, button=event.button)		
+		if   event.type == pygame.QUIT: return self.quit()
+		elif event.type == pygame.ACTIVEEVENT: return self.activeevent(gain=event.gain, state=event.state) #eventos minimizar, focus
+		elif event.type == pygame.KEYDOWN: return self.keydown(keyname=pygame.key.name(event.key), unicode=event.unicode, key=event.key, mod=event.mod)
+		elif event.type == pygame.KEYUP: return self.keyup(keyname=pygame.key.name(event.key), key=event.key, mod=event.mod)
+		elif event.type == pygame.MOUSEMOTION: return self.mousemotion(pos=event.pos, rel=event.rel, buttons=event.buttons)
+		elif event.type == pygame.MOUSEBUTTONUP: return self.mousebuttonup(pos=event.pos, button=event.button)
+		elif event.type == pygame.MOUSEBUTTONDOWN: return self.mousebuttondown(pos=event.pos, button=event.button)		
 		elif event.type == pygame.JOYAXISMOTION:pass #TODO completar todos los eventos
 		elif event.type == pygame.JOYBALLMOTION:pass
 		elif event.type == pygame.JOYHATMOTION:pass
 		elif event.type == pygame.JOYBUTTONUP:pass
 		elif event.type == pygame.JOYBUTTONDOWN:pass
-		elif event.type == pygame.VIDEORESIZE: self.videoresize(size=event.size, w=event.w, h=event.h)
+		elif event.type == pygame.VIDEORESIZE: return self.videoresize(size=event.size, w=event.w, h=event.h)
 		elif event.type == pygame.VIDEOEXPOSE:pass
 		elif event.type == pygame.USEREVENT:pass
 		
@@ -62,11 +62,13 @@ class Event:
 		self.binds = filter(None, self.binds)
 		#llamamos a las funciones manejadoras
 		for func in self.binds:
-			func(self, data)
+			if func(self, data):
+				return True
 		#recorremos la listas de eventos condicionados mediante claves
 		for key, event in self.subbinds.iteritems():
 			if key == data[self.key]:
-				event(**data)
+				if event(**data):
+					return True
 
 	trigger = __call__
 	

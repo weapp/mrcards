@@ -78,7 +78,7 @@ class Core:
                     continue
                 if (event.type == pygame.KEYDOWN and \
                   event.key == pygame.K_ESCAPE) or event.type == pygame.QUIT:
-                    self.stop()
+                    self.stop() #TODO cambiar al sistema de eventos
             #actualizado
             self.__app.update()
             #pintado
