@@ -1,4 +1,3 @@
-from library import core
 from library import event
 import clickable
 import hoverable
@@ -13,16 +12,23 @@ class Pressable(clickable.Clickable, hoverable.Hoverable):
 		self.press = event.EventPack(self.onpress, self.unpress)
 		self.click.bind(self.onclick, self.upclick)
 		self.hover.bind(self.__onhover, self.__offhover)
+		self.__press = 0
 		
 	def onclick(self, event, data):
+		self.__press = 1
 		self.onpress(**data)
 		
+	def __onhover(self, event, data):
+		if pygame.mouse.get_pressed()[0]:
+			self.__press = 1
+			self.onpress(**data)
+			
 	def upclick(self, event, data):
+		self.__press = 0
 		self.unpress(**data)
 	
 	def __offhover(self, event, data):
-		self.unpress(**data)
+		if self.__press == 1:
+			self.unpress(**data)
+		self.__press = 0
 	
-	def __onhover(self, event, data):
-		if pygame.mouse.get_pressed()[0]:
-			self.onpress(**data)

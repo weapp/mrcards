@@ -4,7 +4,7 @@ import pygame
 import re
 
 class div(pygame.sprite.Sprite, module.Module):
-	def __init__(self, content="div", width="75", height="23", vertical_alignment="", \
+	def __init__(self, content="div", color_content="[0,0,0,0]", width="75", height="23", vertical_alignment="", \
 					horizontal_alignment="", margin="[15,15,15,15]", background="[10,128,10,0]", \
 					border_color = "[255,128,128,0]", border_width = "10"):
 		module.Module.__init__(self)
@@ -12,6 +12,7 @@ class div(pygame.sprite.Sprite, module.Module):
 		self.g = pygame.sprite.Group()
 		self.g.add(self)
 		self.content = content
+		self.color_content = map(int, re.match("\[(\d+),(\d+),(\d+),(\d+)\]", color_content).groups())
 		self.width = int(width)
 		self.height = int(height)
 		self.vertical_alignment = vertical_alignment
@@ -28,7 +29,10 @@ class div(pygame.sprite.Sprite, module.Module):
 		##self.bind("videoresize", self.update_position)
 
 		self.f = pygame.font.Font("data/font.ttf", 12)
-		self.surface_content = self.f.render(self.content, True, (0, 0, 0))
+		self.surface_content = self.f.render(self.content, True, self.color_content)
+		
+		self.text_offset_x = 0
+		self.text_offset_y = 0
 		
 	def set_parent(self, *args):
 		module.Module.set_parent(self, *args)
@@ -43,7 +47,9 @@ class div(pygame.sprite.Sprite, module.Module):
 			pygame.draw.rect(self.image, self.border_color, self.image.get_rect().inflate(-self.border_width, -self.border_width), self.border_width)
 				
 		
-		self.image.blit(self.surface_content, self.surface_content.get_rect(center=self.image.get_rect().center))
+		center = self.image.get_rect().center
+		center = center[0] + self.text_offset_x, center[1] + self.text_offset_y
+		self.image.blit(self.surface_content, self.surface_content.get_rect(center=center))
 		
 		
 	def update_position(self,*args):
