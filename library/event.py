@@ -2,6 +2,9 @@ import pygame
 
 class EventManager:
 	def __init__(self):
+		self.clear()
+	
+	def clear(self):
 		self.quit = Event("quit")
 		self.activeevent = Event("activeevent")
 		self.keydown = Event("keydown", "keyname")
@@ -11,6 +14,23 @@ class EventManager:
 		self.mousebuttonup = Event("mousebuttonup", "button")
 		self.mousebuttondown = Event("mousebuttondown", "button")
 		self.videoresize = Event("videoresize")
+		
+	def get_all_bindings(self):
+		return self.quit, self.activeevent, self.keydown, self.keyup, self.keypress, \
+		self.mousemotion, self.mousebuttonup, self.mousebuttondown, self.videoresize
+		
+	def get_set_bindings(self, quit, activeevent, keydown, keyup, keypress, \
+		mousemotion, mousebuttonup, mousebuttondown, videoresize):
+		
+		self.quit = quit
+		self.activeevent = activeevent
+		self.keydown = keydown
+		self.keyup = keyup
+		self.keypress = keypress
+		self.mousemotion = mousemotion
+		self.mousebuttonup = mousebuttonup
+		self.mousebuttondown = mousebuttondown
+		self.videoresize = videoresize
 		
 	def new_event(self, event):
 		if   event.type == pygame.QUIT: self.quit()
@@ -28,6 +48,7 @@ class EventManager:
 		elif event.type == pygame.VIDEORESIZE: self.videoresize(size=event.size, w=event.w, h=event.h)
 		elif event.type == pygame.VIDEOEXPOSE:pass
 		elif event.type == pygame.USEREVENT:pass
+		
 
 class Event:
 	def __init__(self, type=None, key=None):

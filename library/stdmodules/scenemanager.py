@@ -5,6 +5,8 @@ from library.stdmodules import module
 from library.general.structures import sdwak
 from apps import sceneapp
 from library.general import xmlconfig
+from library import core
+
 class SceneManager (module.Module, object):
 
     def __init__(self, factory):
@@ -22,6 +24,7 @@ class SceneManager (module.Module, object):
         if self.__scene:
             self.__scene.end_scene()
             self.del_child(self.__scene)
+            core.core.event.clear()
         self.__scene = scene
         self.add_child(scene)
           
