@@ -1,7 +1,7 @@
 <state>
-    <obj type="background">
-        <param>image</param>
-    </obj>
+	<obj type="background">
+		<param>image</param>
+	</obj>
 
 	<obj type="layer">
 	
@@ -34,8 +34,8 @@
 		
 		<param>
 			<obj type="button">
-				<param>menu</param>
-				<param name="content">1. Ir al Menu 3</param>
+				<param><![CDATA[ core.core.get_app()['SceneManager'].change_scene("menu") ]]></param>
+				<param name="content">Reset</param>
 				<param name="width">150</param>
 				<param name="height">40</param>
 				<param name="vertical_alignment">bottom</param>
@@ -61,11 +61,27 @@
 			</obj>
 		</param>
 		
+		<param>
+			<obj type="button">
+				<param><![CDATA[exit()]]></param>
+				<param name="content">X</param>
+				<param name="color_content">[255,255,255,255]</param>
+				<param name="width">40</param>
+				<param name="height">40</param>
+				<param name="vertical_alignment">top</param>
+				<param name="horizontal_alignment">right</param>
+				<param name="margin">[0,0,0,0]</param>
+				<param name="background">[180,80,80,255]</param>
+				<param name="border_color">[130,40,40,255]</param>
+				<param name="border_width">2</param>
+			</obj>
+		</param>
+		
 	</obj>
 	
-    <obj type="dragable">
-        <param>ad</param>
-    </obj>
+	<obj type="dragable">
+		<param>ad</param>
+	</obj>
 <!--
 	<obj type="gfxobj">
 		<param>1. Ir al Menu 3</param>
@@ -73,7 +89,7 @@
 	</obj>
 -->	
 
-    <obj type="character">
+	<obj type="character">
 		<param>vx_chara01_b.png</param>
 		<param>4</param>
 		<param name="up">w</param>
@@ -91,6 +107,34 @@
 		<param name="left">left</param>
 		<param name="right">right</param>
 		<param name="jump">space</param>
+	</obj>
+	
+	
+	
+	<obj type="libmenu2">
+		<param>Pref</param>
+		<param>Cont</param>
+		<param>Exit</param>
+	</obj>
+	
+	
+
+	<obj type="menu">
+		<param>
+			<obj type="pos"><param>20</param><param>20</param></obj>
+		</param>
+		<child>
+			<obj type="itemmenu">
+				<param>item1</param>
+				<param>menu</param>
+			</obj>
+		</child>
+		<child>
+			<obj type="itemmenu">
+				<param>item2</param>
+				<param>menu2</param>
+			</obj>
+		</child>
 	</obj>
 	
 	
