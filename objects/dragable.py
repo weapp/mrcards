@@ -2,7 +2,7 @@ from library.stdmodules import module
 from library import core
 import pygame
 from library.resources.images import getImage
-from library.stdmodules.controller import event
+from library import event
 import clickable
 
 class dragable(pygame.sprite.Sprite, module.Module, clickable.Clickable):
@@ -19,7 +19,7 @@ class dragable(pygame.sprite.Sprite, module.Module, clickable.Clickable):
 		#self.bind( "click", self.clickdown, self.clickup )
 		
 		self.click.bind(self.clickdown, self.clickup)
-		core.core.get_app().search("#BindingManager")[0].mousemotion.bind(self.motion )
+		core.core.event.mousemotion.bind(self.motion )
 		self.rect.move_ip(300, 300)
 		
 		self.mousedown=0

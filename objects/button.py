@@ -1,7 +1,7 @@
 from library.stdmodules import module
 from library import core
 import pygame
-from library.stdmodules.controller import event
+from library import event
 import pressable
 
 class button(pygame.sprite.Sprite, module.Module, pressable.Pressable):
