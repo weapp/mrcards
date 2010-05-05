@@ -30,7 +30,8 @@ class button(div.div, pressable.Pressable):
 	
 	def __click(self, event, data):
 		print "%s: click!" % self.i
-		core.core.get_app()['SceneManager'].change_scene(self.func)
+		#core.core.get_app()['SceneManager'].change_scene(self.func)
+		exec(self.func)
 		
 	def __unpress(self, event, data):
 		self.text_offset_y -= 2
