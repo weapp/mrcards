@@ -18,7 +18,6 @@
 				<param name="border_width">5</param>
 			</obj>
 		</param>
-		
 		<param>
 			<obj type="div">
 				<param name="content">Content</param>
@@ -34,8 +33,9 @@
 		</param>
 		
 		<param>
-			<obj type="div">
-				<param name="content">Button</param>
+			<obj type="button">
+				<param>menu</param>
+				<param name="content">1. Ir al Menu 3</param>
 				<param name="width">150</param>
 				<param name="height">40</param>
 				<param name="vertical_alignment">bottom</param>
@@ -46,7 +46,6 @@
 				<param name="border_width">2</param>
 			</obj>
 		</param>
-		
 		
 		<param>
 			<obj type="div">
@@ -73,10 +72,6 @@
 		<param>menu</param>
 	</obj>
 -->	
-	<obj type="button">
-		<param>1. Ir al Menu 3</param>
-		<param>menu</param>
-	</obj>
 
     <obj type="character">
 		<param>vx_chara01_b.png</param>
