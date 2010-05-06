@@ -106,10 +106,10 @@ class libmenu2(module.Module):
 			if i==self.position-self.minvisible:
 				if len(self.color_selec):
 					#pygame.draw.rect(self.surface, self.color_selec, rect)
-					theme=os.path.join('themes', 'default' )
+					theme = os.path.join('themes', 'data' )
 					
 					try:select = pygame.image.load( os.path.join(os.path.dirname(sys.argv[0]), os.path.join( theme ,'selectmenu.png') ) )
-					except:select = pygame.image.load( os.path.join(os.path.dirname(sys.argv[0]), os.path.join( 'default' ,'selectmenu.png') ) )
+					except:select = pygame.image.load( os.path.join(os.path.dirname(sys.argv[0]), os.path.join( 'data' ,'selectmenu.png') ) )
 					
 					self.surface.blit(select, rect)
 
