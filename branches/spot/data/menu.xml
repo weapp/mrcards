@@ -48,6 +48,21 @@
 		</param>
 		
 		<param>
+			<obj type="button">
+				<param><![CDATA[ core.core.get_app()['SceneManager'].change_scene("spot") ]]></param>
+				<param name="content">Instinctiv</param>
+				<param name="width">150</param>
+				<param name="height">40</param>
+				<param name="vertical_alignment">bottom</param>
+				<param name="horizontal_alignment">right</param>
+				<param name="margin">[0,0,230,30]</param>
+				<param name="background">[130,130,130,255]</param>
+				<param name="border_color">[100,100,100,255]</param>
+				<param name="border_width">2</param>
+			</obj>
+		</param>
+		
+		<param>
 			<obj type="div">
 				<param name="content">Menu</param>
 				<param name="width">150</param>
@@ -124,13 +139,13 @@
 			<obj type="pos"><param>20</param><param>20</param></obj>
 		</param>
 		<child>
-			<obj type="itemmenu">
+			<obj type="itemmenu" parent="true">
 				<param>item1</param>
 				<param>menu</param>
 			</obj>
 		</child>
 		<child>
-			<obj type="itemmenu">
+			<obj type="itemmenu" parent="true">
 				<param>item2</param>
 				<param>menu2</param>
 			</obj>

@@ -1,0 +1,109 @@
+<state>
+	<obj type="background">
+		<param>image</param>
+	</obj>
+	<obj type="layer" add_child="append">
+		<child>
+			<obj type="div" add_child="add_child" parent="true">
+				<param name="content"></param>
+				<param name="margin">[5,5,5,5]</param>
+				<param name="background">[120,120,120,100]</param>
+				<param name="border_color">[100,100,100,200]</param>
+				<param name="border_width">3</param>
+				<child>
+					<obj type="div" add_child="add_child" parent="true">
+						<param name="content">Instictiv</param>
+						<param name="height">20</param>
+						<param name="vertical_alignment">top</param>
+						<param name="margin">[0,0,0,0]</param>
+						<param name="background">[120,120,120,150]</param>
+					</obj>
+				</child>
+				<child>
+					<obj type="div" add_child="add_child" parent="true">
+						<param name="content">Good News for People Who Love Band News &gt; Now Playing</param>
+						<param name="height">20</param>
+						<param name="vertical_alignment">top</param>
+						<param name="margin">[0,20,0,0]</param>
+						<param name="background">[120,120,120,150]</param>
+					</obj>
+				</child>
+				<child>
+					<obj type="div" add_child="add_child" parent="true">
+						<param name="content">Caratula</param>
+						<param name="margin">[0,40,0,50]</param>
+						<param name="background">[155,120,120,150]</param>
+						<param name="border_color">[100,100,100,150]</param>
+						<child>
+							<obj type="div" add_child="add_child" parent="true">
+								<param name="content">Menu</param>
+								<param name="width">80</param>
+								<param name="horizontal_alignment">left</param>
+								<param name="margin">[0,0,0,0]</param>
+								<param name="background">[0,120,160,150]</param>
+							</obj>
+						</child>
+					</obj>
+				</child>
+				<child>
+				
+				
+					<obj type="div" add_child="add_child" parent="true">
+						<param name="content">(__________===_______________)===)       t</param>
+						<param name="height">50</param>
+						<param name="vertical_alignment">bottom</param>
+						<param name="margin">[0,0,0,0]</param>
+						<param name="background">[120,120,120,150]</param>
+					
+						<child>
+							<obj type="button" add_child="add_child" parent="true">
+								<param></param>
+								<param name="content">&lt;&lt;</param>
+								<param name="height">50</param>
+								<param name="width">50</param>
+								<param name="vertical_alignment">bottom</param>
+								<param name="horizontal_alignment">left</param>
+								<param name="margin">[0,0,0,0]</param>
+								<param name="background">[120,120,120,150]</param>
+							</obj>
+						</child>
+						
+						
+						<child>
+							<obj type="button" add_child="add_child" parent="true">
+								<param></param>
+								<param name="content">Play</param>
+								<param name="height">50</param>
+								<param name="width">50</param>
+								<param name="vertical_alignment">bottom</param>
+								<param name="horizontal_alignment">left</param>
+								<param name="margin">[50,0,0,0]</param>
+								<param name="background">[120,120,120,150]</param>
+							</obj>
+						</child>
+						
+						
+						<child>
+							<obj type="button" add_child="add_child" parent="true">
+								<param></param>
+								<param name="content">&gt;&gt;</param>
+								<param name="height">50</param>
+								<param name="width">50</param>
+								<param name="vertical_alignment">bottom</param>
+								<param name="horizontal_alignment">left</param>
+								<param name="margin">[100,0,0,0]</param>
+								<param name="background">[120,120,120,150]</param>
+							</obj>
+						</child>
+						
+						
+						
+					
+					</obj>
+					
+					
+				</child>
+			</obj>
+		</child>
+	</obj>
+</state>

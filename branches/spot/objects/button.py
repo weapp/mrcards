@@ -14,8 +14,8 @@ def i():
 i = i()
 
 class button(div.div, pressable.Pressable):
-	def __init__(self, func, **kws):
-		div.div.__init__(self, **kws)
+	def __init__(self, parent, func, **kws):
+		div.div.__init__(self, parent, **kws)
 		pressable.Pressable.__init__(self)
 		
 		f = pygame.font.Font("data/font.ttf", 12)
@@ -29,7 +29,7 @@ class button(div.div, pressable.Pressable):
 		self.update_surface()
 	
 	def __click(self, event, data):
-		print "%s: click!" % self.i
+		#print "%s: click!" % self.i
 		#core.core.get_app()['SceneManager'].change_scene(self.func)
 		exec(self.func)
 		

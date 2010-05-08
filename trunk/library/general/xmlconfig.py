@@ -83,14 +83,18 @@ class Params:
 			self.args.append(value)
 		else:
 			self.dic[str(key.value)] = value
+			
+def attr(Node, attr):
+	attr = Node.attributes.get(attr, None)
+	return attr.value if not attr is None else None	
 
-def __parsear_objeto(obj, loader, children_allowed, parent=None):
-	assert obj.tagName == "obj"
-	assert obj.attributes.has_key("type")
-	type = obj.attributes["type"].value
+def __parsear_objeto(obj_node, loader, children_allowed, parent=None):
+	assert obj_node.tagName == "obj"
+	assert obj_node.attributes.has_key("type")
+	type = obj_node.attributes["type"].value
 	params = Params()
 	childs = []
-	for node in filter(lambda e:e.nodeType == Node.ELEMENT_NODE, obj.childNodes):
+	for node in filter(lambda e:e.nodeType == Node.ELEMENT_NODE, obj_node.childNodes):
 		if node.tagName == "param":
 			childnode = first_nodeType(node.childNodes, Node.ELEMENT_NODE)
 			if not childnode is None:  #si el parametro es un objeto,seguir profundizando
@@ -106,15 +110,18 @@ def __parsear_objeto(obj, loader, children_allowed, parent=None):
 			assert (node.tagName == "param") or (node.tagName == "child" and children_allowed)
 	constructor = getattr(loader, type)
 	
-	if parent is None:
+	
+	if attr(obj_node, 'parent') in [None, 'False', '0', 'false']:
 		obj = constructor(*params.args,**params.dic)
 	else:
 		obj = constructor(parent, *params.args,**params.dic)
-		
 	for child in childs:
 		child = first_nodeType(child.childNodes, Node.ELEMENT_NODE)
 		child = __parsear_objeto(child, loader, children_allowed, parent=obj)
-		#obj.add_child(child)
+		
+		addchild = attr(obj_node, 'add_child') #resctamos el nombre del metodo para anyadir objetos
+		if not addchild in [None, 'False', '0', 'false']:
+			getattr(obj, addchild)(child)	#anyadimos los objetos con el metodo anterior
 	
 	
 	return obj
