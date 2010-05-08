@@ -22,5 +22,6 @@ sm = app.find('#SceneManager')
 core.core.set_app(app)
 
 sm.charge_and_change_scene("menu", "data/menu.xml")
+sm.charge_and_change_scene("spot", "data/spot.xml")
 
 core.core.start()

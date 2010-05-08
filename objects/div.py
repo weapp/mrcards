@@ -4,11 +4,13 @@ import pygame
 import re
 
 class div(pygame.sprite.Sprite, module.Module):
-	def __init__(self, content="div", color_content="[0,0,0,0]", width="75", height="23", vertical_alignment="", \
+	def __init__(self, parent=None, content="div", color_content="[0,0,0,0]", width="75", height="23", vertical_alignment="", \
 					horizontal_alignment="", margin="[15,15,15,15]", background="[10,128,10,0]", \
-					border_color = "[255,128,128,0]", border_width = "10"):
+					border_color = "[255,128,128,0]", border_width = "0"):
 		module.Module.__init__(self)
 		pygame.sprite.Sprite.__init__(self)
+		
+		
 		self.g = pygame.sprite.Group()
 		self.g.add(self)
 		self.content = content
@@ -34,10 +36,8 @@ class div(pygame.sprite.Sprite, module.Module):
 		self.text_offset_x = 0
 		self.text_offset_y = 0
 		
-	def set_parent(self, *args):
-		module.Module.set_parent(self, *args)
+		self.set_parent(parent)
 		self.update_position()
-
 	
 	def update_surface(self):
 		self.image = pygame.Surface(self.rect.size, pygame.SRCALPHA | pygame.HWSURFACE)
@@ -55,28 +55,38 @@ class div(pygame.sprite.Sprite, module.Module):
 	def update_position(self,*args):
 		if not self.parent is None:
 			if self.vertical_alignment.lower() == "bottom":
-				top = self.parent.rect.h - (self.rect.h + self.margin[3])
+				top = self.parent.rect.h-self.parent.border_width*2 - (self.rect.h + self.margin[3])
 				height = self.height
 			elif self.vertical_alignment.lower() == "top":
 				top = self.margin[1]
 				height = self.height
 			else:
 				top = self.margin[1]
-				height = self.parent.rect.h - (self.margin[1] + self.margin[3])
+				height = self.parent.rect.h-self.parent.border_width*2 - (self.margin[1] + self.margin[3])
 					
 			if self.horizontal_alignment.lower() == "right":
-				left = self.parent.rect.w - (self.rect.w + self.margin[2])
+				left = self.parent.rect.w-self.parent.border_width*2 - (self.rect.w + self.margin[2])
 				width = self.width
 			elif self.horizontal_alignment.lower() == "left":
 				left = self.margin[0]
 				width = self.width
 			else:
 				left = self.margin[0]
-				width = self.parent.rect.w - (self.margin[0] + self.margin[2])
+				width = self.parent.rect.w-self.parent.border_width*2 - (self.margin[0] + self.margin[2])
+				
+			height = max(0, height)
+			width = max(0, width)
 			
 			self.rect = pygame.Rect(left, top, width, height)
+			self.rect.move_ip(self.parent.rect.x+self.parent.border_width, self.parent.rect.y+self.parent.border_width)
 			self.update_surface()
-		
+			
+			for child in self.get_childs():
+				child.update_position()
+			
 		
 	def update(self):
 		self.g.draw(core.core.video.get_screen())
+		for child in self.get_childs():
+			child.update()
+		
