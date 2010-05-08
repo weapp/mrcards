@@ -9,7 +9,7 @@ screen=core.core.video.get_screen()
 class factory:
 	def list(self,*arg): return arg
 	def __getattr__(self, name):
-		return getattr(getattr(objects, name),name)
+		return getattr(getattr(objects, name), name)
 
 factory = factory()
 

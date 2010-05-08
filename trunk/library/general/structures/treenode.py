@@ -11,7 +11,10 @@ class TreeNode:
             self.kind = kind
         self.parent = None
         self.__childs = {}
-		
+	
+    def clear(self):
+        self.__childs.clear()
+	
     def set_parent(self, parent):
         if not (self.parent is parent):
             if hasattr(self.parent, "del_child"):
