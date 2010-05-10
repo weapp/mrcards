@@ -13,6 +13,15 @@ class reproductor(module.Module):
 		pygame.mixer.music.load(song)
 		pygame.mixer.music.play()
 		#pygame.mixer.music.queue(song)
+		'''
+		print dir(pygame.mixer.music)
+		print pygame.mixer.music.get_busy()
+		#print pygame.mixer.music.get_pos()
+		#pygame.mixer.music.play(0, 10)
+		#print pygame.mixer.music.get_pos()
+		pygame.mixer.music.load(song)
+		print pygame.mixer.music.get_busy()
+		'''
 		
 	def cargar(self):
 		t = core.core.get_app().find('#SceneManager').get_childs()[0][1].get_childs()[0].get_childs()[2].get_childs()[1]

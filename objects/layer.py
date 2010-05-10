@@ -3,9 +3,14 @@ from library import core
 import pygame
 
 class layer(basicapp.BasicApp):
+	def p(self):
+		return core.core.video.get_screen()
+
+	image = property(p)
+	
 	def __init__(self, *args):
 		basicapp.BasicApp.__init__(self)
-		self.rect = core.core.video.get_screen().get_rect()
+		self.container = self.rect = core.core.video.get_screen().get_rect()
 		self.border_width = 0
 		for elem in args:
 			self.append(elem)
