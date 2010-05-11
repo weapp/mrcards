@@ -89,7 +89,10 @@ class div(pygame.sprite.Sprite, module.Module):
 			
 		
 	def update(self):
-		self.g.draw(core.core.video.get_screen().subsurface(self.parent.container))
+		video = core.core.video.get_screen()
+		rect = self.parent.container.clip(video.get_rect())
+		if rect.w == 0: rect = pygame.Rect(0,0,0,0)
+		self.g.draw( video.subsurface(rect) )
 		for child in self.get_childs():
 			child.update()
 		

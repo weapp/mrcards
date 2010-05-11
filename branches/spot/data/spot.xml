@@ -2,8 +2,8 @@
 	<obj type="background">
 		<param>image</param>
 	</obj>
-	<obj type="reproductor">
-	</obj>
+	<obj type="reproductor" />
+	
 	<obj type="layer" add_child="append">
 		<child>
 			<obj type="div" add_child="add_child" parent="true">
