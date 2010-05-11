@@ -86,7 +86,10 @@ class div(pygame.sprite.Sprite, module.Module):
 			
 			for child in self.get_childs():
 				child.update_position()
-			
+				
+	def move(self, rel):
+		self.rect.move_ip(rel)
+		self.container.move_ip(rel)
 		
 	def update(self):
 		video = core.core.video.get_screen()
