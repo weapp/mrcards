@@ -1,31 +1,18 @@
 from library.stdmodules import module
 from library import core
 import pygame
-from library.resources.images import getImage
 from library import event
 import clickable
 
-class dragable(pygame.sprite.Sprite, module.Module, clickable.Clickable):
-	def __init__(self, filename):
-		module.Module.__init__(self)
-		pygame.sprite.Sprite.__init__(self)
-		clickable.Clickable.__init__(self)
-		
-		self.image = getImage(filename)
-		self.rect = self.image.get_rect()
-		self.g = pygame.sprite.Group()
-		self.g.add(self)
-		
-		#self.bind( "click", self.clickdown, self.clickup )
-		
+class dragable(clickable.Clickable):
+	def __init__(self, *args, **kws):
+		clickable.Clickable.__init__(self, *args, **kws)
 		self.click.bind(self.clickdown, self.clickup)
 		core.core.event.mousemotion.bind(self.motion )
-		self.rect.move_ip(300, 300)
+		
+		core.core.event.mousebuttonup[1].bind(self.clickup)
 		
 		self.mousedown=0
-	
-	def update(self):
-		self.g.draw(core.core.video.get_screen())
 	
 	def clickdown(self, event, data):
 		self.mousedown=1
@@ -35,4 +22,4 @@ class dragable(pygame.sprite.Sprite, module.Module, clickable.Clickable):
 		
 	def motion(self, event, data):
 		if self.mousedown:
-			self.rect.move_ip(data['rel'])
+			self.move(data['rel'])

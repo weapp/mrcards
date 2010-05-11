@@ -93,6 +93,19 @@
 							</obj>
 						</child>
 						
+						<child>
+							<obj type="slider" add_child="add_child" parent="true">
+								<param></param>
+								<param name="content"></param>
+								<param name="height">50</param>
+								<param name="width">50</param>
+								<param name="vertical_alignment">bottom</param>
+								<param name="horizontal_alignment">left</param>
+								<param name="margin">[250,0,0,0]</param>
+								<param name="background">[120,220,120,150]</param>
+							</obj>
+						</child>
+						
 						
 						<child>
 							<obj type="button" add_child="add_child" parent="true">

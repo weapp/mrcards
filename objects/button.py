@@ -17,8 +17,6 @@ class button(div.div, pressable.Pressable):
 	def __init__(self, parent, func, **kws):
 		div.div.__init__(self, parent, **kws)
 		pressable.Pressable.__init__(self)
-		
-		f = pygame.font.Font("data/font.ttf", 12)
 		self.func = func
 		self.press.bind(self.__onpress, self.__unpress)
 		self.mousebuttonup.bind(self.__click)
