@@ -4,6 +4,9 @@ from library.stdmodules.apps import basicapp
 from library.stdmodules.apps import extendedapp
 import objects
 
+import pygame
+core.core.video.flags |= pygame.NOFRAME
+
 screen=core.core.video.get_screen()
 
 class factory:
