@@ -13,7 +13,7 @@
 				<param name="border_color">[100,100,100,200]</param>
 				<param name="border_width">3</param>
 				<child>
-					<obj type="div" add_child="add_child" parent="true">
+					<obj type="move" add_child="add_child" parent="true">
 						<param name="content">Instictiv</param>
 						<param name="height">20</param>
 						<param name="vertical_alignment">top</param>
@@ -22,7 +22,7 @@
 					</obj>
 				</child>
 				<child>
-					<obj type="div" add_child="add_child" parent="true">
+					<obj type="move" add_child="add_child" parent="true">
 						<param name="content">Good News for People Who Love Band News &gt; Now Playing</param>
 						<param name="height">20</param>
 						<param name="vertical_alignment">top</param>
