@@ -6,6 +6,7 @@ import objects
 
 import pygame
 core.core.video.flags |= pygame.NOFRAME
+core.core.video.set_size((500,400))
 
 screen=core.core.video.get_screen()
 

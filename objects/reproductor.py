@@ -8,6 +8,8 @@ import os
 class pygame_repr:
 	def __init__(self):
 		self.paused = True
+		self.init_pos = 0
+		self.act = 0
 		#self.lenght = pygame.mixer.Sound(song).get_length()
 		
 	def __busy(self):
@@ -15,16 +17,21 @@ class pygame_repr:
 	busy = property(__busy)
 	
 	def get_pos(self):
-		return pygame.mixer.music.get_pos()
+		return self.init_pos + pygame.mixer.music.get_pos()
 
 	def pause(self):
 		self.paused = True
-		pygame.mixer.music.pause()
+		self.act = self.get_pos()
+		pygame.mixer.music.stop()
 	
-	def play(self, song):
+	def play(self, song, pos = 0):
+		if not pos and self.paused:
+			pos = self.act
+		print "pos: %s" % pos
+		self.init_pos = pos
 		self.paused = False
 		pygame.mixer.music.load(song)
-		pygame.mixer.music.play()
+		pygame.mixer.music.play(0, pos/1000.0)
 		
 class reproductor(module.Module):
 	def __init__(self):
@@ -53,19 +60,28 @@ class reproductor(module.Module):
 			#pos = total*pos/self.lenght
 			slide.move((pos/100,0))
 		
+	def slidermove(self):
+		self.repr.pause()
+		slide = core.core.get_app().find('#slider')
+		print "x: %s" % slide.rect.x
+		self.play(pos=slide.rect.x)
+		
 	
 	def select(self, song, i):
 		self.selected_song = song
 		self.selected_isong = i
 	
-	def play(self, song=None):
+	def play_pause(self, song=None):
 		if self.repr.busy:
 			self.repr.pause()
 		else:
-			if song is None: song = self.selected_song
-			if song is None: return
-			song = "music/" + song
-			self.repr.play(song)
+			self.play(song)
+	
+	def play(self, song=None, pos=0):
+		if song is None: song = self.selected_song
+		if song is None: return	
+		song = "music/" + song
+		self.repr.play(song, pos)
 		#pygame.mixer.music.queue(song)
 		'''
 		print dir(pygame.mixer.music)

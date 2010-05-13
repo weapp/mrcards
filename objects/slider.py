@@ -48,3 +48,6 @@ class slider(div.div, dragable.dragable):
 		elif self.rect.x + self.rect.w > self.parent.container.w:
 			self.container.move_ip( ( -self.rect.x + self.parent.container.w - self.rect.w, 0))
 			self.rect.move_ip( ( -self.rect.x + self.parent.container.w - self.rect.w, 0))
+		self.content = "%d:%02d" % (self.rect.x/10/60, self.rect.x/10%60)
+		self.surface_content = self.f.render(self.content, True, self.color_content)
+		self.update_surface()
