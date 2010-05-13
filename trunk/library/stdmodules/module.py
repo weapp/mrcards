@@ -5,8 +5,8 @@ from library.general.structures import treenode
 
 class Module(treenode.TreeNode, object):
     #__metaclass__ = Meta_Verboso
-    def __init__(self) :
-        treenode.TreeNode.__init__(self)
+    def __init__(self, *args, **kws) :
+        treenode.TreeNode.__init__(self, *args, **kws)
         if type(self) is Module:
             raise AbstractClassException
         else:
