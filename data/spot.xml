@@ -1,33 +1,40 @@
 <state>
-	<obj type="background">
-		<param>image</param>
-	</obj>
 	<obj type="reproductor" />
 	
 	<obj type="layer" add_child="append">
 		<child>
 			<obj type="div" add_child="add_child" parent="true">
 				<param name="content"></param>
-				<param name="margin">[5,5,5,5]</param>
-				<param name="background">[120,120,120,100]</param>
-				<param name="border_color">[100,100,100,200]</param>
-				<param name="border_width">3</param>
+				<param name="margin">[0,0,0,0]</param>
+				<param name="background">[120,120,120,70]</param>
+				<param name="background_image">image</param>
+				<param name="border_color">[130,130,130,255]</param>
+				<param name="border_width">1</param>
 				<child>
-					<obj type="move" add_child="add_child" parent="true">
-						<param name="content">Instictiv</param>
-						<param name="height">20</param>
-						<param name="vertical_alignment">top</param>
+					<obj type="div" add_child="add_child" parent="true">
+						<param name="content"></param>
 						<param name="margin">[0,0,0,0]</param>
-						<param name="background">[120,120,120,150]</param>
-					</obj>
-				</child>
-				<child>
-					<obj type="move" add_child="add_child" parent="true">
-						<param name="content">Good News for People Who Love Band News &gt; Now Playing</param>
-						<param name="height">20</param>
 						<param name="vertical_alignment">top</param>
-						<param name="margin">[0,20,0,0]</param>
-						<param name="background">[120,120,120,150]</param>
+						<param name="height">40</param>
+						<param name="background_image">top</param>
+						<child>
+							<obj type="move" add_child="add_child" parent="true">
+								<param name="content">Instictiv</param>
+								<param name="height">20</param>
+								<param name="vertical_alignment">top</param>
+								<param name="margin">[0,0,0,0]</param>
+								<param name="background">[120,120,120,150]</param>
+							</obj>
+						</child>
+						<child>
+							<obj type="move" add_child="add_child" parent="true">
+								<param name="content">Good News for People Who Love Band News &gt; Now Playing</param>
+								<param name="height">20</param>
+								<param name="vertical_alignment">top</param>
+								<param name="margin">[0,20,0,0]</param>
+								<param name="background">[120,120,120,150]</param>
+							</obj>
+						</child>
 					</obj>
 				</child>
 				<child>
@@ -39,6 +46,8 @@
 						<child>
 							<obj type="div" add_child="add_child" parent="true">
 								<param name="content">Menu</param>
+								<param name="color_content">[255,255,255,255]</param>
+								<param name="background_image">menu</param>
 								<param name="width">80</param>
 								<param name="horizontal_alignment">left</param>
 								<param name="margin">[0,0,0,0]</param>
@@ -48,9 +57,10 @@
 						
 						<child>
 							<obj type="div" add_child="add_child" parent="true">
-								<param name="content">Caratula</param>
+								<param name="id">main</param>
+								<param name="content"></param>
 								<param name="margin">[80,0,0,0]</param>
-								<param name="background">[20,0,60,150]</param>
+								<param name="background">[58,58,58,255]</param>
 							</obj>
 						</child>
 						
@@ -60,7 +70,7 @@
 				
 				
 					<obj type="div" add_child="add_child" parent="true">
-						<param name="content">(__________===_______________)===)       t</param>
+						<param name="content"></param>
 						<param name="height">50</param>
 						<param name="vertical_alignment">bottom</param>
 						<param name="margin">[0,0,0,0]</param>
@@ -94,15 +104,24 @@
 						</child>
 						
 						<child>
-							<obj type="slider" add_child="add_child" parent="true">
-								<param></param>
+							<obj type="div" add_child="add_child" parent="true">
 								<param name="content"></param>
 								<param name="height">50</param>
 								<param name="width">50</param>
-								<param name="vertical_alignment">bottom</param>
-								<param name="horizontal_alignment">left</param>
-								<param name="margin">[250,0,0,0]</param>
-								<param name="background">[120,220,120,150]</param>
+								<param name="margin">[150,0,250,0]</param>
+								<param name="background">[220,120,120,150]</param>
+								<child>
+									<obj type="slider" add_child="add_child" parent="true">
+										<param></param>
+										<param name="content"></param>
+										<param name="height">50</param>
+										<param name="width">50</param>
+										<param name="vertical_alignment">bottom</param>
+										<param name="horizontal_alignment">left</param>
+										<param name="margin">[250,0,0,0]</param>
+										<param name="background">[120,220,120,150]</param>
+									</obj>
+								</child>
 							</obj>
 						</child>
 						
@@ -125,7 +144,7 @@
 						<child>
 							<obj type="button" add_child="add_child" parent="true">
 								<param><![CDATA[core.core.get_app().find('#reproductor').cargar()]]></param>
-								<param name="content">"Cargar Biblioteca"</param>
+								<param name="content">"Recargar Biblioteca"</param>
 								<param name="height">50</param>
 								<param name="width">250</param>
 								<param name="vertical_alignment">bottom</param>

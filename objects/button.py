@@ -26,11 +26,6 @@ class button(div.div, pressable.Pressable):
 	def __onpress(self, event, data):
 		self.text_offset_y += 2
 		self.update_surface()
-		print "x"
-		import ctypes
-		import win32con
-		ctypes.windll.user32.SendMessageA(pygame.display.get_wm_info()['window'], win32con.WM_LBUTTONUP, 0, 0);
-		ctypes.windll.user32.SendMessageA(pygame.display.get_wm_info()['window'], win32con.WM_NCLBUTTONDOWN, win32con.HTCAPTION, 0)
 	
 	def __click(self, event, data):
 		#print "%s: click!" % self.i
