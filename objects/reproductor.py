@@ -1,7 +1,7 @@
 from library import core
 from library.stdmodules import module
 import pygame
-import button
+import song
 import div
 import os
 
@@ -27,7 +27,6 @@ class pygame_repr:
 	def play(self, song, pos = 0):
 		if not pos and self.paused:
 			pos = self.act
-		print "pos: %s" % pos
 		self.init_pos = pos
 		self.paused = False
 		pygame.mixer.music.load(song)
@@ -63,8 +62,7 @@ class reproductor(module.Module):
 	def slidermove(self):
 		self.repr.pause()
 		slide = core.core.get_app().find('#slider')
-		print "x: %s" % slide.rect.x
-		self.play(pos=slide.rect.x)
+		self.play(pos=slide.rect.x*100)
 		
 	
 	def select(self, song, i):
@@ -105,4 +103,4 @@ class reproductor(module.Module):
 		self.lista.clear()
 		path, dir, files = os.walk('music').next()
 		for i, file in enumerate(files):
-			self.lista.add_child(button.button(self.lista, 'core.core.get_app().find("#reproductor").select("'+file+'",'+str(i)+')', content=file, vertical_alignment="top", height="20", margin="[5,%s,5,0]" % (5+i*25), color_content="[255,255,255,255]", background="[105,105,105,70]" ))
+			self.lista.add_child(song.song(self.lista, file, i))

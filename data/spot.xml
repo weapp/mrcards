@@ -1,6 +1,5 @@
 <state>
 	<obj type="reproductor" />
-	
 	<obj type="layer" add_child="append">
 		<child>
 			<obj type="div" add_child="add_child" parent="true">
@@ -51,13 +50,53 @@
 						<param name="border_color">[100,100,100,150]</param>
 						<child>
 							<obj type="div" add_child="add_child" parent="true">
-								<param name="content">Menu</param>
+								<param name="id">Menu</param>
 								<param name="color_content">[255,255,255,255]</param>
 								<param name="background_image">menu</param>
 								<param name="width">80</param>
 								<param name="horizontal_alignment">left</param>
 								<param name="margin">[0,0,0,0]</param>
 								<param name="background">[0,120,160,150]</param>
+								<child>
+									<obj type="togglebutton" add_child="add_child" parent="true">
+										<param></param>
+										<param name="content"></param>
+										<param name="height">70</param>
+										<param name="vertical_alignment">top</param>
+										<param name="margin">[0,20,0,0]</param>
+										<param name="background_image">search</param>
+									</obj>
+								</child>
+								<child>
+									<obj type="togglebutton" add_child="add_child" parent="true">
+										<param></param>
+										<param name="content"></param>
+										<param name="height">70</param>
+										<param name="vertical_alignment">top</param>
+										<param name="margin">[0,90,0,0]</param>
+										<param name="background_image">folder-sound</param>
+									</obj>
+								</child>
+								<child>
+									<obj type="togglebutton" add_child="add_child" parent="true">
+										<param></param>
+										<param name="content"></param>
+										<param name="height">70</param>
+										<param name="vertical_alignment">top</param>
+										<param name="margin">[0,160,0,0]</param>
+										<param name="background_image">shuffle</param>
+									</obj>
+								</child>
+								<child>
+									<obj type="togglebutton" add_child="add_child" parent="true">
+										<param></param>
+										<param name="content"></param>
+										<param name="height">70</param>
+										<param name="vertical_alignment">top</param>
+										<param name="margin">[0,230,0,0]</param>
+										<param name="background_image">repeat</param>
+									</obj>
+								</child>
 							</obj>
 						</child>
 						
@@ -134,7 +173,7 @@
 								<param name="background_image">slid</param>
 								<child>
 									<obj type="slider" add_child="add_child" parent="true">
-										<param></param>
+										<param name="direction">horizontal</param>
 										<param name="content"></param>
 										<param name="id">slider</param>
 										<param name="onup"><![CDATA[core.core.get_app().find('#reproductor').slidermove()]]></param>
@@ -167,7 +206,7 @@
 						
 						<child>
 							<obj type="sizer" add_child="add_child" parent="true">>
-								<param name="content">_|</param>
+								<param name="content">*</param>
 								<param name="height">20</param>
 								<param name="width">20</param>
 								<param name="vertical_alignment">bottom</param>
@@ -183,6 +222,21 @@
 				</child>
 			</obj>
 		</child>
+		
+		
+		<child>
+			<obj type="button" add_child="add_child" parent="true">
+				<param><![CDATA[core.core.stop()]]></param>
+				<param name="background_image">close</param>
+				<param name="height">20</param>
+				<param name="width">20</param>
+				<param name="vertical_alignment">top</param>
+				<param name="horizontal_alignment">right</param>
+				<param name="margin">[0,5,5,0]</param>
+			</obj>
+		</child>
+		
+		
 			</obj>
 		</child>
 	</obj>
