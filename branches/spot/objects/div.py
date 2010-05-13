@@ -2,12 +2,13 @@ from library.stdmodules import module
 from library import core
 import pygame
 import re
+from library.resources.images import getImage
 
 class div(pygame.sprite.Sprite, module.Module):
-	def __init__(self, parent=None, content="div", color_content="[0,0,0,0]", width="75", height="23", vertical_alignment="", \
-					horizontal_alignment="", margin="[15,15,15,15]", background="[10,128,10,0]", \
+	def __init__(self, parent=None, id=None, kind=None, content="div", color_content="[0,0,0,0]", width="75", height="23", vertical_alignment="", \
+					horizontal_alignment="", margin="[15,15,15,15]", background="[10,128,10,0]", background_image=None, \
 					border_color="[255,128,128,0]", border_width="0", overflow="hidden" ):
-		module.Module.__init__(self)
+		module.Module.__init__(self, id, kind)
 		pygame.sprite.Sprite.__init__(self)
 		
 		
@@ -25,6 +26,7 @@ class div(pygame.sprite.Sprite, module.Module):
 		self.update_position()
 		
 		self.background = map(int, re.match("\[(\d+),(\d+),(\d+),(\d+)\]", background).groups())
+		self.background_image = background_image
 		self.border_color = map(int, re.match("\[(\d+),(\d+),(\d+),(\d+)\]", border_color).groups())
 		self.border_width = int(border_width)
 		#self.border_color = [0,0,0,255]
@@ -48,8 +50,11 @@ class div(pygame.sprite.Sprite, module.Module):
 		if self.border_width:
 			pygame.draw.rect(self.image, self.border_color, self.image.get_rect().inflate(-self.border_width, -self.border_width), self.border_width)
 				
-		
 		center = self.image.get_rect().center
+		
+		if self.background_image:
+			self.image.blit(getImage(self.background_image), getImage(self.background_image).get_rect(center=center))
+		
 		center = center[0] + self.text_offset_x, center[1] + self.text_offset_y
 		self.image.blit(self.surface_content, self.surface_content.get_rect(center=center))
 		

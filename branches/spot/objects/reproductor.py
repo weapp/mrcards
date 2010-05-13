@@ -8,6 +8,10 @@ class reproductor(module.Module):
 		module.Module.__init__(self)
 		self.id = "reproductor"
 		
+		onload = core.core.get_app().find('#SceneManager').get_childs()[0].onload
+		onload.bind(self.cargar)
+		
+		
 	def play(self, song):
 		song = "music/"+song
 		pygame.mixer.music.load(song)
@@ -23,10 +27,11 @@ class reproductor(module.Module):
 		print pygame.mixer.music.get_busy()
 		'''
 		
-	def cargar(self):
-		t = core.core.get_app().find('#SceneManager').get_childs()[0][1].get_childs()[0].get_childs()[2].get_childs()[1]
-		t.clear()
+	def cargar(self, event=None, data=None):
+		#main = core.core.get_app().find('#SceneManager').get_childs()[0][1].get_childs()[0].get_childs()[2].get_childs()[1]
+		main = core.core.get_app().find('#main')
+		main.clear()
 		import os
 		path, dir, files = os.walk('music').next()
 		for i, file in enumerate(files):
-			t.add_child(button(t, 'core.core.get_app().find("#reproductor").play("'+file+'")', content=file, vertical_alignment="top", height="50", margin="[5,%s,5,0]" % (5+i*55), background="[255,255,255,120]" ))
+			main.add_child(button(main, 'core.core.get_app().find("#reproductor").play("'+file+'")', content=file, vertical_alignment="top", height="20", margin="[5,%s,5,0]" % (5+i*25), background="[255,255,255,120]" ))
