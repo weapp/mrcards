@@ -99,7 +99,7 @@
 						
 						<child>
 							<obj type="button" add_child="add_child" parent="true">
-								<param><![CDATA[core.core.get_app().find("#reproductor").play()]]></param>
+								<param><![CDATA[core.core.get_app().find("#reproductor").play_pause()]]></param>
 								<!--<param name="content">Play</param>-->
 								<param name="id">play</param>
 								<param name="height">50</param>
@@ -130,14 +130,14 @@
 								<param name="content"></param>
 								<param name="height">50</param>
 								<param name="width">50</param>
-								<param name="margin">[150,15,250,15]</param>
+								<param name="margin">[150,15,150,15]</param>
 								<param name="background_image">slid</param>
 								<child>
 									<obj type="slider" add_child="add_child" parent="true">
 										<param></param>
 										<param name="content"></param>
 										<param name="id">slider</param>
-										<param name="onup"><![CDATA[print "x"]]></param>
+										<param name="onup"><![CDATA[core.core.get_app().find('#reproductor').slidermove()]]></param>
 										<param name="width">50</param>
 										<param name="horizontal_alignment">left</param>
 										<param name="margin">[0,0,0,0]</param>
@@ -157,10 +157,9 @@
 								<param><![CDATA[core.core.get_app().find('#reproductor').recargar()]]></param>
 								<param name="content">"Recargar Biblioteca"</param>
 								<param name="height">50</param>
-								<param name="width">250</param>
+								<param name="width">150</param>
 								<param name="vertical_alignment">bottom</param>
 								<param name="horizontal_alignment">right</param>
-								<param name="margin">[150,0,0,0]</param>
 								
 							</obj>
 						</child>
