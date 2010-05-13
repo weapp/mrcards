@@ -1,5 +1,5 @@
 import div
-import pressable
+import clickable
 import ctypes
 import win32con
 import pygame
@@ -22,10 +22,10 @@ SW_FORCEMINIMIZE = 11
 SW_MAX = 11
 
 
-class move(div.div, pressable.Pressable):
+class move(div.div, clickable.Clickable):
 	def __init__(self, parent, **kws):
 		div.div.__init__(self, parent, **kws)
-		pressable.Pressable.__init__(self)
+		clickable.Clickable.__init__(self)
 		self.mousebuttondown.bind(self.__onpress)
 		
 	def __onpress(self, event, data):

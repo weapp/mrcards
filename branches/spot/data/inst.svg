@@ -18,6 +18,30 @@
    sodipodi:docname="inst.svg">
   <defs
      id="defs4">
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient4478">
+      <stop
+         style="stop-color:#a7a7a7;stop-opacity:1"
+         offset="0"
+         id="stop4480" />
+      <stop
+         style="stop-color:#9c9c9c;stop-opacity:1"
+         offset="1"
+         id="stop4482" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient4381">
+      <stop
+         style="stop-color:#7d7d7d;stop-opacity:1;"
+         offset="0"
+         id="stop4383" />
+      <stop
+         style="stop-color:#cecece;stop-opacity:1"
+         offset="1"
+         id="stop4385" />
+    </linearGradient>
     <pattern
        inkscape:collect="always"
        xlink:href="#pattern3653"
@@ -26,7 +50,7 @@
     <linearGradient
        id="linearGradient3641">
       <stop
-         style="stop-color:#3f3f3f;stop-opacity:0;"
+         style="stop-color:#959595;stop-opacity:0;"
          offset="0"
          id="stop3643" />
       <stop
@@ -77,6 +101,89 @@
          y="0"
          sodipodi:absref="C:\Program Files\Inkscape\.\inkscape_pasted_image_20100513_112943.png" />
     </pattern>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4381"
+       id="linearGradient4387"
+       x1="153.57143"
+       y1="140.93361"
+       x2="153.57143"
+       y2="96.646454"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(21.901598,0,0,0.90322576,-2878.3527,-130.79277)" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4478"
+       id="linearGradient4484"
+       x1="-7.5761442"
+       y1="502.573"
+       x2="-7.5761442"
+       y2="511.93057"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(19.336841,0,0,1,497.78722,-577.0335)" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3641"
+       id="linearGradient4494"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.7163428,0,0,0.93807371,1237.2587,-677.36166)"
+       x1="-276.58481"
+       y1="331.49207"
+       x2="-273.05542"
+       y2="331.49207" />
+    <filter
+       inkscape:collect="always"
+       id="filter4526"
+       x="-0.53593952"
+       width="2.071879"
+       y="-1.5665924"
+       height="4.1331848">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="17.143721"
+         id="feGaussianBlur4528" />
+    </filter>
+    <filter
+       inkscape:collect="always"
+       id="filter4530"
+       x="-0.18806947"
+       width="1.3761389"
+       y="-0.54974154"
+       height="2.0994831">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="6.015997"
+         id="feGaussianBlur4532" />
+    </filter>
+    <filter
+       inkscape:collect="always"
+       id="filter4534"
+       x="-0.15544034"
+       width="1.3108807"
+       y="-0.45436407"
+       height="1.9087281">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="4.972251"
+         id="feGaussianBlur4536" />
+    </filter>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath4546">
+      <path
+         sodipodi:type="arc"
+         style="fill:#666666;fill-opacity:1;stroke:none"
+         id="path4548"
+         sodipodi:cx="280.31732"
+         sodipodi:cy="884.17181"
+         sodipodi:rx="43.941635"
+         sodipodi:ry="14.647212"
+         d="m 324.25896,884.17181 a 43.941635,14.647212 0 1 1 -87.88327,0 43.941635,14.647212 0 1 1 87.88327,0 z"
+         inkscape:export-filename="C:\Users\manu\Desktop\mrcards\branches\spot\data\slider.png"
+         inkscape:export-xdpi="90"
+         inkscape:export-ydpi="90"
+         transform="matrix(0.51724187,0,0,0.60344864,156.53865,387.23752)" />
+    </clipPath>
   </defs>
   <sodipodi:namedview
      id="base"
@@ -85,11 +192,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.7"
-     inkscape:cx="-161.24141"
-     inkscape:cy="806.13512"
+     inkscape:zoom="0.98994949"
+     inkscape:cx="-93.655726"
+     inkscape:cy="661.68776"
      inkscape:document-units="px"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="g4550"
      showgrid="false"
      inkscape:window-width="1280"
      inkscape:window-height="748"
@@ -155,5 +262,380 @@
        style="opacity:0.8;fill:#3f3f3f;fill-opacity:1;stroke:none"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90" />
+    <rect
+       style="fill:url(#linearGradient4387);fill-opacity:1;stroke:none"
+       id="rect4379"
+       width="922.99591"
+       height="40"
+       x="-281.44897"
+       y="-43.497898"
+       inkscape:export-filename="C:\Users\manu\Desktop\mrcards\branches\spot\data\top.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <g
+       id="g4399"
+       transform="translate(-206.21294,-27.517718)"
+       inkscape:export-filename="C:\Users\manu\Desktop\mrcards\branches\spot\data\play.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <path
+         sodipodi:nodetypes="cccc"
+         id="path4393"
+         d="m 107.05197,497.1059 0,21.35241 18.04497,-10.09444 -18.04497,-11.25797 z"
+         style="fill:#b6b6b6;fill-opacity:1;stroke:none" />
+      <path
+         style="fill:#3a3a3a;fill-opacity:1;stroke:none"
+         d="m 107.07616,496.76533 0,20.46854 17.28737,-9.67658 -17.28737,-10.79196 z"
+         id="path4391"
+         sodipodi:nodetypes="cccc" />
+      <path
+         sodipodi:nodetypes="cccc"
+         id="path4389"
+         d="m 108.21259,497.90176 0,18.95331 15.5196,-8.96025 -15.5196,-9.99306 z"
+         style="fill:#4b4b4b;fill-opacity:1;stroke:none" />
+    </g>
+    <g
+       id="g4404"
+       transform="translate(-206.60715,-26.785714)"
+       inkscape:export-filename="C:\Users\manu\Desktop\mrcards\branches\spot\data\play.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <path
+         sodipodi:type="arc"
+         style="fill:none;stroke:#a7a7a7;stroke-opacity:1"
+         id="path4397"
+         sodipodi:cx="97.984795"
+         sodipodi:cy="491.98007"
+         sodipodi:rx="25.001276"
+         sodipodi:ry="25.001276"
+         d="m 122.98607,491.98007 c 0,13.80783 -11.19345,25.00128 -25.001275,25.00128 -13.807824,0 -25.001276,-11.19345 -25.001276,-25.00128 0,-13.80782 11.193452,-25.00127 25.001276,-25.00127 13.807825,0 25.001275,11.19345 25.001275,25.00127 z"
+         transform="matrix(0.76232894,0,0,0.76232894,39.986306,132.54345)" />
+      <path
+         transform="matrix(0.76232894,0,0,0.76232894,39.450591,131.82917)"
+         d="m 122.98607,491.98007 c 0,13.80783 -11.19345,25.00128 -25.001275,25.00128 -13.807824,0 -25.001276,-11.19345 -25.001276,-25.00128 0,-13.80782 11.193452,-25.00127 25.001276,-25.00127 13.807825,0 25.001275,11.19345 25.001275,25.00127 z"
+         sodipodi:ry="25.001276"
+         sodipodi:rx="25.001276"
+         sodipodi:cy="491.98007"
+         sodipodi:cx="97.984795"
+         id="path4395"
+         style="fill:none;stroke:#3a3a3a;stroke-opacity:1"
+         sodipodi:type="arc" />
+    </g>
+    <g
+       id="g4416">
+      <g
+         id="g4408"
+         transform="translate(-206.21294,19.625139)"
+         inkscape:export-filename="C:\Users\manu\Desktop\mrcards\branches\spot\data\play.png"
+         inkscape:export-xdpi="90"
+         inkscape:export-ydpi="90">
+        <path
+           sodipodi:nodetypes="cccc"
+           id="path4410"
+           d="m 107.05197,497.1059 0,21.35241 18.04497,-10.09444 -18.04497,-11.25797 z"
+           style="fill:#b6b6b6;fill-opacity:1;stroke:none" />
+        <path
+           style="fill:#3a3a3a;fill-opacity:1;stroke:none"
+           d="m 107.07616,496.76533 0,20.46854 17.28737,-9.67658 -17.28737,-10.79196 z"
+           id="path4412"
+           sodipodi:nodetypes="cccc" />
+        <path
+           sodipodi:nodetypes="cccc"
+           id="path4414"
+           d="m 108.21259,497.90176 0,18.95331 15.5196,-8.96025 -15.5196,-9.99306 z"
+           style="fill:#4b4b4b;fill-opacity:1;stroke:none" />
+      </g>
+    </g>
+    <g
+       id="g4422"
+       transform="matrix(0.47472584,0,0,0.47472584,-11.372409,265.15824)"
+       inkscape:export-filename="C:\Users\manu\Desktop\mrcards\branches\spot\data\fw.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <g
+         inkscape:export-ydpi="90"
+         inkscape:export-xdpi="90"
+         inkscape:export-filename="C:\Users\manu\Desktop\mrcards\branches\spot\data\play.png"
+         transform="translate(-206.21294,19.625139)"
+         id="g4424">
+        <path
+           style="fill:#b6b6b6;fill-opacity:1;stroke:none"
+           d="m 107.05197,497.1059 0,21.35241 18.04497,-10.09444 -18.04497,-11.25797 z"
+           id="path4426"
+           sodipodi:nodetypes="cccc" />
+        <path
+           sodipodi:nodetypes="cccc"
+           id="path4428"
+           d="m 107.07616,496.76533 0,20.46854 17.28737,-9.67658 -17.28737,-10.79196 z"
+           style="fill:#3a3a3a;fill-opacity:1;stroke:none" />
+        <path
+           style="fill:#4b4b4b;fill-opacity:1;stroke:none"
+           d="m 108.21259,497.90176 0,18.95331 15.5196,-8.96025 -15.5196,-9.99306 z"
+           id="path4430"
+           sodipodi:nodetypes="cccc" />
+      </g>
+    </g>
+    <g
+       transform="matrix(0.47472584,0,0,0.47472584,-2.6081392,265.15824)"
+       id="g4432"
+       inkscape:export-filename="C:\Users\manu\Desktop\mrcards\branches\spot\data\fw.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <g
+         id="g4434"
+         transform="translate(-206.21294,19.625139)"
+         inkscape:export-filename="C:\Users\manu\Desktop\mrcards\branches\spot\data\play.png"
+         inkscape:export-xdpi="90"
+         inkscape:export-ydpi="90">
+        <path
+           sodipodi:nodetypes="cccc"
+           id="path4436"
+           d="m 107.05197,497.1059 0,21.35241 18.04497,-10.09444 -18.04497,-11.25797 z"
+           style="fill:#b6b6b6;fill-opacity:1;stroke:none" />
+        <path
+           style="fill:#3a3a3a;fill-opacity:1;stroke:none"
+           d="m 107.07616,496.76533 0,20.46854 17.28737,-9.67658 -17.28737,-10.79196 z"
+           id="path4438"
+           sodipodi:nodetypes="cccc" />
+        <path
+           sodipodi:nodetypes="cccc"
+           id="path4440"
+           d="m 108.21259,497.90176 0,18.95331 15.5196,-8.96025 -15.5196,-9.99306 z"
+           style="fill:#4b4b4b;fill-opacity:1;stroke:none" />
+      </g>
+    </g>
+    <path
+       sodipodi:nodetypes="cccc"
+       id="path4446"
+       d="m -49.880267,541.85036 0,-10.13654 -8.56642,4.79209 8.56642,5.34445 z"
+       style="fill:#b6b6b6;fill-opacity:1;stroke:none"
+       inkscape:export-filename="C:\Users\manu\Desktop\mrcards\branches\spot\data\rw.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="fill:#3a3a3a;fill-opacity:1;stroke:none"
+       d="m -50.22844,541.26908 0,-9.71694 -8.20676,4.59372 8.20676,5.12322 z"
+       id="path4448"
+       sodipodi:nodetypes="cccc"
+       inkscape:export-filename="C:\Users\manu\Desktop\mrcards\branches\spot\data\rw.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       sodipodi:nodetypes="cccc"
+       id="path4450"
+       d="m -50.528154,541.08926 0,-8.99763 -7.36755,4.25366 7.36755,4.74397 z"
+       style="fill:#4b4b4b;fill-opacity:1;stroke:none"
+       inkscape:export-filename="C:\Users\manu\Desktop\mrcards\branches\spot\data\rw.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="fill:#b6b6b6;fill-opacity:1;stroke:none"
+       d="m -41.115997,541.85036 0,-10.13654 -8.56642,4.79209 8.56642,5.34445 z"
+       id="path4456"
+       sodipodi:nodetypes="cccc"
+       inkscape:export-filename="C:\Users\manu\Desktop\mrcards\branches\spot\data\rw.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       sodipodi:nodetypes="cccc"
+       id="path4458"
+       d="m -41.46417,541.26908 0,-9.71694 -8.20676,4.59372 8.20676,5.12322 z"
+       style="fill:#3a3a3a;fill-opacity:1;stroke:none"
+       inkscape:export-filename="C:\Users\manu\Desktop\mrcards\branches\spot\data\rw.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="fill:#4b4b4b;fill-opacity:1;stroke:none"
+       d="m -41.763884,541.08926 0,-8.99763 -7.36755,4.25366 7.36755,4.74397 z"
+       id="path4460"
+       sodipodi:nodetypes="cccc"
+       inkscape:export-filename="C:\Users\manu\Desktop\mrcards\branches\spot\data\rw.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       style="fill:url(#linearGradient4484);fill-opacity:1;stroke:none"
+       id="rect4476"
+       width="927.82507"
+       height="45.961941"
+       x="-293.30573"
+       y="-111.06484"
+       inkscape:export-filename="C:\Users\manu\Desktop\mrcards\branches\spot\data\bottom.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="C:\Users\manu\Desktop\mrcards\branches\spot\data\slid.png"
+       y="-636.37305"
+       x="762.54565"
+       height="530.34668"
+       width="6.0507627"
+       id="rect4488"
+       style="opacity:0.5;fill:url(#linearGradient4494);fill-opacity:1;stroke:none"
+       transform="matrix(0,1,-1,0,0,0)" />
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="C:\Users\manu\Desktop\mrcards\branches\spot\data\slid.png"
+       y="-633.9278"
+       x="765.07104"
+       height="525.45618"
+       width="1"
+       id="rect4490"
+       style="opacity:0.5;fill:#303030;fill-opacity:1;stroke:none"
+       transform="matrix(0,1,-1,0,0,0)" />
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       style="opacity:0.50000000000000000;fill:#797979;fill-opacity:1;stroke:none"
+       id="rect4492"
+       width="1"
+       height="527.98157"
+       x="765.07104"
+       y="-635.19049"
+       transform="matrix(0,1,-1,0,0,0)"
+       inkscape:export-filename="C:\Users\manu\Desktop\mrcards\branches\spot\data\slid.png" />
+    <g
+       id="g4540"
+       clip-path="url(#clipPath4546)"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"
+       inkscape:export-filename="C:\Users\manu\Desktop\mrcards\branches\spot\data\slider.png">
+      <path
+         sodipodi:type="arc"
+         style="fill:#666666;fill-opacity:1;stroke:none"
+         id="path4502"
+         sodipodi:cx="280.31732"
+         sodipodi:cy="884.17181"
+         sodipodi:rx="43.941635"
+         sodipodi:ry="14.647212"
+         d="m 324.25896,884.17181 a 43.941635,14.647212 0 1 1 -87.88327,0 43.941635,14.647212 0 1 1 87.88327,0 z"
+         inkscape:export-filename="C:\Users\manu\Desktop\mrcards\branches\spot\data\slider.png"
+         inkscape:export-xdpi="90"
+         inkscape:export-ydpi="90"
+         transform="matrix(0.51724187,0,0,0.60344864,156.53865,387.23752)" />
+      <path
+         transform="matrix(0.52233877,0,0,0.60939502,155.56581,382.62024)"
+         inkscape:export-ydpi="90"
+         inkscape:export-xdpi="90"
+         inkscape:export-filename="C:\Users\manu\Desktop\mrcards\branches\spot\data\slider.png"
+         d="m 317.18789,882.65656 a 38.385796,13.131983 0 1 1 -76.77159,0 38.385796,13.131983 0 1 1 76.77159,0 z"
+         sodipodi:ry="13.131983"
+         sodipodi:rx="38.385796"
+         sodipodi:cy="882.65656"
+         sodipodi:cx="278.80209"
+         id="path4510"
+         style="fill:#808080;fill-opacity:1;stroke:none;filter:url(#filter4534)"
+         sodipodi:type="arc" />
+      <path
+         sodipodi:type="arc"
+         style="fill:#999999;fill-opacity:1;stroke:none;filter:url(#filter4530)"
+         id="path4504"
+         sodipodi:cx="278.80209"
+         sodipodi:cy="882.65656"
+         sodipodi:rx="38.385796"
+         sodipodi:ry="13.131983"
+         d="m 317.18789,882.65656 a 38.385796,13.131983 0 1 1 -76.77159,0 38.385796,13.131983 0 1 1 76.77159,0 z"
+         inkscape:export-filename="C:\Users\manu\Desktop\mrcards\branches\spot\data\slider.png"
+         inkscape:export-xdpi="90"
+         inkscape:export-ydpi="90"
+         transform="matrix(0.43171555,0,0,0.50366797,178.6158,475.05704)" />
+      <path
+         transform="matrix(0.15149567,0,0,0.17674489,261.28738,760.58738)"
+         inkscape:export-ydpi="90"
+         inkscape:export-xdpi="90"
+         inkscape:export-filename="C:\Users\manu\Desktop\mrcards\branches\spot\data\slider.png"
+         d="m 317.18789,882.65656 a 38.385796,13.131983 0 1 1 -76.77159,0 38.385796,13.131983 0 1 1 76.77159,0 z"
+         sodipodi:ry="13.131983"
+         sodipodi:rx="38.385796"
+         sodipodi:cy="882.65656"
+         sodipodi:cx="278.80209"
+         id="path4512"
+         style="fill:#b3b3b3;fill-opacity:1;stroke:none;filter:url(#filter4526)"
+         sodipodi:type="arc" />
+    </g>
+    <g
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="C:\Users\manu\Desktop\mrcards\branches\spot\data\play.png"
+       transform="translate(-206.21294,-131.56343)"
+       id="g4550">
+      <g
+         id="g4576"
+         transform="translate(2.6714487,-27.601955)"
+         inkscape:export-filename="C:\Users\manu\Desktop\mrcards\branches\spot\data\pause.png"
+         inkscape:export-xdpi="90"
+         inkscape:export-ydpi="90">
+        <rect
+           style="fill:#3a3a3a;fill-opacity:1;stroke:none"
+           id="rect4566"
+           width="7.0583887"
+           height="19.937744"
+           x="102.55238"
+           y="543.37537" />
+        <rect
+           y="544.08966"
+           x="103.17738"
+           height="19.223537"
+           width="6.4333773"
+           id="rect4568"
+           style="fill:#b6b6b6;fill-opacity:1;stroke:none" />
+        <rect
+           y="544.08966"
+           x="103.17738"
+           height="18.687822"
+           width="5.8083773"
+           id="rect4564"
+           style="fill:#4b4b4b;fill-opacity:1;stroke:none" />
+        <rect
+           y="543.37537"
+           x="113.0881"
+           height="19.937744"
+           width="7.0583887"
+           id="rect4570"
+           style="fill:#3a3a3a;fill-opacity:1;stroke:none" />
+        <rect
+           style="fill:#b6b6b6;fill-opacity:1;stroke:none"
+           id="rect4572"
+           width="6.4333773"
+           height="19.223537"
+           x="113.7131"
+           y="544.08966" />
+        <rect
+           style="fill:#4b4b4b;fill-opacity:1;stroke:none"
+           id="rect4574"
+           width="5.8083773"
+           height="18.687822"
+           x="113.7131"
+           y="544.08966" />
+      </g>
+    </g>
+    <g
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="C:\Users\manu\Desktop\mrcards\branches\spot\data\pause.png"
+       transform="translate(-206.60715,-113.05806)"
+       id="g4558">
+      <path
+         transform="matrix(0.76232894,0,0,0.76232894,39.986306,132.54345)"
+         d="m 122.98607,491.98007 c 0,13.80783 -11.19345,25.00128 -25.001275,25.00128 -13.807824,0 -25.001276,-11.19345 -25.001276,-25.00128 0,-13.80782 11.193452,-25.00127 25.001276,-25.00127 13.807825,0 25.001275,11.19345 25.001275,25.00127 z"
+         sodipodi:ry="25.001276"
+         sodipodi:rx="25.001276"
+         sodipodi:cy="491.98007"
+         sodipodi:cx="97.984795"
+         id="path4560"
+         style="fill:none;stroke:#a7a7a7;stroke-opacity:1"
+         sodipodi:type="arc" />
+      <path
+         sodipodi:type="arc"
+         style="fill:none;stroke:#3a3a3a;stroke-opacity:1"
+         id="path4562"
+         sodipodi:cx="97.984795"
+         sodipodi:cy="491.98007"
+         sodipodi:rx="25.001276"
+         sodipodi:ry="25.001276"
+         d="m 122.98607,491.98007 c 0,13.80783 -11.19345,25.00128 -25.001275,25.00128 -13.807824,0 -25.001276,-11.19345 -25.001276,-25.00128 0,-13.80782 11.193452,-25.00127 25.001276,-25.00127 13.807825,0 25.001275,11.19345 25.001275,25.00127 z"
+         transform="matrix(0.76232894,0,0,0.76232894,39.450591,131.82917)" />
+    </g>
   </g>
 </svg>

@@ -5,9 +5,9 @@ import re
 from library.resources.images import getImage
 
 class div(pygame.sprite.Sprite, module.Module):
-	def __init__(self, parent=None, id=None, kind=None, content="div", color_content="[0,0,0,0]", width="75", height="23", vertical_alignment="", \
-					horizontal_alignment="", margin="[15,15,15,15]", background="[10,128,10,0]", background_image=None, \
-					border_color="[255,128,128,0]", border_width="0", overflow="hidden" ):
+	def __init__(self, parent=None, id=None, kind=None, content="", color_content="[0,0,0,0]", width="0", height="0", vertical_alignment="", \
+					horizontal_alignment="", margin="[0,0,0,0]", background="[80,80,80,0]", background_image=None, \
+					border_color="[0,0,0,0]", border_width="0", overflow="hidden", font="DroidSans", font_size=12, bold="", underline="", italic="" ):
 		module.Module.__init__(self, id, kind)
 		pygame.sprite.Sprite.__init__(self)
 		
@@ -34,7 +34,14 @@ class div(pygame.sprite.Sprite, module.Module):
 		
 		##self.bind("videoresize", self.update_position)
 
-		self.f = pygame.font.Font("data/font.ttf", 12)
+		self.f = pygame.font.Font("data/"+font+".ttf", font_size)
+		if bold:
+			self.f.set_bold(1)
+		if underline:
+			self.f.set_underline(1)
+		if italic:
+			self.f.set_italic(1)
+		
 		self.surface_content = self.f.render(self.content, True, self.color_content)
 		
 		self.text_offset_x = 0

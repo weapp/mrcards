@@ -6,9 +6,13 @@
 			<obj type="div" add_child="add_child" parent="true">
 				<param name="content"></param>
 				<param name="margin">[0,0,0,0]</param>
-				<param name="background">[120,120,120,70]</param>
-				<param name="background_image">image</param>
 				<param name="border_color">[130,130,130,255]</param>
+				<param name="border_width">1</param>
+				<child>
+			<obj type="div" add_child="add_child" parent="true">
+				<param name="content"></param>
+				<param name="margin">[0,0,0,0]</param>
+				<param name="border_color">[255,255,255,255]</param>
 				<param name="border_width">1</param>
 				<child>
 					<obj type="div" add_child="add_child" parent="true">
@@ -24,6 +28,7 @@
 								<param name="vertical_alignment">top</param>
 								<param name="margin">[0,0,0,0]</param>
 								<param name="background">[120,120,120,150]</param>
+								<param name="font">DroidSerif-Regular</param>
 							</obj>
 						</child>
 						<child>
@@ -33,6 +38,7 @@
 								<param name="vertical_alignment">top</param>
 								<param name="margin">[0,20,0,0]</param>
 								<param name="background">[120,120,120,150]</param>
+								<param name="font">DroidSerif-Regular</param>
 							</obj>
 						</child>
 					</obj>
@@ -70,6 +76,7 @@
 				
 				
 					<obj type="div" add_child="add_child" parent="true">
+						<param name="background_image">bottom</param>
 						<param name="content"></param>
 						<param name="height">50</param>
 						<param name="vertical_alignment">bottom</param>
@@ -79,27 +86,42 @@
 						<child>
 							<obj type="button" add_child="add_child" parent="true">
 								<param></param>
-								<param name="content">&lt;&lt;</param>
+								<!--<param name="content">&lt;&lt;</param>-->
+								<param name="background_image">rw</param>
 								<param name="height">50</param>
 								<param name="width">50</param>
 								<param name="vertical_alignment">bottom</param>
 								<param name="horizontal_alignment">left</param>
 								<param name="margin">[0,0,0,0]</param>
-								<param name="background">[120,120,120,150]</param>
 							</obj>
 						</child>
 						
 						
 						<child>
 							<obj type="button" add_child="add_child" parent="true">
-								<param></param>
-								<param name="content">Play</param>
+								<param><![CDATA[core.core.get_app().find("#reproductor").play()]]></param>
+								<!--<param name="content">Play</param>-->
+								<param name="id">play</param>
 								<param name="height">50</param>
 								<param name="width">50</param>
 								<param name="vertical_alignment">bottom</param>
 								<param name="horizontal_alignment">left</param>
 								<param name="margin">[50,0,0,0]</param>
-								<param name="background">[120,120,120,150]</param>
+								<param name="bold">1</param>
+								<param name="background_image">play</param>
+							</obj>
+						</child>
+						
+						<child>
+							<obj type="button" add_child="add_child" parent="true">
+								<param></param>
+								<!--<param name="content">&gt;&gt;</param>-->
+								<param name="background_image">fw</param>
+								<param name="height">50</param>
+								<param name="width">50</param>
+								<param name="vertical_alignment">bottom</param>
+								<param name="horizontal_alignment">left</param>
+								<param name="margin">[100,0,0,0]</param>
 							</obj>
 						</child>
 						
@@ -108,57 +130,60 @@
 								<param name="content"></param>
 								<param name="height">50</param>
 								<param name="width">50</param>
-								<param name="margin">[150,0,250,0]</param>
-								<param name="background">[220,120,120,150]</param>
+								<param name="margin">[150,15,250,15]</param>
+								<param name="background_image">slid</param>
 								<child>
 									<obj type="slider" add_child="add_child" parent="true">
 										<param></param>
 										<param name="content"></param>
-										<param name="height">50</param>
+										<param name="id">slider</param>
+										<param name="onup"><![CDATA[print "x"]]></param>
 										<param name="width">50</param>
-										<param name="vertical_alignment">bottom</param>
 										<param name="horizontal_alignment">left</param>
-										<param name="margin">[250,0,0,0]</param>
-										<param name="background">[120,220,120,150]</param>
+										<param name="margin">[0,0,0,0]</param>
+								<param name="background_image">slider</param>
 									</obj>
 								</child>
 							</obj>
 						</child>
 						
 						
-						<child>
-							<obj type="button" add_child="add_child" parent="true">
-								<param></param>
-								<param name="content">&gt;&gt;</param>
-								<param name="height">50</param>
-								<param name="width">50</param>
-								<param name="vertical_alignment">bottom</param>
-								<param name="horizontal_alignment">left</param>
-								<param name="margin">[100,0,0,0]</param>
-								<param name="background">[120,120,120,150]</param>
-							</obj>
-						</child>
+						
 						
 						<!-- print "\n".join(filter(lambda x: not x.startswith('_'), dir(t))) -->
 						
 						<child>
 							<obj type="button" add_child="add_child" parent="true">
-								<param><![CDATA[core.core.get_app().find('#reproductor').cargar()]]></param>
+								<param><![CDATA[core.core.get_app().find('#reproductor').recargar()]]></param>
 								<param name="content">"Recargar Biblioteca"</param>
 								<param name="height">50</param>
 								<param name="width">250</param>
 								<param name="vertical_alignment">bottom</param>
 								<param name="horizontal_alignment">right</param>
 								<param name="margin">[150,0,0,0]</param>
-								<param name="background">[255,255,0,150]</param>
 								
 							</obj>
 						</child>
+					
+						
+						<child>
+							<obj type="sizer" add_child="add_child" parent="true">>
+								<param name="content">_|</param>
+								<param name="height">20</param>
+								<param name="width">20</param>
+								<param name="vertical_alignment">bottom</param>
+								<param name="horizontal_alignment">right</param>
+								<param name="margin">[150,0,0,0]</param>
+							</obj>
+						</child>
+						
 					
 					</obj>
 					
 					
 				</child>
+			</obj>
+		</child>
 			</obj>
 		</child>
 	</obj>
