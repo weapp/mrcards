@@ -7,9 +7,10 @@ import div
 
 
 class slider(div.div, dragable.dragable):
-	def __init__(self, parent, direction="horizontal", **kws):
+	def __init__(self, parent, direction="horizontal", onup="", **kws):
 		div.div.__init__(self, parent, **kws)
 		dragable.dragable.__init__(self)
+		self.onup = onup
 		
 		self.__init_pos_mouse = (0,0)
 		self.__init_pos_rect = self.rect.x, self.rect.y
@@ -22,7 +23,10 @@ class slider(div.div, dragable.dragable):
 		self.__init_pos_container = self.container.x, self.container.y
 	
 	def clickup(self, event, data):
+		if self.mousedown:
+			exec(self.onup)
 		dragable.dragable.clickup(self,event,data)
+		
 		
 	def motion(self, event, data):
 		if self.mousedown:

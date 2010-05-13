@@ -17,6 +17,7 @@ class Pressable(clickable.Clickable, hoverable.Hoverable):
 	def onclick(self, event, data):
 		self.__press = 1
 		self.onpress(**data)
+		return True
 		
 	def __onhover(self, event, data):
 		if pygame.mouse.get_pressed()[0]:
