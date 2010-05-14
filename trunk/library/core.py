@@ -38,6 +38,7 @@ class Core:
         self.delay = 0
         self.velocity = 10
         self.vdelay = 0
+        self.ontick = event.Event("tick")
         
     def get_app(self):
         return self.__app
