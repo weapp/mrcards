@@ -4,20 +4,14 @@
 	<obj type="layer" add_child="append">
 		<child>
 			<obj type="div" add_child="add_child" parent="true">
-				<param name="content"></param>
-				<param name="margin">[0,0,0,0]</param>
 				<param name="border_color">#828282</param>
 				<param name="border_width">1</param>
 				<child>
 			<obj type="div" add_child="add_child" parent="true">
-				<param name="content"></param>
-				<param name="margin">[0,0,0,0]</param>
 				<param name="border_color">#FFF</param>
 				<param name="border_width">1</param>
 				<child>
 					<obj type="div" add_child="add_child" parent="true">
-						<param name="content"></param>
-						<param name="margin">[0,0,0,0]</param>
 						<param name="vertical_alignment">top</param>
 						<param name="height">40</param>
 						<param name="background_image">top</param>
@@ -26,8 +20,6 @@
 								<param name="content">Instictiv</param>
 								<param name="height">20</param>
 								<param name="vertical_alignment">top</param>
-								<param name="margin">[0,0,0,0]</param>
-								<param name="background_color">#78787896</param>
 								<param name="font">DroidSerif-Regular</param>
 							</obj>
 						</child>
@@ -37,7 +29,6 @@
 								<param name="height">20</param>
 								<param name="vertical_alignment">top</param>
 								<param name="margin">[0,20,0,0]</param>
-								<param name="background_color">[120,120,120,150]</param>
 								<param name="font">DroidSerif-Regular</param>
 							</obj>
 						</child>
@@ -45,23 +36,17 @@
 				</child>
 				<child>
 					<obj type="div" add_child="add_child" parent="true">
-						<param name="content"></param>
 						<param name="margin">[0,40,0,50]</param>
-						<param name="background_color">[155,120,120,150]</param>
-						<param name="border_color">[100,100,100,150]</param>
 						<child>
 							<obj type="div" add_child="add_child" parent="true">
 								<param name="id">Menu</param>
-								<param name="color_content">[255,255,255,255]</param>
+								<param name="color_content">#FFF</param>
 								<param name="background_image">menu</param>
 								<param name="width">80</param>
 								<param name="horizontal_alignment">left</param>
-								<param name="margin">[0,0,0,0]</param>
-								<param name="background_color">[0,120,160,150]</param>
 								<child>
 									<obj type="togglebutton" add_child="add_child" parent="true">
 										<param></param>
-										<param name="content"></param>
 										<param name="height">70</param>
 										<param name="vertical_alignment">top</param>
 										<param name="margin">[0,20,0,0]</param>
@@ -71,7 +56,6 @@
 								<child>
 									<obj type="togglebutton" add_child="add_child" parent="true">
 										<param></param>
-										<param name="content"></param>
 										<param name="height">70</param>
 										<param name="vertical_alignment">top</param>
 										<param name="margin">[0,90,0,0]</param>
@@ -81,7 +65,6 @@
 								<child>
 									<obj type="togglebutton" add_child="add_child" parent="true">
 										<param></param>
-										<param name="content"></param>
 										<param name="height">70</param>
 										<param name="vertical_alignment">top</param>
 										<param name="margin">[0,160,0,0]</param>
@@ -91,7 +74,6 @@
 								<child>
 									<obj type="togglebutton" add_child="add_child" parent="true">
 										<param></param>
-										<param name="content"></param>
 										<param name="height">70</param>
 										<param name="vertical_alignment">top</param>
 										<param name="margin">[0,230,0,0]</param>
@@ -104,9 +86,8 @@
 						<child>
 							<obj type="div" add_child="add_child" parent="true">
 								<param name="id">main</param>
-								<param name="content"></param>
 								<param name="margin">[80,0,0,0]</param>
-								<param name="background_color">[58,58,58,255]</param>
+								<param name="background_color">#3a3a3a</param>
 							</obj>
 						</child>
 						
@@ -116,12 +97,10 @@
 				
 				
 					<obj type="div" add_child="add_child" parent="true">
+						<param name="id">bottom</param>
 						<param name="background_image">bottom</param>
-						<param name="content"></param>
 						<param name="height">50</param>
 						<param name="vertical_alignment">bottom</param>
-						<param name="margin">[0,0,0,0]</param>
-						<param name="background_color">[120,120,120,150]</param>
 					
 						<child>
 							<obj type="button" add_child="add_child" parent="true">
@@ -131,7 +110,6 @@
 								<param name="width">50</param>
 								<param name="vertical_alignment">bottom</param>
 								<param name="horizontal_alignment">left</param>
-								<param name="margin">[0,0,0,0]</param>
 							</obj>
 						</child>
 						
@@ -164,7 +142,6 @@
 						
 						<child>
 							<obj type="div" add_child="add_child" parent="true">
-								<param name="content"></param>
 								<param name="height">50</param>
 								<param name="width">50</param>
 								<param name="margin">[150,15,150,15]</param>
@@ -172,12 +149,10 @@
 								<child>
 									<obj type="slider" add_child="add_child" parent="true">
 										<param name="direction">horizontal</param>
-										<param name="content"></param>
 										<param name="id">slider</param>
 										<param name="onup"><![CDATA[core.core.get_app().find('#reproductor').slidermove()]]></param>
 										<param name="width">50</param>
 										<param name="horizontal_alignment">left</param>
-										<param name="margin">[0,0,0,0]</param>
 								<param name="background_image">slider</param>
 									</obj>
 								</child>
@@ -201,7 +176,7 @@
 							<obj type="fps" add_child="add_child" parent="true">>
 								<param name="content">*</param>
 								<param name="height">20</param>
-								<param name="width">20</param>
+								<param name="width">100</param>
 								<param name="vertical_alignment">bottom</param>
 								<param name="horizontal_alignment">right</param>
 								<param name="margin">[150,0,0,0]</param>
