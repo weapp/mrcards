@@ -21,7 +21,7 @@ core.core.ticks = 40
 
 app = extendedapp.ExtendedApp(factory)
 
-sm = app.find('#SceneManager')
+sm = app.find('&SceneManager')
 
 core.core.set_app(app)
 

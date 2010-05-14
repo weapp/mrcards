@@ -38,7 +38,7 @@ class reproductor(module.Module):
 		self.id = "reproductor"
 		self.repr = pygame_repr()
 		self.selected_song = None
-		onload = core.core.get_app().find('#SceneManager').get_childs()[0].onload
+		onload = core.core.get_app().find('&SceneManager').get_childs()[0].onload
 		onload.bind(self.cargar)
 		self.lenght = 1
 		
@@ -92,7 +92,7 @@ class reproductor(module.Module):
 		'''
 		
 	def cargar(self, event=None, data=None):
-		#main = core.core.get_app().find('#SceneManager').get_childs()[0][1].get_childs()[0].get_childs()[2].get_childs()[1]
+		#main = core.core.get_app().find('&SceneManager').get_childs()[0][1].get_childs()[0].get_childs()[2].get_childs()[1]
 		main = core.core.get_app().find('#main')
 		
 		self.lista = div.div(main, margin = "[15,15,15,15]")		
