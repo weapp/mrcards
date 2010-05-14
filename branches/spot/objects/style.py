@@ -8,7 +8,8 @@ class style:
 		
 		
 	def load(self, event, data):
-		pass
+		f = file("data/" + self.file + ".css")
+		print f.read()
 		
 	def update(self):
 		pass
