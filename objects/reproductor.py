@@ -45,10 +45,10 @@ class reproductor(module.Module):
 	def update(self):
 		play = core.core.get_app().find('#play')
 		if self.repr.busy:
-			play.background_image = "pause"
+			play.p.background_image = "pause"
 			self.update_slide()
 		else:
-			play.background_image = "play"
+			play.p.background_image = "play"
 		play.update_surface()
 		
 	def update_slide(self):
