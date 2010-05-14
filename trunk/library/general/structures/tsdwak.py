@@ -38,12 +38,12 @@ class TSDWAK(sdwak.SDWAK, treenode.TreeNode):
         self.actualize_childs()
 
     def append(self, value):
-        if hasattr(value, 'id') and not value.id is None:
-            key = value.id
+        if hasattr(value, 'key') and not value.key is None:
+            key = value.key
             self[key] = value #no hace fallta  _add_child, se realiza en setitem
         else:
             key = sdwak.SDWAK.append(self, value)
-            value.id = key
+            value.key = key
             self.__add_child(key, value)
         return key
 
@@ -52,13 +52,13 @@ class TSDWAK(sdwak.SDWAK, treenode.TreeNode):
         del self.childs[:]
         assert t is self.childs
         for key,value in self.iteritems():
-            if (not hasattr(value, 'id')) or value.id is None:
-                value.id = key
+            if (not hasattr(value, 'key')) or value.key is None:
+                value.key = key
             self.add_child(value)
             
     def __add_child(self, key, value):
-        if (not hasattr(value, 'id')) or value.id is None:
-            value.id = key
+        if (not hasattr(value, 'key')) or value.key is None:
+            value.key = key
         self.add_child(value)
     
     def __del_child(self, key):

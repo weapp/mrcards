@@ -1,20 +1,43 @@
 #!/usr/bin/env python
 #-*- coding:utf-8 -*-
 import re
+from library.general import singleton
+import random
 
+class Ids:
+    __metaclass__ = singleton.Singleton
+    def __init__(self):
+        self.ids = {}
+    def generate_valid_id(self):
+        id = None
+        keys = self.ids.keys()
+        while (id is None) or (id in keys):
+            id = random.randint(3,100)
+        return id
+ids = Ids()
+    
 class TreeNode:
     def __init__(self, id=None, kind=None):
         self.id = id
+        self.key = id
         if kind is None:
             self.kind = []
         else:
             self.kind = kind
         self.parent = None
         self.__childs = {}
-	
+
+    def get_id(self):
+        return self.__id
+        
+    def set_id(self, id):
+        self.__id = id if not id is None else ids.generate_valid_id()
+
+    id = property(get_id, set_id)
+    
     def clear(self):
         self.__childs.clear()
-	
+    
     def set_parent(self, parent):
         if not (self.parent is parent):
             if hasattr(self.parent, "del_child"):
@@ -68,6 +91,10 @@ class TreeNode:
     def search_by_id(self, id):
         r=self.filter_objects(filter_=filter_by_id(id))
         return [r[0]] if r else []
+		
+    def search_by_key(self, key):
+        r=self.filter_objects(filter_=filter_by_key(key))
+        return [r[0]] if r else []
         
     def __search(self, expresion='> *'):
         expresion=expresion.split(' ')
@@ -94,9 +121,9 @@ class TreeNode:
         return nodup
         
     def find(self, *args, **kws):
-		r = self.search(*args, **kws)
-		if len(r):
-			return r[0]
+        r = self.search(*args, **kws)
+        if len(r):
+            return r[0]
 
 def filter_by_isinstance(param, lista):
     def filter_(obj):
@@ -114,6 +141,13 @@ def filter_by_id(param):
     def filter__(lista):
         def filter_(obj):
             return obj.id == param if hasattr(obj,'id') else False
+        return filter(filter_,lista)
+    return filter__
+
+def filter_by_key(param):
+    def filter__(lista):
+        def filter_(obj):
+            return obj.key == param if hasattr(obj,'key') else False
         return filter(filter_,lista)
     return filter__
 
@@ -143,9 +177,11 @@ def filter_completo(param):
     def filter_(lista):
         if param == "*":
             return lista
-        for elem in re.findall(r'[#\.:]?[a-zA-Z0-9]*',param):
+        for elem in re.findall(r'[#&\.:]?[a-zA-Z0-9]*',param):
             if elem.startswith('#'):
                 lista = filter_by_id(elem[1:])(lista)
+            elif elem.startswith('&'):
+                lista = filter_by_key(elem[1:])(lista)
             elif elem.startswith('.'):
                 lista = filter_by_kind(elem[1:])(lista)
             elif elem.startswith(':'):
