@@ -4,7 +4,7 @@
 from library.stdmodules import module
 from library.general.structures import sdwak
 from apps import sceneapp
-from library.general import xmlconfig
+from library.general import xmlconfigure
 from library import core
 
 class SceneManager (module.Module, object):
@@ -46,7 +46,7 @@ class SceneManager (module.Module, object):
     def __change_scene(self):
         self.scene = sceneapp.SceneApp()
         self.add_child(self.scene)
-        xmlconfig.cargar_estado(self.scenes[self.next_scene], self.scene.add, self.factory)
+        xmlconfigure.cargar_estado(self.scenes[self.next_scene], self.scene.add, self.factory)
         self.scene.start_scene()
         self.next_scene = None
                         
