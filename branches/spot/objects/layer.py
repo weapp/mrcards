@@ -11,7 +11,6 @@ class layer(basicapp.BasicApp):
 	def __init__(self, *args):
 		basicapp.BasicApp.__init__(self)
 		self.container = self.rect = core.core.video.get_screen().get_rect()
-		self.border_width = 0
 		for elem in args:
 			self.append(elem)
 		core.core.event.videoresize.bind(self.update_position)

@@ -17,7 +17,7 @@ class factory:
 
 factory = factory()
 
-core.core.ticks = 40
+core.core.ticks = 200
 
 app = extendedapp.ExtendedApp(factory)
 

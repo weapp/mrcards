@@ -1,17 +1,18 @@
 <state>
-	<obj type="reproductor" />
+	<obj type="reproductor" />>
+	<obj type="style"><param name="file">css</param></obj>
 	<obj type="layer" add_child="append">
 		<child>
 			<obj type="div" add_child="add_child" parent="true">
 				<param name="content"></param>
 				<param name="margin">[0,0,0,0]</param>
-				<param name="border_color">[130,130,130,255]</param>
+				<param name="border_color">#828282</param>
 				<param name="border_width">1</param>
 				<child>
 			<obj type="div" add_child="add_child" parent="true">
 				<param name="content"></param>
 				<param name="margin">[0,0,0,0]</param>
-				<param name="border_color">[255,255,255,255]</param>
+				<param name="border_color">#FFF</param>
 				<param name="border_width">1</param>
 				<child>
 					<obj type="div" add_child="add_child" parent="true">
@@ -26,7 +27,7 @@
 								<param name="height">20</param>
 								<param name="vertical_alignment">top</param>
 								<param name="margin">[0,0,0,0]</param>
-								<param name="background">[120,120,120,150]</param>
+								<param name="background_color">#78787896</param>
 								<param name="font">DroidSerif-Regular</param>
 							</obj>
 						</child>
@@ -36,7 +37,7 @@
 								<param name="height">20</param>
 								<param name="vertical_alignment">top</param>
 								<param name="margin">[0,20,0,0]</param>
-								<param name="background">[120,120,120,150]</param>
+								<param name="background_color">[120,120,120,150]</param>
 								<param name="font">DroidSerif-Regular</param>
 							</obj>
 						</child>
@@ -46,7 +47,7 @@
 					<obj type="div" add_child="add_child" parent="true">
 						<param name="content"></param>
 						<param name="margin">[0,40,0,50]</param>
-						<param name="background">[155,120,120,150]</param>
+						<param name="background_color">[155,120,120,150]</param>
 						<param name="border_color">[100,100,100,150]</param>
 						<child>
 							<obj type="div" add_child="add_child" parent="true">
@@ -56,7 +57,7 @@
 								<param name="width">80</param>
 								<param name="horizontal_alignment">left</param>
 								<param name="margin">[0,0,0,0]</param>
-								<param name="background">[0,120,160,150]</param>
+								<param name="background_color">[0,120,160,150]</param>
 								<child>
 									<obj type="togglebutton" add_child="add_child" parent="true">
 										<param></param>
@@ -105,7 +106,7 @@
 								<param name="id">main</param>
 								<param name="content"></param>
 								<param name="margin">[80,0,0,0]</param>
-								<param name="background">[58,58,58,255]</param>
+								<param name="background_color">[58,58,58,255]</param>
 							</obj>
 						</child>
 						
@@ -120,12 +121,11 @@
 						<param name="height">50</param>
 						<param name="vertical_alignment">bottom</param>
 						<param name="margin">[0,0,0,0]</param>
-						<param name="background">[120,120,120,150]</param>
+						<param name="background_color">[120,120,120,150]</param>
 					
 						<child>
 							<obj type="button" add_child="add_child" parent="true">
 								<param></param>
-								<!--<param name="content">&lt;&lt;</param>-->
 								<param name="background_image">rw</param>
 								<param name="height">50</param>
 								<param name="width">50</param>
@@ -139,7 +139,6 @@
 						<child>
 							<obj type="button" add_child="add_child" parent="true">
 								<param><![CDATA[core.core.get_app().find("#reproductor").play_pause()]]></param>
-								<!--<param name="content">Play</param>-->
 								<param name="id">play</param>
 								<param name="height">50</param>
 								<param name="width">50</param>
@@ -154,7 +153,6 @@
 						<child>
 							<obj type="button" add_child="add_child" parent="true">
 								<param></param>
-								<!--<param name="content">&gt;&gt;</param>-->
 								<param name="background_image">fw</param>
 								<param name="height">50</param>
 								<param name="width">50</param>
@@ -186,11 +184,6 @@
 							</obj>
 						</child>
 						
-						
-						
-						
-						<!-- print "\n".join(filter(lambda x: not x.startswith('_'), dir(t))) -->
-						
 						<child>
 							<obj type="button" add_child="add_child" parent="true">
 								<param><![CDATA[core.core.get_app().find('#reproductor').recargar()]]></param>
@@ -205,7 +198,7 @@
 					
 						
 						<child>
-							<obj type="sizer" add_child="add_child" parent="true">>
+							<obj type="fps" add_child="add_child" parent="true">>
 								<param name="content">*</param>
 								<param name="height">20</param>
 								<param name="width">20</param>

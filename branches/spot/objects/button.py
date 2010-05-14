@@ -18,13 +18,17 @@ class button(div.div, pressable.Pressable):
 	def __init__(self, parent, func, **kws):
 		div.div.__init__(self, parent, **kws)
 		pressable.Pressable.__init__(self)
+		self.p.subscribe('press', self.onpress, self.unpress)
+		self.p.press.text_offset_y = 2
 		self.func = func
 		self.press.bind(self.__onpress, self.__unpress)
 		self.mousebuttonup.bind(self.__click)
 		self.i = i.next()
-		
+
 	def __onpress(self, event, data):
-		self.text_offset_y += 2
+		self.update_surface()
+		
+	def __unpress(self, event, data):
 		self.update_surface()
 	
 	def __click(self, event, data):
@@ -32,6 +36,3 @@ class button(div.div, pressable.Pressable):
 		#core.core.get_app()['SceneManager'].change_scene(self.func)
 		exec(self.func)
 		
-	def __unpress(self, event, data):
-		self.text_offset_y -= 2
-		self.update_surface()
