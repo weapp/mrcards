@@ -60,7 +60,8 @@ class TreeNode:
         return self.__childs.get(key,[])[:]
     
     def del_child(self, child, key=0):
-        self.__childs.get(key,[]).remove(child)
+        if child in self.__childs.get(key,[]):
+			self.__childs[key].remove(child)
         
     def get_all_childs(self):
         r = []

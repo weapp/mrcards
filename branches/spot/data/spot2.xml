@@ -4,17 +4,17 @@
 	<layer>
 		<div border_color="#828282"	border_width="1">
 			<div border_color="#FFF" border_width="1">
-				<div id="header">
+				<vbox id="header">
 					<move content="Instictiv"/>
 					<move content="Good News for People Who Love Band News &gt; Now Playing" />
-				</div>
-				<div margin="[0,40,0,50]">
-					<div id="Menu" horizontal_alignment="left">
-						<togglebutton func="" margin="[0,20,0,0]" background_image="search" />
-						<togglebutton func="" margin="[0,90,0,0]" background_image="folder-sound" />
-						<togglebutton func="" margin="[0,160,0,0]" background_image="shuffle" />
-						<togglebutton func="" margin="[0,230,0,0]" background_image="repeat" />
-					</div>
+				</vbox>
+				<div id="sidebar">
+					<vbox id="Menu" horizontal_alignment="left">
+						<togglebutton func="" background_image="search" />
+						<togglebutton func="" background_image="folder-sound" />
+						<togglebutton func="" background_image="shuffle" />
+						<togglebutton func="" background_image="repeat" />
+					</vbox>
 					<div id="main"/>
 				</div>
 				<div id="bottom">

@@ -2,7 +2,7 @@ from library import core
 from library.stdmodules import module
 import pygame
 import song
-import div
+import vbox
 import os
 
 class pygame_repr:
@@ -94,13 +94,11 @@ class reproductor(module.Module):
 	def cargar(self, event=None, data=None):
 		#main = core.core.get_app().find('&SceneManager').get_childs()[0][1].get_childs()[0].get_childs()[2].get_childs()[1]
 		main = core.core.get_app().find('#main')
-		
-		self.lista = div.div(main, margin = "[15,15,15,15]")		
-		main.add_child(self.lista)
+		self.lista = vbox.vbox(main, id="lista")
 		self.recargar()
 	
 	def recargar(self, event=None, data=None):
-		self.lista.clear()
+		#self.lista.clear()
 		path, dir, files = os.walk('music').next()
 		for i, file in enumerate(files):
-			self.lista.add_child(song.song(self.lista, file, i))
+			song.song(self.lista, file, i)

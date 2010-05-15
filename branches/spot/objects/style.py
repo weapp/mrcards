@@ -2,6 +2,12 @@ from library import core
 import re
 from library.stdmodules import module
 
+class cmp:
+	def __init__(self, elem):
+		self.elem = elem
+	def __call__(self, x):
+		return x == self.elem
+		
 class style(module.Module):
 	def __init__(self,parent, file):
 		module.Module.__init__(self)
@@ -9,31 +15,26 @@ class style(module.Module):
 		self.scene.onload.bind(self.load)
 		self.file = file
 		
-		
 	def load(self, event, data):
-		for selector, properties in self.get_properties():
-			if ":" in selector:
-				selector, onevent = selector.split(":")
-			else:
-				onevent = None
-			for item in self.scene.search(selector):
-				for prop in properties:
-					prop = prop.split(":")
-					setattr(item.p.get_sub(onevent), prop[0].replace("-","_"), prop[1])
-				item.update_position()
+		self.apply_to_elems()
 	
 	def apply_to_elem(self, elem):
+		self.apply_to_elems(cmp(elem))
+	
+	def apply_to_elems(self, filter = None):
 		for selector, properties in self.get_properties():
-			if ":" in selector:
-				selector, onevent = selector.split(":")
-			else:
-				onevent = None
-			for item in self.scene.search(selector):
-				if elem == item:
-					for prop in properties:
-						prop = prop.split(":")
-						setattr(item.p.get_sub(onevent), prop[0].replace("-","_"), prop[1])
-					item.update_position()
+			for selector in selector.split(','):
+				selector = selector.strip()
+				if ":" in selector:
+					selector, onevent = selector.split(":")
+				else:
+					onevent = None
+				for item in self.scene.search(selector):
+					if filter is None or filter(item):
+						for prop in properties:
+							prop = prop.split(":")
+							setattr(item.p.get_sub(onevent), prop[0].replace("-","_"), prop[1])
+						item.update_position()
 	
 	def get_properties(self):
 		f = file("data/" + self.file + ".css").read()
