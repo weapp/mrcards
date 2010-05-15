@@ -16,6 +16,8 @@ class div(pygame.sprite.Sprite, module.Module):
 		setattr(self.p, attr, value)
 	
 	def __init__(self, parent=None, id=None, kind=None, content="", **kws):
+		if not kind is None:
+			kind = kind.split(" ")
 		module.Module.__init__(self, id, kind)
 		pygame.sprite.Sprite.__init__(self)
 		self.p = properties.properties()

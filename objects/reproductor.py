@@ -33,7 +33,7 @@ class pygame_repr:
 		pygame.mixer.music.play(0, pos/1000.0)
 		
 class reproductor(module.Module):
-	def __init__(self):
+	def __init__(self, parent=None):
 		module.Module.__init__(self)
 		self.id = "reproductor"
 		self.repr = pygame_repr()
