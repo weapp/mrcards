@@ -54,17 +54,20 @@ class TSDWAK(sdwak.SDWAK, treenode.TreeNode):
         for key,value in self.iteritems():
             if (not hasattr(value, 'key')) or value.key is None:
                 value.key = key
-            self.add_child(value)
+            treenode.TreeNode.add_child(self, value)
             
     def __add_child(self, key, value):
         if (not hasattr(value, 'key')) or value.key is None:
             value.key = key
-        self.add_child(value)
+        treenode.TreeNode.add_child(self, value)
     
     def __del_child(self, key):
         self.del_child(self[key])
     
-    add=append
+    add = append
+    def add_child(self, child, key=0):
+        treenode.TreeNode.add_child(self, child, key=0)
+        sdwak.SDWAK.append(self, child)
     
 if __name__ == '__main__':
     pass

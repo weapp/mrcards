@@ -10,6 +10,27 @@ def dec(s):
 	else:
 		return (int(s[0:2], 16),int(s[2:4], 16),int(s[4:6], 16), 255)
 
+def parse_margin(s):
+	t = re.match("(\d+)[,\s]\s?(\d+)[,\s]\s?(\d+)[,\s]\s?(\d+)", s)
+	if not t is None:
+		t = map(int, t.groups())
+		return t
+	t = re.match("(\d+)[,\s]\s?(\d+)[,\s]\s?(\d+)", s)
+	if not t is None:
+		t = map(int, t.groups())
+		t.append(t[1])
+		return t
+	t = re.match("(\d+)[,\s]\s?(\d+)", s)
+	if not t is None:
+		t = map(int, t.groups())
+		t *= 2
+		return t
+	t = re.match("(\d+)", s)
+	if not t is None:
+		t = map(int, t.groups())
+		t *= 4
+		return t
+	
 class properties:
 	def __init__(self, eventskey=[]):
 		self.actual = ["default"]
@@ -23,6 +44,12 @@ class properties:
 		a1, a2 = self.action(key)
 		event.bind(a1)
 		event2.bind(a2)
+	
+	def get_sub(self, sub):
+		if sub is None:
+			return self
+		else:
+			return self.sub.setdefault(sub, properties())
 	
 	def action(self, key):
 		def act(event, data):
@@ -56,10 +83,13 @@ class properties:
 
 	def parse(self, attr, value):
 		if isinstance(value, basestring):
-			if "width" in attr or "height" in attr:
+			if "width" in attr or "height" in attr or "offset" in attr:
 				value = int(value)
 			elif attr == "margin":
-				value = map(int, re.match("\[(\d+),\s?(\d+),\s?(\d+),\s?(\d+)\]", value).groups())
+				if value.startswith("["):
+					value = parse_margin(value[1:-1])
+				else:
+					value = parse_margin(value)
 			elif "color" in attr:
 				if value.startswith("#"):
 					value =	dec(value[1:])
@@ -70,7 +100,7 @@ class properties:
 					else:
 						value = map(int, re.match("\[(\d+),\s?(\d+),\s?(\d+)\]", value).groups()).append(255)
 			elif attr in ("bold", "italic", "underline"):
-				value = bool(value)
+				value = not value in ("0", "False", "false", "")
 		return value
 		
 		

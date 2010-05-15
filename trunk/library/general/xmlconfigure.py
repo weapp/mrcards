@@ -91,18 +91,9 @@ def __parsear_objeto(obj_node, loader, parent=None):
 	params = {}
 	for key, value in i:
 		params[key] = value
-	if 'parent' in params: del params['parent']
-	if 'add_child' in params: del params['add_child']
-	if attr(obj_node, 'parent') in [None, 'False', '0', 'false']:
-		obj = constructor(**params)
-	else:
-		obj = constructor(parent,**params)
-		
+	obj = constructor(parent,**params)
 	for child in childs:
-		child = __parsear_objeto(child, loader, parent=obj)
-		addchild = attr(obj_node, 'add_child') #resctamos el nombre del metodo para anyadir objetos
-		if not addchild in [None, 'False', '0', 'false']:
-			getattr(obj, addchild)(child)	#anyadimos los objetos con el metodo anterior
+		obj.add_child( __parsear_objeto(child, loader, parent=obj))
 	return obj
 			
 

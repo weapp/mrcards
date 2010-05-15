@@ -177,14 +177,14 @@ def filter_completo(param):
     def filter_(lista):
         if param == "*":
             return lista
-        for elem in re.findall(r'[#&\.:]?[a-zA-Z0-9]*',param):
+        for elem in re.findall(r'[#&\.%]?[a-zA-Z0-9]*',param):
             if elem.startswith('#'):
                 lista = filter_by_id(elem[1:])(lista)
             elif elem.startswith('&'):
                 lista = filter_by_key(elem[1:])(lista)
             elif elem.startswith('.'):
                 lista = filter_by_kind(elem[1:])(lista)
-            elif elem.startswith(':'):
+            elif elem.startswith('%'):
                 lista = filter_especial(elem[1:])(lista)
             elif elem:
                 lista = filter_by_type(elem)(lista)

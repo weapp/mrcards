@@ -19,7 +19,6 @@ class button(div.div, pressable.Pressable):
 		div.div.__init__(self, parent, **kws)
 		pressable.Pressable.__init__(self)
 		self.p.subscribe('press', self.onpress, self.unpress)
-		self.p.press.text_offset_y = 2
 		self.func = func
 		self.press.bind(self.__onpress, self.__unpress)
 		self.mousebuttonup.bind(self.__click)

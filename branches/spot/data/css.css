@@ -1,0 +1,92 @@
+#header{
+	vertical-alignment:top;
+	height:40;
+	background-image:top;
+}
+
+#bottom {
+	background-image:bottom;
+	height:50;
+	vertical-alignment:bottom;
+}
+
+#header move{
+	height:20;
+	vertical-alignment:top;
+	font:DroidSerif-Regular;
+}
+
+#main{
+	margin:80 0 0 0;
+	background-color:#3a3a3a;
+}
+
+#Menu{
+	color-content:#FFF;
+	background-image:menu;
+	width:80;
+	horizontal-alignmen:left;
+}
+
+#Menu togglebutton{
+	height:70;
+	vertical-alignment:top;
+}
+
+togglebutton:press{
+	background-color:#000;
+}
+
+#play{
+	height:50;
+	width:50;
+	vertical-alignment:bottom;
+	horizontal-alignment:left;
+	margin:50 0 0 0;
+	bold:1;
+	background-image:play;
+}
+
+#slider{
+	direction:horizontal;
+	width:50;
+	horizontal-alignment:left;
+	background-image:slider;
+}
+
+button:press{
+	text_offset_y:2;
+}
+
+#rw{
+	background-image:rw;
+	height:50;
+	width:50;
+	vertical-alignment:bottom;
+	horizontal-alignment:left;
+}
+
+#fw{
+	background-image:fw;
+	height:50;
+	width:50;
+	vertical-alignment:bottom;
+	horizontal-alignment:left;
+	margin:100 0 0 0;
+}
+
+#slid{
+	height:50;
+	width:50;
+	margin:150 15;
+	background-image:slid;
+}
+
+#close{
+	background-image:close;
+	height:20;
+	width:20;
+	vertical-alignment:top;
+	horizontal-alignment:right;
+	margin:5;
+}
