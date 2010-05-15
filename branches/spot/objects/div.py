@@ -26,7 +26,9 @@ class div(pygame.sprite.Sprite, module.Module):
 		for attr, value in kws.iteritems():
 			self.set_prop(attr, value)
 		self.content = content
-		self.set_parent(parent)		
+		self.set_parent(parent)
+		for style in core.core.get_app().search("style"):
+			style.apply_to_elem(self)
 		self.update_position()
 		
 	def update_position(self,*args):

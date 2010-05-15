@@ -64,7 +64,7 @@ class properties:
 		else:							#pide la prop actual
 			r = None
 			if self.actual[-1] != "default":								#no nos encontramos donde queremos la propiedad
-				r = getattr(self.sub[self.actual[-1]], attr, None)					
+				r = getattr(self.get_sub(self.actual[-1]), attr, None)					
 			return r if not r is None else self.prop.get(attr, None)
 		'''
 		r = getattr(self.sub[self.actual[-1]],attr) if self.sub.has_key(self.actual[-1]) else self.prop.get(attr, None)

@@ -2,7 +2,12 @@
 	vertical-alignment:top;
 	height:40;
 	background-image:top;
+	background-color:#FF0;
 }
+#header move%last{
+	margin:[0,20,0,0];
+}
+
 
 #bottom {
 	background-image:bottom;
@@ -25,7 +30,7 @@
 	color-content:#FFF;
 	background-image:menu;
 	width:80;
-	horizontal-alignmen:left;
+	horizontal-alignment:left;
 }
 
 #Menu togglebutton{
@@ -55,7 +60,7 @@ togglebutton:press{
 }
 
 button:press{
-	text_offset_y:2;
+	text-offset-y:2;
 }
 
 #rw{
@@ -89,4 +94,42 @@ button:press{
 	vertical-alignment:top;
 	horizontal-alignment:right;
 	margin:5;
+}
+
+song{
+	background-color:[105,105,105,70];
+	vertical-alignment:top;
+	height:28;
+	color-content:[200,200,200,255];
+}
+
+song .title{
+	color-content:#FFF;
+	text-align:left;
+	margin:5;
+ }
+
+song .info{
+	color-content:#FFF;
+	margin:0 5 5 5;
+	horizontal-alignment:right;
+	width:50;
+	background-color:#46825A;
+	border-color:#46825A;
+	border-width:3;
+}
+
+song:press{
+	background-color:[150, 150, 255, 255];
+}
+
+song .title:press{
+	color-content:#000;
+}
+
+#bottom button%last{
+	height:50;
+	width:150;
+	vertical_alignment:bottom;
+	horizontal_alignment:right;
 }
