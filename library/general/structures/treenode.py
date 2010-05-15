@@ -43,6 +43,8 @@ class TreeNode:
             if hasattr(self.parent, "del_child"):
                 self.parent.del_child(self, None)
             self.parent = parent
+            if hasattr(self.parent, "add_child"):
+                self.parent.add_child(self)
 
     def add_child(self, child, key=0):
         if not child in self.__childs.setdefault(key, []):
@@ -91,7 +93,7 @@ class TreeNode:
     def search_by_id(self, id):
         r=self.filter_objects(filter_=filter_by_id(id))
         return [r[0]] if r else []
-		
+        
     def search_by_key(self, key):
         r=self.filter_objects(filter_=filter_by_key(key))
         return [r[0]] if r else []
