@@ -3,6 +3,7 @@
 import re
 from library.general import singleton
 import random
+import hashlib
 
 class Ids:
     __metaclass__ = singleton.Singleton
@@ -12,7 +13,7 @@ class Ids:
         id = None
         keys = self.ids.keys()
         while (id is None) or (id in keys):
-            id = random.randint(3,100)
+            id = hashlib.md5(str(random.random())).hexdigest()[0:5]
         return id
 ids = Ids()
     
@@ -31,7 +32,10 @@ class TreeNode:
         return self.__id
         
     def set_id(self, id):
+        if hasattr(self, "_TreeNode__id"):
+            del ids.ids[self.__id]
         self.__id = id if not id is None else ids.generate_valid_id()
+        ids.ids[self.__id] = self
 
     id = property(get_id, set_id)
     
