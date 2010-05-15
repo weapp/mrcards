@@ -2,10 +2,6 @@
 	vertical-alignment:top;
 	height:40;
 	background-image:top;
-	background-color:#FF0;
-}
-#header move%last{
-	margin:[0,20,0,0];
 }
 
 
@@ -19,6 +15,7 @@
 	height:20;
 	vertical-alignment:top;
 	font:DroidSerif-Regular;
+	margin:80 0;
 }
 
 #main{
@@ -31,14 +28,14 @@
 	background-image:menu;
 	width:80;
 	horizontal-alignment:left;
+	c_ell-height:65;
 }
 
 #Menu togglebutton{
-	height:70;
-	vertical-alignment:top;
+	margin:0 0 4;
 }
 
-togglebutton:press{
+#Menu togglebutton:press,#Menu togglebutton:selected{
 	background-color:#000;
 }
 
@@ -96,18 +93,27 @@ button:press{
 	margin:5;
 }
 
+#close:press{
+	background-image:close_press;
+}
+
+#lista{
+	margin:15,15,15,15;
+	cell-height:34;
+}
+
 song{
-	background-color:[105,105,105,70];
-	vertical-alignment:top;
+	background-color:#69696946;
 	height:28;
-	color-content:[200,200,200,255];
+	color-content:#C8C8C8;
+	margin:4;
 }
 
 song .title{
 	color-content:#FFF;
 	text-align:left;
 	margin:5;
- }
+}
 
 song .info{
 	color-content:#FFF;
@@ -119,11 +125,11 @@ song .info{
 	border-width:3;
 }
 
-song:press{
-	background-color:[150, 150, 255, 255];
+song:selected, song:press{
+	background-color:#9696FF;
 }
 
-song .title:press{
+song .title:selected{
 	color-content:#000;
 }
 
@@ -133,3 +139,8 @@ song .title:press{
 	vertical_alignment:bottom;
 	horizontal_alignment:right;
 }
+
+#sidebar{
+	margin:0,40,0,50;	
+}
+

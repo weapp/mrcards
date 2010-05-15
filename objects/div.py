@@ -3,6 +3,7 @@ from library import core
 import pygame
 import re
 from library.resources.images import getImage
+from library.resources.font import getFont
 import properties
 
 default = dict( color_content="[0,0,0,0]", width="0", height="0", vertical_alignment="", \
@@ -31,13 +32,12 @@ class div(pygame.sprite.Sprite, module.Module):
 			style.apply_to_elem(self)
 		self.update_position()
 		
-	def update_position(self,*args):
+	def update_self_position(self,*args):
 		self.container = self.rect = pygame.Rect(0, 0, self.p.width , self.p.height)
-		self.f = pygame.font.Font("data/"+self.p.font+".ttf", self.p.font_size)
+		self.f = getFont(self.p.font, self.p.font_size)
 		self.f.set_bold(self.p.bold)
 		self.f.set_underline(self.p.underline)
 		self.f.set_italic(self.p.italic)
-		self.surface_content = self.f.render(self.content, True, self.p.color_content)
 		self.p.text_offset_x, self.p.text_offset_y = 0, 0
 		
 		if self.p.vertical_alignment.lower() == "bottom":
@@ -67,21 +67,22 @@ class div(pygame.sprite.Sprite, module.Module):
 		self.container = self.rect.move(self.parent.container.x, self.parent.container.y)
 		self.container = self.container.inflate(self.p.border_width * -2, self.p.border_width * -2)
 		self.update_surface()
-		
+	
+	def update_position(self,*args):
+		self.update_self_position(self,*args)
 		for child in self.get_childs():
 			child.update_position()
 	
 	def update_surface(self):
+		self.surface_content = self.f.render(self.content, True, self.p.color_content)
 		self.image = pygame.Surface(self.rect.size, pygame.SRCALPHA | pygame.HWSURFACE)
 		#self.image.fill(self.p.background_color)
 		pygame.draw.rect(self.image, self.p.background_color, self.image.get_rect().inflate(-self.p.border_width, -self.p.border_width))
-		if self.p.border_width:
-			pygame.draw.rect(self.image, self.p.border_color, self.image.get_rect().inflate(-self.p.border_width, -self.p.border_width), self.p.border_width)
-				
 		center = list(self.image.get_rect().center)
-		
 		if self.p.background_image:
 			self.image.blit(getImage(self.p.background_image), getImage(self.p.background_image).get_rect(center=center))
+		if self.p.border_width:
+			pygame.draw.rect(self.image, self.p.border_color, self.image.get_rect().inflate(-self.p.border_width, -self.p.border_width), self.p.border_width)
 		
 		if self.p.text_align == "left":
 			center[0] = self.surface_content.get_rect().center[0]
