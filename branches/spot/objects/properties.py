@@ -48,12 +48,13 @@ class properties:
 	
 	def push(self, key):
 		self.actual.append(key)
-		if not self.parent is None: self.parent.update_position()
+		if self.get_sub(key).prop:
+			if not self.parent is None: self.parent.update_position()
 		
 	def pop(self, key):
 		if key in self.actual:
 			self.actual.remove(key)
-		if not self.parent is None: self.parent.update_position()
+			if not self.parent is None: self.parent.update_position()
 	
 	def get_sub(self, sub):
 		if sub is None:

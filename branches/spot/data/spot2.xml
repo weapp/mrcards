@@ -17,7 +17,7 @@
 					</vbox>
 					<div id="main">
 						<scrollpanel>
-							<filemanager />
+							<!--<filemanager />-->
 						</scrollpanel>
 						<vbox id="lista" />
 					</div>

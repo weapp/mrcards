@@ -10,13 +10,13 @@ class Clickable:
 		core.core.event.mousebuttonup[1].bind(self.__mousebuttonup)
 		
 	def __mousebuttondown(self, event, data):
-		if hasattr(self,'parent') and hasattr(self.parent, 'container') and hasattr(self,'rect'):
-			rect = self.container.clamp(self.parent.container).clip(self.parent.container)
+		if hasattr(self,'parent') and hasattr(self.parent, 'get_container') and hasattr(self,'rect'):
+			rect = self.container.clamp(self.parent.get_container(self)).clip(self.parent.get_container(self))
 			if rect.collidepoint(data['pos']):
 				self.mousebuttondown(**data)
 		
 	def __mousebuttonup(self, event, data):
-		if hasattr(self,'parent') and hasattr(self.parent, 'container') and hasattr(self,'rect'):
-			rect = self.container.clamp(self.parent.container).clip(self.parent.container)
+		if hasattr(self,'parent') and hasattr(self.parent, 'get_container') and hasattr(self,'rect'):
+			rect = self.container.clamp(self.parent.get_container(self)).clip(self.parent.get_container(self))
 			if rect.collidepoint(data['pos']):
 				self.mousebuttonup(**data)

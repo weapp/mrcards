@@ -45,9 +45,9 @@ class slider(div.div, dragable.dragable):
 			if self.rect.x < 0:
 				self.container.move_ip((-self.rect.x, 0))
 				self.rect.move_ip((-self.rect.x, 0))
-			elif self.rect.x + self.rect.w > self.parent.container.w:
-				self.container.move_ip( ( -self.rect.x + self.parent.container.w - self.rect.w, 0))
-				self.rect.move_ip( ( -self.rect.x + self.parent.container.w - self.rect.w, 0))
+			elif self.rect.x + self.rect.w > self.parent.get_container(self).w:
+				self.container.move_ip( ( -self.rect.x + self.parent.get_container(self).w - self.rect.w, 0))
+				self.rect.move_ip( ( -self.rect.x + self.parent.get_container(self).w - self.rect.w, 0))
 			self.content = "%d:%02d" % (self.rect.x/10/60, self.rect.x/10%60)
 			self.p.vertical_alignment="left"
 			self.p.margin[0] = self.rect.x
@@ -58,12 +58,12 @@ class slider(div.div, dragable.dragable):
 			if self.rect.y < 0:
 				self.container.move_ip((0, -self.rect.y))
 				self.rect.move_ip((0, -self.rect.y))
-			elif self.rect.y + self.rect.h > self.parent.container.h:
-				self.container.move_ip( (0, -self.rect.y + self.parent.container.h - self.rect.h))
-				self.rect.move_ip( (0, -self.rect.y + self.parent.container.h - self.rect.h))
+			elif self.rect.y + self.rect.h > self.parent.get_container(self).h:
+				self.container.move_ip( (0, -self.rect.y + self.parent.get_container(self).h - self.rect.h))
+				self.rect.move_ip( (0, -self.rect.y + self.parent.get_container(self).h - self.rect.h))
 			self.content = "%d:%02d" % (self.rect.y/10/60, self.rect.y/10%60)
 			self.p.vertical_alignment="top"
 			self.p.margin[1] = self.rect.y
 			
-		self.surface_content = self.f.render(self.content, True, self.p.color_content)
+		
 		self.update_surface()

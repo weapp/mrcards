@@ -19,3 +19,8 @@ class layer(basicapp.BasicApp):
 		for child in self.get_all_childs():
 			child.update_position()
 	
+	def get_container(self, child):
+		return self.container
+		
+	def get_clip_container(self, child):
+		return self.container
