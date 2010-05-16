@@ -6,10 +6,10 @@ from library.resources.images import getImage
 from library.resources.font import getFont
 import properties
 
-default = dict( color_content="[0,0,0,0]", width="0", height="0", vertical_alignment="", \
-				horizontal_alignment="", margin="[0,0,0,0]", background_color="[80,80,80,0]", background_image=None, \
-				border_color="[0,0,0,0]", border_width="0", overflow="hidden",\
-				bold="", underline="", italic="", text_align="center", vertical_align="center", font="DroidSans", font_size=12 )
+default = dict( color_content="[0,0,0,255]", width=0, height=0, vertical_alignment="center", \
+				horizontal_alignment="", margin="[0,0,0,0]", background_color="[255,255,255,0]", background_image=None, \
+				border_color="[0,0,0,0]", border_width=0, overflow="hidden",\
+				bold=0, underline=0, italic=0, text_align="center", vertical_align="center", font="DroidSans", font_size=12, text_offset_x=0, text_offset_y=0 )
 
 class div(pygame.sprite.Sprite, module.Module):
 	def __init__(self, parent=None, id=None, kind=None, content="", **kws):
@@ -19,47 +19,44 @@ class div(pygame.sprite.Sprite, module.Module):
 		pygame.sprite.Sprite.__init__(self)
 		self.p = properties.properties(self)
 		for attr, value in default.iteritems():
-			self.set_prop(attr, value)
+			self.p.set(attr, value)
 		for attr, value in kws.iteritems():
-			self.set_prop(attr, value)
+			self.p.set(attr, value)
 		self.content = content
 		self.set_parent(parent)
 		for style in core.core.get_app().search("style"):
 			style.apply_to_elem(self)
 		self.update_position()
-		
-	def set_prop(self, attr, value):
-		setattr(self.p, attr, value)
-	
+			
 	def update_self_position(self,*args):
-		self.container = self.rect = pygame.Rect(0, 0, self.p.width , self.p.height)
+		self.container = self.rect = pygame.Rect(0, 0, self.p.get('width') , self.p.get('height'))
 		
-		if self.p.vertical_alignment.lower() == "bottom":
-			top = self.parent.get_container(self).h - (self.rect.h + self.p.margin[3])
-			height = self.p.height
-		elif self.p.vertical_alignment.lower() == "top":
-			top = self.p.margin[1]
-			height = self.p.height
+		if self.p.get('vertical_alignment') == "bottom":
+			top = self.parent.get_container(self).h - (self.rect.h + self.p.get('margin')[3])
+			height = self.p.get('height')
+		elif self.p.get('vertical_alignment') == "top":
+			top = self.p.get('margin')[1]
+			height = self.p.get('height')
 		else:
-			top = self.p.margin[1]
-			height = self.parent.get_container(self).h - (self.p.margin[1] + self.p.margin[3])
+			top = self.p.get('margin')[1]
+			height = self.parent.get_container(self).h - (self.p.get('margin')[1] + self.p.get('margin')[3])
 				
-		if self.p.horizontal_alignment.lower() == "right":
-			left = self.parent.get_container(self).w - (self.rect.w + self.p.margin[2])
-			width = self.p.width
-		elif self.p.horizontal_alignment.lower() == "left":
-			left = self.p.margin[0]
-			width = self.p.width
+		if self.p.get('horizontal_alignment') == "right":
+			left = self.parent.get_container(self).w - (self.rect.w + self.p.get('margin')[2])
+			width = self.p.get('width')
+		elif self.p.get('horizontal_alignment') == "left":
+			left = self.p.get('margin')[0]
+			width = self.p.get('width')
 		else:
-			left = self.p.margin[0]
-			width = self.parent.get_container(self).w - (self.p.margin[0] + self.p.margin[2])
+			left = self.p.get('margin')[0]
+			width = self.parent.get_container(self).w - (self.p.get('margin')[0] + self.p.get('margin')[2])
 			
 		height = max(0, height)
 		width = max(0, width)
 		
 		self.rect = pygame.Rect(left, top, width, height)
 		self.container = self.rect.move(self.parent.get_container(self).x, self.parent.get_container(self).y)
-		self.container = self.container.inflate(self.p.border_width * -2, self.p.border_width * -2)
+		self.container = self.container.inflate(self.p.get('border_width') * -2, self.p.get('border_width') * -2)
 		self.update_surface()
 	
 	def update_position(self,*args):
@@ -70,8 +67,8 @@ class div(pygame.sprite.Sprite, module.Module):
 	def update_surface(self):
 		self.image = pygame.Surface(self.rect.size, pygame.SRCALPHA | pygame.HWSURFACE)
 		#self.image.fill(self.p.background_color)
-		bgcolor = self.p.background_color
-		image = self.p.background_image
+		bgcolor = self.p.get('background_color')
+		image = self.p.get('background_image')
 		
 		if image or self.content:
 			center = list(self.image.get_rect().center)
@@ -84,31 +81,31 @@ class div(pygame.sprite.Sprite, module.Module):
 			image = getImage(image)
 			self.image.blit(image, image.get_rect(center=center))
 			
-		if self.p.border_width:
-			#pygame.draw.rect(self.image, self.p.border_color, self.image.get_rect().inflate(-1*self.p.border_width, -1*self.p.border_width), self.p.border_width)
-			self.image.fill(self.p.border_color, pygame.Rect(0, 0, self.p.border_width, self.rect.h))    #left
-			self.image.fill(self.p.border_color, pygame.Rect(0, 0, self.rect.w, self.p.border_width)) #top
-			self.image.fill(self.p.border_color, pygame.Rect(self.rect.w - self.p.border_width, 0, self.p.border_width, self.rect.h))
-			self.image.fill(self.p.border_color, pygame.Rect(0, self.rect.h - self.p.border_width, self.rect.w, self.p.border_width))
+		if self.p.get('border_width'):
+			#pygame.draw.rect(self.image, self.p.get('border_color'), self.image.get_rect().inflate(-1*self.p.get('border_width'), -1*self.p.get('border_width')), self.p.get('border_width'))
+			self.image.fill(self.p.get('border_color'), pygame.Rect(0, 0, self.p.get('border_width'), self.rect.h))    #left
+			self.image.fill(self.p.get('border_color'), pygame.Rect(0, 0, self.rect.w, self.p.get('border_width'))) #top
+			self.image.fill(self.p.get('border_color'), pygame.Rect(self.rect.w - self.p.get('border_width'), 0, self.p.get('border_width'), self.rect.h))
+			self.image.fill(self.p.get('border_color'), pygame.Rect(0, self.rect.h - self.p.get('border_width'), self.rect.w, self.p.get('border_width')))
 		
 		if self.content != "":
-			self.f = getFont(self.p.font, self.p.font_size)
-			self.f.set_bold(self.p.bold)
-			self.f.set_underline(self.p.underline)
-			self.f.set_italic(self.p.italic)
-			self.p.text_offset_x, self.p.text_offset_y = 0, 0
-			self.surface_content = self.f.render(self.content, True, self.p.color_content)
-			if self.p.text_align == "left":
+			self.f = getFont(self.p.get('font'), self.p.get('font_size'))
+			self.f.set_bold(self.p.get('bold'))
+			self.f.set_underline(self.p.get('underline'))
+			self.f.set_italic(self.p.get('italic'))
+			#self.p.text_offset_x, self.p.text_offset_y = 0, 0
+			self.surface_content = self.f.render(self.content, True, self.p.get('color_content'))
+			if self.p.get('text_align') == "left":
 				center[0] = self.surface_content.get_rect().center[0]
-			elif self.p.text_align == "righr":
+			elif self.p.get('text_align') == "righr":
 				center[0] = self.rect.w - self.surface_content.get_rect().center[0]
 				
-			if self.p.text_align == "top":
+			if self.p.get('text_align') == "top":
 				center[1] = self.surface_content.get_rect().center[1]
-			elif self.p.text_align == "bottom":
+			elif self.p.get('text_align') == "bottom":
 				center[1] = self.rect.h - self.surface_content.get_rect().center[1]
 				
-			center = center[0] + self.p.text_offset_x, center[1] + self.p.text_offset_y
+			center = center[0] + self.p.get('text_offset_x'), center[1] + self.p.get('text_offset_y')
 			self.image.blit(self.surface_content, self.surface_content.get_rect(center=center))
 		
 				
@@ -118,7 +115,7 @@ class div(pygame.sprite.Sprite, module.Module):
 		
 	def update(self):
 		video = core.core.video.get_screen()
-		rect = self.parent.get_container(self).clip(video.get_rect()).clip(self.parent.get_clip_container(self))
+		rect = self.parent.get_container(self).clip(video.get_rect())
 		if rect.w == 0: rect = pygame.Rect(0,0,0,0)
 		video.subsurface(rect).blit(self.image, self.rect)
 		for child in self.get_childs():

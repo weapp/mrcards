@@ -36,7 +36,7 @@ class style(module.Module):
 						if filter is None or filter(item):
 							for prop in properties:
 								prop = prop.split(":")
-								setattr(item.p.get_sub(onevent), prop[0].replace("-","_"), prop[1])
+								item.p.get_sub(onevent).set(prop[0], prop[1])
 							item.update_position()
 	
 	def get_properties(self):

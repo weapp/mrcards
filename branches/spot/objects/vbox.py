@@ -16,10 +16,10 @@ class vbox(div.div):
 		childs = self.get_childs()
 		container = self.container.copy()
 		n = len(childs)
-		if self.p.cell_height is None:
+		if self.p.get('cell_height') is None:
 			container.h = self.container.h/n
 		else:
-			container.h = self.p.cell_height
+			container.h = self.p.get('cell_height')
 			self.container.h = container.h * n
 		container.move_ip(0, childs.index(child) * container.h)
 		

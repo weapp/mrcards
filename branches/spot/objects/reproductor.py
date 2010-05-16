@@ -45,16 +45,16 @@ class reproductor(module.Module):
 	def update(self):
 		play = core.core.get_app().find('#play')
 		if self.repr.busy:
-			play.p.background_image = "pause"
+			play.p.set('background_image', "pause")
 			self.update_slide()
 		else:
-			play.p.background_image = "play"
+			play.p.set('background_image', "play")
 		play.update_surface()
 		
 	def update_slide(self):
 			slide = core.core.get_app().find('#slider')
 			pos = self.repr.get_pos()
-			total = slide.parent.container.w - slide.rect.w
+			total = slide.parent.get_container(slide).w - slide.rect.w
 			slide.move((-total,0))
 			#pos = total*pos/self.lenght
 			slide.move((pos/100,0))
