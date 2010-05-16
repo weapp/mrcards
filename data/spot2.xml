@@ -2,20 +2,25 @@
 	<style file="css"/>
 	<reproductor />
 	<layer>
-		<div border_color="#828282"	border_width="1">
+		<div border_color="#777" border_width="1">
 			<div border_color="#FFF" border_width="1">
 				<vbox id="header">
 					<move content="Instictiv"/>
 					<move content="Good News for People Who Love Band News &gt; Now Playing" />
 				</vbox>
-				<div id="sidebar">
+				<div id="inter">
 					<vbox id="Menu" horizontal_alignment="left">
 						<togglebutton func="" background_image="search" />
 						<togglebutton func="" background_image="folder-sound" />
 						<togglebutton func="" background_image="shuffle" />
 						<togglebutton func="" background_image="repeat" />
 					</vbox>
-					<div id="main"/>
+					<div id="main">
+						<scrollpanel>
+							<filemanager />
+						</scrollpanel>
+						<vbox id="lista" />
+					</div>
 				</div>
 				<div id="bottom">
 					<button func="" id="rw" />
@@ -24,12 +29,21 @@
 					<div id="slid">
 						<slider id="slider" onup="core.core.get_app().find('#reproductor').slidermove()" />
 					</div>
-					<button func="core.core.get_app().find('#reproductor').recargar()"
-					content="Recargar Biblioteca" />
+					<button func="core.core.get_app().find('#reproductor').recargar()" content="Recargar Biblioteca" />
 					<size content="*" height="20" width="100" vertical_alignment="bottom" horizontal_alignment="right" margin="[150,0,0,0]" />
 				</div>
-			</div>	
-			<button id="close" func="core.core.stop()"/>
+			</div>
 		</div>
+		<button id="close" func="core.core.stop()"/>
+		
+		<div background_color="#777" width="2" height="2" vertical_alignment="bottom" horizontal_alignment="right"/>
+		<div background_color="#FFF" width="1" height="1" vertical_alignment="bottom" horizontal_alignment="right" margin="2"/>
+		<div background_color="#777" width="2" height="2" vertical_alignment="bottom" horizontal_alignment="left"/>
+		<div background_color="#FFF" width="1" height="1" vertical_alignment="bottom" horizontal_alignment="left" margin="2"/>
+		<div background_color="#777" width="2" height="2" vertical_alignment="top" horizontal_alignment="right"/>
+		<div background_color="#FFF" width="1" height="1" vertical_alignment="top" horizontal_alignment="right" margin="2"/>
+		<div background_color="#777" width="2" height="2" vertical_alignment="top" horizontal_alignment="left"/>
+		<div background_color="#FFF" width="1" height="1" vertical_alignment="top" horizontal_alignment="left" margin="2"/>
+		
 	</layer>
 </state>
