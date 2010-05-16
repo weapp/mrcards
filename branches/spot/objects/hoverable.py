@@ -16,6 +16,8 @@ class Hoverable:
 			
 			if rect.collidepoint(data['pos']) and not rect.collidepoint(self.__prev_pos):
 				self.onhover(**data)
+				self.p.push("hover")
 			if not rect.collidepoint(data['pos']) and rect.collidepoint(self.__prev_pos):
 				self.offhover(**data)
+				self.p.pop("hover")
 			self.__prev_pos = data['pos']

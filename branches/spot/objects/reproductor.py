@@ -92,13 +92,11 @@ class reproductor(module.Module):
 		'''
 		
 	def cargar(self, event=None, data=None):
-		#main = core.core.get_app().find('&SceneManager').get_childs()[0][1].get_childs()[0].get_childs()[2].get_childs()[1]
-		main = core.core.get_app().find('#main')
-		self.lista = vbox.vbox(main, id="lista")
+		self.lista = core.core.get_app().find('#lista')
 		self.recargar()
 	
 	def recargar(self, event=None, data=None):
-		#self.lista.clear()
+		self.lista.clear()
 		path, dir, files = os.walk('music').next()
 		for i, file in enumerate(files):
 			song.song(self.lista, file, i)

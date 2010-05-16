@@ -7,9 +7,10 @@
 
 #bottom {
 	background-image:bottom;
-	height:50;
+	height:46;
 	vertical-alignment:bottom;
 }
+
 
 #header move{
 	height:20;
@@ -19,20 +20,20 @@
 }
 
 #main{
-	margin:80 0 0 0;
+	margin:76 0 0 0;
 	background-color:#3a3a3a;
 }
 
 #Menu{
 	color-content:#FFF;
 	background-image:menu;
-	width:80;
+	width:76;
 	horizontal-alignment:left;
-	c_ell-height:65;
+	cell-height:65;
 }
 
 #Menu togglebutton{
-	margin:0 0 4;
+	margin:0 0 0;
 }
 
 #Menu togglebutton:press,#Menu togglebutton:selected{
@@ -98,15 +99,18 @@ button:press{
 }
 
 #lista{
-	margin:15,15,15,15;
+	margin:305 5 5 5;
 	cell-height:34;
 }
 
 song{
-	background-color:#69696946;
+	background-color:#6664;
 	height:28;
 	color-content:#C8C8C8;
-	margin:4;
+}
+
+#lista %even song{
+	background-color:#7777;
 }
 
 song .title{
@@ -129,6 +133,10 @@ song:selected, song:press{
 	background-color:#9696FF;
 }
 
+song:hover{
+	background-color:#88D;
+}
+
 song .title:selected{
 	color-content:#000;
 }
@@ -140,7 +148,15 @@ song .title:selected{
 	horizontal_alignment:right;
 }
 
-#sidebar{
-	margin:0,40,0,50;	
+#inter{
+	margin:0 40 0 46;	
 }
 
+scrollpanel{
+horizontal-alignment:left;
+width:300;
+}
+
+#image{
+	background-image:image;
+}

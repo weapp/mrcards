@@ -7,11 +7,9 @@ class togglebutton(button.button):
 		
 	def _button__click(self, event, data):
 		self.i += 1
-		if self.i == 2: self.i=0
-		if self.i:
-			self.p.actual.append('selected')
+		if self.i == 2:
+			self.i=0
+			self.p.pop('selected')
 		else:
-			self.p.actual.remove('selected')
-		self.update_surface()
+			self.p.push('selected')
 		button.button._button__click(self, event, data)
-		

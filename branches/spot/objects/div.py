@@ -21,7 +21,7 @@ class div(pygame.sprite.Sprite, module.Module):
 			kind = kind.split(" ")
 		module.Module.__init__(self, id, kind)
 		pygame.sprite.Sprite.__init__(self)
-		self.p = properties.properties()
+		self.p = properties.properties(self)
 		for attr, value in default.iteritems():
 			self.set_prop(attr, value)
 		for attr, value in kws.iteritems():
@@ -77,22 +77,25 @@ class div(pygame.sprite.Sprite, module.Module):
 		self.surface_content = self.f.render(self.content, True, self.p.color_content)
 		self.image = pygame.Surface(self.rect.size, pygame.SRCALPHA | pygame.HWSURFACE)
 		#self.image.fill(self.p.background_color)
-		pygame.draw.rect(self.image, self.p.background_color, self.image.get_rect().inflate(-self.p.border_width, -self.p.border_width))
+		self.image.fill(self.p.background_color)
 		center = list(self.image.get_rect().center)
 		if self.p.background_image:
 			self.image.blit(getImage(self.p.background_image), getImage(self.p.background_image).get_rect(center=center))
 		if self.p.border_width:
-			pygame.draw.rect(self.image, self.p.border_color, self.image.get_rect().inflate(-self.p.border_width, -self.p.border_width), self.p.border_width)
-		
+			#pygame.draw.rect(self.image, self.p.border_color, self.image.get_rect().inflate(-1*self.p.border_width, -1*self.p.border_width), self.p.border_width)
+			self.image.fill(self.p.border_color, pygame.Rect(0, 0, self.p.border_width, self.rect.h))    #left
+			self.image.fill(self.p.border_color, pygame.Rect(0, 0, self.rect.w, self.p.border_width)) #top
+			self.image.fill(self.p.border_color, pygame.Rect(self.rect.w - self.p.border_width, 0, self.p.border_width, self.rect.h))
+			self.image.fill(self.p.border_color, pygame.Rect(0, self.rect.h - self.p.border_width, self.rect.w, self.p.border_width))
 		if self.p.text_align == "left":
 			center[0] = self.surface_content.get_rect().center[0]
 		elif self.p.text_align == "righr":
-			center[0] = self.image.get_rect().w - self.surface_content.get_rect().center[0]
+			center[0] = self.rect.w - self.surface_content.get_rect().center[0]
 			
 		if self.p.text_align == "top":
 			center[1] = self.surface_content.get_rect().center[1]
 		elif self.p.text_align == "bottom":
-			center[1] = self.image.get_rect().h - self.surface_content.get_rect().center[1]
+			center[1] = self.rect.h - self.surface_content.get_rect().center[1]
 			
 		center = center[0] + self.p.text_offset_x, center[1] + self.p.text_offset_y
 		self.image.blit(self.surface_content, self.surface_content.get_rect(center=center))

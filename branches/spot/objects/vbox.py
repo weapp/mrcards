@@ -19,6 +19,10 @@ class vbox(div.div):
 		self.add_child = self.append_child
 		return box
 		
+	def clear(self):
+		div.div.clear(self)
+		self.box = []
+		
 	def update_position(self, *args, **kws):
 		div.div.update_self_position(self, *args, **kws)
 		if hasattr(self, "box"):

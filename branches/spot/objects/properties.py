@@ -32,8 +32,9 @@ def parse_margin(s):
 		return t
 	
 class properties:
-	def __init__(self, eventskey=[]):
-		self.actual = ["default"]
+	def __init__(self, parent=None, eventskey=[]):
+		self.parent=parent
+		self.actual = []
 		self.prop = {}
 		self.sub = {}
 		for key, event, event2 in eventskey:
@@ -45,6 +46,15 @@ class properties:
 		event.bind(a1)
 		event2.bind(a2)
 	
+	def push(self, key):
+		self.actual.append(key)
+		if not self.parent is None: self.parent.update_position()
+		
+	def pop(self, key):
+		if key in self.actual:
+			self.actual.remove(key)
+		if not self.parent is None: self.parent.update_position()
+	
 	def get_sub(self, sub):
 		if sub is None:
 			return self
@@ -53,9 +63,9 @@ class properties:
 	
 	def action(self, key):
 		def act(event, data):
-			self.actual.append(key)
+			self.push(key)
 		def act2(event, data):
-			if key in self.actual: self.actual.remove(key)
+			self.pop(key)
 		return act, act2
 		
 	def __getattr__(self, attr):
@@ -63,8 +73,9 @@ class properties:
 			return self.sub[attr]		
 		else:							#pide la prop actual
 			r = None
-			if self.actual[-1] != "default":								#no nos encontramos donde queremos la propiedad
-				r = getattr(self.get_sub(self.actual[-1]), attr, None)					
+			for elem in reversed(self.actual):
+				r = getattr(self.get_sub(elem), attr, None)
+				if not r is None: break
 			return r if not r is None else self.prop.get(attr, None)
 		'''
 		r = getattr(self.sub[self.actual[-1]],attr) if self.sub.has_key(self.actual[-1]) else self.prop.get(attr, None)
@@ -76,7 +87,7 @@ class properties:
 
 				
 	def __setattr__(self, attr, value):
-		if attr in ("actual", "prop", "sub"):
+		if attr in ("actual", "prop", "sub", "parent"):
 			self.__dict__[attr] = value
 		else:
 			self.prop[attr] = self.parse(attr, value)
@@ -108,7 +119,7 @@ if __name__ == "__main__":
 	from library import event
 	e = event.Event()
 	e2 = event.Event()
-	p = properties( (("k", e, e2), ) )
+	p = properties( eventskey=(("k", e, e2), ) )
 	p.value1 = "default_value1"
 	p.value2 = "default_value2"
 	p.k.value2 = "k.value2"	

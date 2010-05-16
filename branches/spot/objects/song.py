@@ -16,12 +16,8 @@ class song(button.button):
 			for box in self.parent.parent.box:
 				for child in box.get_childs():
 					if 'selected' in child.p.actual:
-						child.p.actual.remove('selected')
-						child.update_position()
-						child.title.p.actual.remove('selected')
-						child.title.update_position()
-			self.p.actual.append('selected')
-			self.update_position()
-			self.title.p.actual.append('selected')
-			self.title.update_position()
+						child.p.pop('selected')
+						child.title.p.pop('selected')
+			self.p.push('selected')
+			self.title.p.push('selected')
 			button.button._button__click(self, event, data)
