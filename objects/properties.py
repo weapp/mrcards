@@ -68,7 +68,19 @@ class properties:
 		def act2(event, data):
 			self.pop(key)
 		return act, act2
+	
+	def get(self, prop):
+		r = None
+		for elem in reversed(self.actual):
+			r = self.get_sub(elem).get(prop)
+			if not r is None: break
+		return r if not r is None else self.prop.get(prop, None)
 		
+	def set(self, prop, value):
+		prop = prop.replace("-","_")
+		self.prop[prop] = self.parse(prop, value)
+	
+	"""
 	def __getattr__(self, attr):
 		if self.sub.has_key(attr):		#pide una propiedad en un estado
 			return self.sub[attr]		
@@ -85,14 +97,16 @@ class properties:
 		else:
 			return r
 		'''
+	"""
 
-				
 	def __setattr__(self, attr, value):
 		if attr in ("actual", "prop", "sub", "parent"):
 			self.__dict__[attr] = value
 		else:
-			self.prop[attr] = self.parse(attr, value)
+			#self.prop[attr] = self.parse(attr, value)
+			raise Exception()
 
+	
 	def parse(self, attr, value):
 		if isinstance(value, basestring):
 			if "width" in attr or "height" in attr or "offset" in attr:
@@ -113,6 +127,8 @@ class properties:
 						value = map(int, re.match("\[(\d+),\s?(\d+),\s?(\d+)\]", value).groups()).append(255)
 			elif attr in ("bold", "italic", "underline"):
 				value = not value in ("0", "False", "false", "")
+			else:
+				value = value.lower()
 		return value
 		
 		
