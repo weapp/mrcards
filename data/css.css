@@ -109,7 +109,7 @@ song{
 	color-content:#C8C8C8;
 }
 
-#lista %even song{
+#lista song%even{
 	background-color:#7777;
 }
 

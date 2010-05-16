@@ -13,11 +13,9 @@ class song(button.button):
 		if 'selected' in self.p.actual:
 			core.core.get_app().find("#reproductor").play()
 		else:
-			for box in self.parent.parent.box:
-				for child in box.get_childs():
-					if 'selected' in child.p.actual:
-						child.p.pop('selected')
-						child.title.p.pop('selected')
+			for child in self.parent.get_childs():
+					child.p.pop('selected')
+					child.title.p.pop('selected')
 			self.p.push('selected')
 			self.title.p.push('selected')
 			button.button._button__click(self, event, data)
