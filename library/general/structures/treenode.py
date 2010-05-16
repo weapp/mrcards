@@ -61,7 +61,7 @@ class TreeNode:
     
     def del_child(self, child, key=0):
         if child in self.__childs.get(key,[]):
-			self.__childs[key].remove(child)
+               self.__childs[key].remove(child)
         
     def get_all_childs(self):
         r = []
@@ -104,8 +104,8 @@ class TreeNode:
         return [r[0]] if r else []
         
     def __search(self, expresion='> *'):
-        expresion=expresion.split(' ')
-        exp=expresion.pop(0)
+        expresion = expresion.split(' ')
+        exp = expresion.pop(0)
         if exp == ">": #comprueba que solo queramos de la primera capa de hijos, si es asi obtenemos la siguiente expresion
             exp = expresion.pop(0)
             resultados = self.filter_objects(filter_=filter_completo(exp), deep=False)
@@ -171,7 +171,8 @@ class filter_especial:
             
     def __call__(self, lista):
         if self.param == 'even':
-            r = [lista[i] for i in range(len(lista)) if ((i+1)%2)]
+            #r = [lista[i] for i in range(len(lista)) if ((i+1)%2)]
+            r = [elem for i, elem in enumerate(lista) if not i%2]
         elif self.param == 'first' and lista:
             r = [lista[0]]
         elif self.param == 'last' and lista:

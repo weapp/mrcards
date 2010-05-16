@@ -4,6 +4,7 @@
 #import xml.dom.minidom
 from xml.dom import minidom
 from xml.dom.minidom import Node
+import time
 """
 el parser ejecutaria una simulacion de:
 
@@ -33,6 +34,8 @@ def personaje(position,name,money):
 def point(x=0,y=0):
 	return ModuloNoseke.Vector2D(int(x),int(y))
 """
+
+VERBOSE = False
 
 class stateload (object):
 	"""
@@ -78,13 +81,14 @@ def attr(Node, attr):
 
 
 def __parsear_objeto(obj_node, loader, parent=None):
-	type = obj_node.tagName
+	t = time.clock()
+	type_ = obj_node.tagName
 	#type = obj_node.attributes["type"].value
 	params = obj_node.attributes
 	childs = []
 	for node in filter(lambda e:e.nodeType == Node.ELEMENT_NODE, obj_node.childNodes):
 		childs.append(node)
-	constructor = getattr(loader, type)
+	constructor = getattr(loader, type_)
 	
 	#params = params.copy()
 	i=params.items()
@@ -94,6 +98,7 @@ def __parsear_objeto(obj_node, loader, parent=None):
 	obj = constructor(parent,**params)
 	for child in childs:
 		obj.add_child( __parsear_objeto(child, loader, parent=obj))
+	if VERBOSE: print "%5s %15s : %s" % (int((time.clock() - t)*10000), type(obj).__name__, obj.id )
 	return obj
 			
 
