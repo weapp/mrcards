@@ -5,7 +5,13 @@ from library.stdmodules.apps import extendedapp
 import objects
 
 import pygame
-core.core.video.flags |= pygame.NOFRAME
+
+try:
+	import ctypes, win32con:
+	core.core.video.flags |= pygame.NOFRAME
+except:
+	pass
+
 core.core.video.set_size((800,600))
 
 screen=core.core.video.get_screen()
