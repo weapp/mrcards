@@ -21,8 +21,10 @@ class vbox(div.div):
 		else:
 			container.h = self.p.get('cell_height')
 			self.container.h = container.h * n
-		container.move_ip(0, childs.index(child) * container.h)
-		
+		if child in childs:
+			container.move_ip(0, childs.index(child) * container.h)
+		else:
+			print "Acceso a hijo inesperado en vbox"
 		self.containers[child] = container
 		return container
 		
