@@ -7,8 +7,10 @@ import objects
 import pygame
 
 try:
-	import ctypes, win32con:
-	core.core.video.flags |= pygame.NOFRAME
+	import sys
+	if not "framed" in sys.argv:
+		import ctypes, win32con
+		core.core.video.flags |= pygame.NOFRAME
 except:
 	pass
 
@@ -23,7 +25,7 @@ class factory:
 
 factory = factory()
 
-core.core.ticks = 200
+core.core.ticks = 40
 
 app = extendedapp.ExtendedApp(factory)
 

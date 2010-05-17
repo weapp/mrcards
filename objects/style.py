@@ -15,6 +15,7 @@ class style(module.Module):
 		self.scene.onload.bind(self.load)
 		self.file = file
 		self.load = False
+		self.cached = False
 		
 	def load(self, event, data):
 		self.load = True
@@ -25,9 +26,8 @@ class style(module.Module):
 	
 	def apply_to_elems(self, filter = None):
 		if self.load:
-			for selector, properties in self.get_properties():
-				for selector in selector.split(','):
-					selector = selector.strip()
+			for selectors, properties in self.get_properties():
+				for selector in selectors:
 					if ":" in selector:
 						selector, onevent = selector.split(":")
 					else:
@@ -38,6 +38,13 @@ class style(module.Module):
 								prop = prop.split(":")
 								item.p.get_sub(onevent).set(prop[0], prop[1])
 							item.update_position()
+	
+	def get_propieties(self):
+		if not self.cached:
+			self.cache = list(get_propieties)
+			self.cached = True
+		return self.cache
+			
 	
 	def get_properties(self):
 		f = file("data/" + self.file + ".css").read()
@@ -52,8 +59,8 @@ class style(module.Module):
 			end = r.end()
 			
 			g = r.groups()
-			selector = g[0].strip()
-			yield selector, list(self._parse_properties(g[1]))
+			selectors = [selector.strip() for selector in g[0].split(',')]
+			yield selectors, list(self._parse_properties(g[1]))
 			
 	def _parse_properties(self, properties):
 		expr="([^\n;]*);"

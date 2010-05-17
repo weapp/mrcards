@@ -11,6 +11,10 @@ default = dict( color_content="[0,0,0,255]", width=0, height=0, vertical_alignme
 				border_color="[0,0,0,0]", border_width=0, overflow="hidden",\
 				bold=0, underline=0, italic=0, text_align="center", vertical_align="center", font="DroidSans", font_size=12, text_offset_x=0, text_offset_y=0 )
 
+p = properties.properties()
+for attr, value in default.iteritems():
+	p.set(attr, value)
+	
 class div(pygame.sprite.Sprite, module.Module):
 	def __init__(self, parent=None, id=None, kind=None, content="", **kws):
 		if not kind is None:

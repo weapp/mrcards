@@ -12,7 +12,7 @@ class vbox(div.div):
 		elif child in self.containers:
 			return self.containers[child]
 
-		div.div.update_self_position(self)
+		#div.div.update_self_position(self)
 		childs = self.get_childs()
 		container = self.container.copy()
 		n = len(childs)
