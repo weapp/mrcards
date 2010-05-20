@@ -2,6 +2,7 @@
 	vertical-alignment:top;
 	height:40;
 	background-image:top;
+	repeat-x:true;
 }
 
 
@@ -9,6 +10,7 @@
 	background-image:bottom;
 	height:46;
 	vertical-alignment:bottom;
+	repeat-x:true;
 }
 
 
@@ -30,6 +32,7 @@
 	width:76;
 	horizontal-alignment:left;
 	cell-height:65;
+	repeat-y:true;
 }
 
 #Menu togglebutton{
@@ -83,6 +86,7 @@ button:press{
 	width:50;
 	margin:150 15;
 	background-image:slid;
+	repeat-x:true;
 }
 
 #close{
@@ -99,7 +103,8 @@ button:press{
 }
 
 #lista{
-	margin:305 5 5 5;
+	_margin:305 5 5 5;
+	margin:5;
 	cell-height:34;
 }
 

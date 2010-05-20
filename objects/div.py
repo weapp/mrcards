@@ -8,7 +8,7 @@ import properties
 
 default = dict( color_content="[0,0,0,255]", width=0, height=0, vertical_alignment="center", \
 				horizontal_alignment="", margin="[0,0,0,0]", background_color="[255,255,255,0]", background_image=None, \
-				border_color="[0,0,0,0]", border_width=0, overflow="hidden",\
+				border_color="[0,0,0,0]", border_width="[0,0,0,0]", overflow="hidden",\
 				bold=0, underline=0, italic=0, text_align="center", vertical_align="center", font="DroidSans", font_size=12, text_offset_x=0, text_offset_y=0 )
 
 p = properties.properties()
@@ -17,6 +17,7 @@ for attr, value in default.iteritems():
 	
 class div(pygame.sprite.Sprite, module.Module):
 	def __init__(self, parent=None, id=None, kind=None, content="", **kws):
+		self.dirty = False
 		if not kind is None:
 			kind = kind.split(" ")
 		module.Module.__init__(self, id, kind)
@@ -60,7 +61,8 @@ class div(pygame.sprite.Sprite, module.Module):
 		
 		self.rect = pygame.Rect(left, top, width, height)
 		self.container = self.rect.move(self.parent.get_container(self).x, self.parent.get_container(self).y)
-		self.container = self.container.inflate(self.p.get('border_width') * -2, self.p.get('border_width') * -2)
+		bw = self.p.get('border_width')
+		self.container = self.container.inflate(-bw[0] -bw[2], -bw[1] -bw[3])
 		self.update_surface()
 	
 	def update_position(self,*args):
@@ -83,14 +85,43 @@ class div(pygame.sprite.Sprite, module.Module):
 		
 		if image:
 			image = getImage(image)
-			self.image.blit(image, image.get_rect(center=center))
+			imgrect0 = image.get_rect(center=center).copy()
+			self.image.blit(image, imgrect0)
 			
-		if self.p.get('border_width'):
+			if self.p.get('repeat_x'):
+				imgrect1 = image.get_rect(center=center).copy()
+				imgrect2 = image.get_rect(center=center).copy()
+				imgrect1.move_ip(-imgrect1.w, 0)
+				imgrect2.move_ip(imgrect1.w, 0)
+				while self.rect.x < imgrect1.x + imgrect1.w:
+					self.image.blit(image, imgrect1)
+					imgrect1.move_ip(-imgrect1.w, 0)
+				
+				while self.rect.w > imgrect2.x:
+					self.image.blit(image, imgrect2)
+					imgrect2.move_ip(imgrect2.w, 0)
+					
+			if self.p.get('repeat_y'):
+				imgrect1 = image.get_rect(center=center).copy()
+				imgrect2 = image.get_rect(center=center).copy()
+				imgrect1.move_ip(0, -imgrect1.w)
+				imgrect2.move_ip(0, imgrect1.w)
+				while self.rect.y < imgrect1.y + imgrect1.h:
+					self.image.blit(image, imgrect1)
+					imgrect1.move_ip(0, -imgrect1.h)
+				
+				while self.rect.h > imgrect2.y:
+					self.image.blit(image, imgrect2)
+					imgrect2.move_ip(0, imgrect2.h)
+		
+		bw = self.p.get('border_width')
+		if bw:
+			
 			#pygame.draw.rect(self.image, self.p.get('border_color'), self.image.get_rect().inflate(-1*self.p.get('border_width'), -1*self.p.get('border_width')), self.p.get('border_width'))
-			self.image.fill(self.p.get('border_color'), pygame.Rect(0, 0, self.p.get('border_width'), self.rect.h))    #left
-			self.image.fill(self.p.get('border_color'), pygame.Rect(0, 0, self.rect.w, self.p.get('border_width'))) #top
-			self.image.fill(self.p.get('border_color'), pygame.Rect(self.rect.w - self.p.get('border_width'), 0, self.p.get('border_width'), self.rect.h))
-			self.image.fill(self.p.get('border_color'), pygame.Rect(0, self.rect.h - self.p.get('border_width'), self.rect.w, self.p.get('border_width')))
+			self.image.fill(self.p.get('border_color'), pygame.Rect(0, 0, bw[0], self.rect.h))    #left
+			self.image.fill(self.p.get('border_color'), pygame.Rect(0, 0, self.rect.w, bw[1])) #top
+			self.image.fill(self.p.get('border_color'), pygame.Rect(self.rect.w - bw[2], 0, bw[2], self.rect.h))
+			self.image.fill(self.p.get('border_color'), pygame.Rect(0, self.rect.h - bw[3], self.rect.w, bw[3]))
 		
 		if self.content != "":
 			self.f = getFont(self.p.get('font'), self.p.get('font_size'))
