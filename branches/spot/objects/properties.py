@@ -50,11 +50,13 @@ class properties:
 		self.actual.append(key)
 		if self.get_sub(key).prop:
 			if not self.parent is None: self.parent.update_position()
+		self.update_surface()
 		
 	def pop(self, key):
 		if key in self.actual:
 			self.actual.remove(key)
 			if not self.parent is None: self.parent.update_position()
+		self.update_surface()
 	
 	def get_sub(self, sub):
 		if sub is None:
@@ -79,6 +81,12 @@ class properties:
 	def set(self, prop, value):
 		prop = prop.replace("-","_")
 		self.prop[prop] = self.parse(prop, value)
+		self.update_surface()
+	
+	def update_surface(self):
+		if self.parent:
+			self.parent.dirty = True
+			#self.parent.update_position()
 	
 	"""
 	def __getattr__(self, attr):
@@ -97,7 +105,6 @@ class properties:
 		else:
 			return r
 		'''
-	"""
 
 	def __setattr__(self, attr, value):
 		if attr in ("actual", "prop", "sub", "parent"):
@@ -105,17 +112,18 @@ class properties:
 		else:
 			#self.prop[attr] = self.parse(attr, value)
 			raise Exception()
+	"""
 
 	
 	def parse(self, attr, value):
 		if isinstance(value, basestring):
-			if "width" in attr or "height" in attr or "offset" in attr:
-				value = int(value)
-			elif attr == "margin":
+			if attr in ("margin", "border_width"):
 				if value.startswith("["):
 					value = parse_margin(value[1:-1])
 				else:
 					value = parse_margin(value)
+			elif "width" in attr or "height" in attr or "offset" in attr:
+				value = int(value)
 			elif "color" in attr:
 				if value.startswith("#"):
 					value =	dec(value[1:])
@@ -125,9 +133,9 @@ class properties:
 						value =  map(int, t.groups())
 					else:
 						value = map(int, re.match("\[(\d+),\s?(\d+),\s?(\d+)\]", value).groups()).append(255)
-			elif attr in ("bold", "italic", "underline"):
+			elif attr in ("bold", "italic", "underline", "repeat_x", "repeat_y"):
 				value = not value in ("0", "False", "false", "")
-			else:
+			elif not attr in ("font", "background-image"): #los nombres de archivos no deben pasarse a minuscula
 				value = value.lower()
 		return value
 		

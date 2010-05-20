@@ -16,9 +16,9 @@
 						<togglebutton func="" background_image="repeat" />
 					</vbox>
 					<div id="main">
-						<scrollpanel>
-							<!--<filemanager />-->
-						</scrollpanel>
+						<!--<scrollpanel>
+							<filemanager />
+						</scrollpanel>-->
 						<vbox id="lista" />
 					</div>
 				</div>
