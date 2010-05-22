@@ -10,6 +10,18 @@ button:press{
 	text-offset-y:2;
 }
 
+itemmenu{
+	color-content:#FF8000FF;
+	font-size:20;
+	font:joinpd;
+}
+
+itemmenu:hover{
+	color-content:#FFC880FF;
+	
+}
+
+
 #header{
 	vertical-alignment:top;
 	height:40;

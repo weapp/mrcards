@@ -4,32 +4,25 @@ from library.stdmodules.apps import basicapp
 from library.stdmodules.menu.menu2 import Menu as Menu2
 from library.stdmodules.menu.menu import Menu
 from library import core
+import vbox
 
-class menu(basicapp.BasicApp):
-	def __init__(self, parent, pos):
+class menu(vbox.vbox):
+	def __init__(self, parent):
 	
-		pos = map(int,pos.split(","))
 		
-		basicapp.BasicApp.__init__(self)
+		vbox.vbox.__init__(self, parent)
 		
 		#data
-		self.options = []
 		self.position = 0
 		self.menu_en_bucle = menu_en_bucle = True
 		self.activate = activate = True
 		self.persistant = persistant = True
-		self.i = 0
 		
 		#appearance-data
 		self.nvisibles = nvisibles = 6
 		self.minvisible = 0
 		self.maxvisible = nvisibles
-		self.visible_options = self.options[self.minvisible:self.maxvisible]
-		
-		#appearance
-		self.pos = pos
-		self.g = pygame.sprite.Group()
-		
+		self.visible_options = self.get_childs()[self.minvisible:self.maxvisible]
 		
 		#eventos
 		core.core.event.keydown['down'].bind(self.k_down)
@@ -38,44 +31,38 @@ class menu(basicapp.BasicApp):
 		core.core.event.keydown['return'].bind(self.k_return)
 		core.core.event.keydown['escape'].bind(self.k_escape)
 	
-	def add_option(self, option):
-		option.rect.move_ip(self.pos)
-		option.rect.move_ip(0, 45*self.i)
-		self.g.add(option)
-		self.i+=1
-		self.options.append(option)
-		self.visible_options = self.options[self.minvisible:self.maxvisible]
-		
-	def update(self):
-		self.g.draw(core.core.video.get_screen())
-
-		
+	def add_child(self, option):
+		vbox.vbox.add_child(self, option)
+		self.visible_options = self.get_childs()[self.minvisible:self.maxvisible]
+	
 	def no_out(self):
 		#actuacion en caso de que se salga del array
 		if self.menu_en_bucle:
-			self.position = self.position%len(self.options)
+			self.position = self.position%len(self.get_childs())
 		else:
 			if self.position < 0:
 				self.position = 0
-			elif self.position >= len(self.options):
-				self.position = len(self.options)-1
+			elif self.position >= len(self.get_childs()):
+				self.position = len(self.get_childs())-1
 		
 		if self.position >= (self.maxvisible):
 			self.minvisible = self.position-self.nvisibles+1
 			self.maxvisible = self.position+1
-			self.visible_options = self.options[self.minvisible:self.maxvisible]
+			self.visible_options = self.get_childs()[self.minvisible:self.maxvisible]
 			
 		if self.position <= (self.minvisible):
 			self.minvisible = self.position
 			self.maxvisible = self.position+self.nvisibles
-			self.visible_options = self.options[self.minvisible:self.maxvisible]
+			self.visible_options = self.get_childs()[self.minvisible:self.maxvisible]
 			
 	def change_options(self,options):
-		self.options = options
+		self.clear()
+		for option in options:
+			self.add_child(option)
 		self.position = 0
 		self.minvisible = 0
 		self.maxvisible = self.nvisibles
-		self.visible_options = self.options[self.minvisible:self.maxvisible]
+		self.visible_options = self.get_childs()[self.minvisible:self.maxvisible]
 		
 	def down(self):
 		self.position += 1
@@ -94,25 +81,25 @@ class menu(basicapp.BasicApp):
 	
 	def k_return(self, event, data):
 		if self.activate or self.persistant:
-			self.options[self.position].select()
+			self.get_childs()[self.position].select()
 	
 	def k_space(self, event, data):
 		if self.activate or self.persistant:
-			self.options[self.position].select()
+			self.get_childs()[self.position].select()
 					
 	
 	def k_up(self, event, data):
 		if self.activate or self.persistant:
-			self.options[self.position].hover_off()
+			self.get_childs()[self.position].hover_off()
 			self.up()
-			self.options[self.position].hover_on()
+			self.get_childs()[self.position].hover_on()
 			
 		
 	def k_down(self, event, data):
 		if self.activate or self.persistant:
-			self.options[self.position].hover_off()
+			self.get_childs()[self.position].hover_off()
 			self.down()
-			self.options[self.position].hover_on()
+			self.get_childs()[self.position].hover_on()
 		
 
 	def seleccionar(self,n):
