@@ -6,7 +6,10 @@ from library.stdmodules.menu.menu import Menu
 from library import core
 
 class menu(basicapp.BasicApp):
-	def __init__(self, pos):
+	def __init__(self, parent, pos):
+	
+		pos = map(int,pos.split(","))
+		
 		basicapp.BasicApp.__init__(self)
 		
 		#data

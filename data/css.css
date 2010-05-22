@@ -1,3 +1,15 @@
+button.classic{
+	background-color:[130,130,130,255];
+	border-color:[100,100,100,255];
+	border-width:2;
+	width:150;
+	height:40;
+}
+
+button:press{
+	text-offset-y:2;
+}
+
 #header{
 	vertical-alignment:top;
 	height:40;
@@ -60,9 +72,6 @@
 	background-image:slider;
 }
 
-button:press{
-	text-offset-y:2;
-}
 
 #rw{
 	background-image:rw;

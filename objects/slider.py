@@ -2,14 +2,14 @@ from library.stdmodules import module
 from library import core
 import pygame
 from library import event
-import dragable
+import draggable
 import div
 
 
-class slider(div.div, dragable.dragable):
+class slider(div.div, draggable.draggable):
 	def __init__(self, parent, direction="horizontal", onup="", **kws):
 		div.div.__init__(self, parent, **kws)
-		dragable.dragable.__init__(self)
+		draggable.draggable.__init__(self)
 		self.onup = onup
 		self.direction = direction
 		self.__init_pos_mouse = (0,0)
@@ -17,7 +17,7 @@ class slider(div.div, dragable.dragable):
 		self.__init_pos_container = self.container.x, self.container.y
 		
 	def clickdown(self, event, data):
-		dragable.dragable.clickdown(self,event,data)
+		draggable.draggable.clickdown(self,event,data)
 		self.__init_pos_mouse = data['pos']
 		self.__init_pos_rect = self.rect.x, self.rect.y
 		self.__init_pos_container = self.container.x, self.container.y
@@ -25,7 +25,7 @@ class slider(div.div, dragable.dragable):
 	def clickup(self, event, data):
 		if self.mousedown:
 			exec(self.onup)
-		dragable.dragable.clickup(self,event,data)
+		draggable.draggable.clickup(self,event,data)
 		
 	def motion(self, event, data):
 		if self.mousedown:

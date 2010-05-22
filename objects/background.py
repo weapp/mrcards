@@ -4,7 +4,7 @@ import pygame
 from library.resources.images import getImage
 
 class background(basicapp.BasicApp):
-    def __init__(self, filename):
+    def __init__(self, parent, filename):
         basicapp.BasicApp.__init__(self)
         self.spr = pygame.sprite.Sprite()
         self.spr.image = getImage(filename)

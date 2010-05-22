@@ -25,7 +25,7 @@ class factory:
 
 factory = factory()
 
-core.core.ticks = 10
+core.core.ticks = 60
 
 app = extendedapp.ExtendedApp(factory)
 
@@ -33,7 +33,7 @@ sm = app.find('&SceneManager')
 
 core.core.set_app(app)
 
-sm.charge_and_change_scene("menu", "data/menu.xml")
 sm.charge_and_change_scene("spot", "data/spot2.xml")
+sm.charge_and_change_scene("menu", "data/menu2.xml")
 
 core.core.start()
