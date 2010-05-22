@@ -4,7 +4,7 @@ import pygame
 from library import event
 import clickable
 
-class dragable(clickable.Clickable):
+class draggable(clickable.Clickable):
 	def __init__(self, *args, **kws):
 		clickable.Clickable.__init__(self, *args, **kws)
 		self.click.bind(self.clickdown, self.clickup)

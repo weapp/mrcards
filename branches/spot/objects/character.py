@@ -38,7 +38,7 @@ class VxCharset:
         return self.direction
 		
 class character(module.Module, ph2d.Ph2D):
-    def __init__(self, filename, num, up, down, left, right,  jump):
+    def __init__(self, parent, filename, num, up, down, left, right,  jump):
         module.Module.__init__(self)
         ph2d.Ph2D.__init__(self)
         self.animation = VxCharset(filename, int(num))        
