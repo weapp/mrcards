@@ -11,7 +11,6 @@ class imagedraggable(div.div, draggable.draggable):
 	def __init__(self, parent, onup="", **kws):
 		div.div.__init__(self, parent, **kws)
 		w, h = getImage(self.p.get('background_image')).get_rect().size
-		print w,h
 		self.p.set('vertical_alignment', "top")
 		self.p.set('horizontal_alignment', "left")
 		self.p.set('width', w)

@@ -122,7 +122,7 @@ class properties:
 					value = parse_margin(value[1:-1])
 				else:
 					value = parse_margin(value)
-			elif "width" in attr or "height" in attr or "offset" in attr:
+			elif "width" in attr or "height" in attr or "offset" in attr or "size" in attr:
 				value = int(value)
 			elif "color" in attr:
 				if value.startswith("#"):

@@ -2,33 +2,25 @@ import pygame
 from library.stdmodules import module
 import pressable
 from library import core
+import button
 
-class itemmenu(pygame.sprite.Sprite, module.Module, pressable.Pressable):
+class itemmenu(button.button):
 	def __init__(self, parent, name, func):
-		module.Module.__init__(self)
-		pygame.sprite.Sprite.__init__(self)
-		pressable.Pressable.__init__(self)
+		button.button.__init__(self, parent, 'self.select()', content=name)
+		self.sc = func
 		self.name = name
-		self.parent = parent
-		f = pygame.font.Font("font.ttf", 40)
-		self.imageon = f.render(name, True, (255, 200, 125))
-		self.image = self.imageoff = f.render(name, True, (255, 125, 0))
-		self.rect = self.image.get_rect()
-		self.func = func
-		
 		
 		self.hover.bind(self.onhover_handler, self.offhover_handler)
 		self.click.bind(self.onclick, None)
 		
 		self.ishovered = False
-		
-		parent.add_option(self)
 	
 	def hover_on(self):
-		self.image = self.imageon
+		self.p.push("hover")
+		
 		
 	def hover_off(self):
-		self.image = self.imageoff
+		self.p.pop("hover")
 	
 	def onhover_handler(self, *args):
 		self.hover_on()
@@ -43,7 +35,7 @@ class itemmenu(pygame.sprite.Sprite, module.Module, pressable.Pressable):
 		self.select()
 		
 	def select(self):
-		core.core.get_app()['SceneManager'].change_scene(self.func)
+		core.core.get_app()['SceneManager'].change_scene(self.sc)
 		
 	def k_space(self, event, data):
 		if self.activate or self.persistant:
