@@ -27,7 +27,13 @@ class vbox(div.div):
 			print "Acceso a hijo inesperado en vbox"
 		self.containers[child] = container
 		return container
-		
+	
+
+	def update_self_position(self,*args):
+		div.div.update_self_position(self,*args)
+		if hasattr(self, 'containers'):
+			self.containers.clear()
+	
 	def add_child(self, child):
 		self.dirty = True
 		div.div.add_child(self, child)
