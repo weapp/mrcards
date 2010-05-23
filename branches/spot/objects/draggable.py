@@ -9,9 +9,7 @@ class draggable(clickable.Clickable):
 		clickable.Clickable.__init__(self, *args, **kws)
 		self.click.bind(self.clickdown, self.clickup)
 		core.core.event.mousemotion.bind(self.motion )
-		
 		core.core.event.mousebuttonup[1].bind(self.clickup)
-		
 		self.mousedown=0
 	
 	def clickdown(self, event, data):
@@ -22,4 +20,6 @@ class draggable(clickable.Clickable):
 		
 	def motion(self, event, data):
 		if self.mousedown:
+			self.dirty = True
 			self.move(data['rel'])
+			self.dirty = True

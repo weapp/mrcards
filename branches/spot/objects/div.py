@@ -182,21 +182,26 @@ class div(pygame.sprite.Sprite, module.Module):
 		rect = self.calculate_rect() #parent
 		t = self.rect.move(-rect.x, -rect.y)
 		im = self.image
-		
-		video.subsurface(rect).blit(im, self.rect)
-		
-		
+		#video.subsurface(rect).blit(im, self.rect)
 		rct = self.rect.move(rect.x, rect.y)
 		p = rct.clip(rectan)
-		
 		#pygame.draw.rect(video.subsurface(rect), [255,255,255], self.rect, 1) #.blit(im, self.rect)
 		#pygame.draw.rect(video.subsurface(rect), [255,255,0], p.move(-rect.x, -rect.y) , 1) #.blit(im, self.rect)
-		
 		p2 = p.move(-self.rect.x-rect.x, -self.rect.y-rect.y).clip(im.get_rect())
 		if p.w:
 			#video.subsurface(rect).blit(im.subsurface(p), self.rect)
 			video.blit(im.subsurface(p2), p)
 			#pygame.draw.rect(video.subsurface(rect), [255,255,0], p.move(-rect.x, -rect.y) , 1) #.blit(im, self.rect)
+			
+			for child in self.get_childs():
+				child.update(rectan)
+		
+		self.dirty = False
+	def get_container(self, child):
+		return self.container
+		
+	def get_clip_container(self, child):
+		return self.get_container(child)
 		
 		
 		'''
@@ -220,13 +225,3 @@ class div(pygame.sprite.Sprite, module.Module):
 		#pygame.draw.rect(video, [255,255,255], rectan, 1)
 		#pygame.draw.rect(video, j(), self.image.get_rect())
 		#pygame.draw.rect(video, j(), p.move(-rect.x, -rect.y), 1)
-		self.dirty = False
-		for child in self.get_childs():
-			child.update(rectan)
-		
-	def get_container(self, child):
-		return self.container
-		
-	def get_clip_container(self, child):
-		return self.get_container(child)
-		

@@ -36,12 +36,13 @@ class imagedraggable(div.div, draggable.draggable):
 		
 	def motion(self, event, data):
 		if self.mousedown:
+			self.dirty = True
 			self.restore()
 			rel = data['pos'][0] - self.__init_pos_mouse[0], data['pos'][1] - self.__init_pos_mouse[1]
 			self.move(rel)
+			self.dirty = True
 	
 	def restore(self):
 		self.rect.x, self.rect.y = self.__init_pos_rect
 		self.container.x, self.container.y = self.__init_pos_container
-	
 		self.update_surface()
