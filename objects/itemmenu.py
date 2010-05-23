@@ -18,18 +18,19 @@ class itemmenu(button.button):
 	def hover_on(self):
 		self.p.push("hover")
 		
-		
 	def hover_off(self):
 		self.p.pop("hover")
 	
+	def item_on(self):
+		self.parent.item_on(self.parent.get_childs().index(self))
+	
 	def onhover_handler(self, *args):
-		self.hover_on()
+		self.item_on()
+		#self.hover_on()
 		
 	def offhover_handler(self, *args):
-		self.hover_off()
-		
-	def change(self, *args):
-		self.image, self.image2 = self.image2, self.image
+		pass
+		#self.hover_off()
 	
 	def onclick(self, *args):
 		self.select()
