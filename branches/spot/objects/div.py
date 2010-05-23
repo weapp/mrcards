@@ -6,15 +6,22 @@ from library.resources.images import getImage
 from library.resources.font import getFont
 import properties
 
+		
+import random
+j = lambda : [random.randint(0, 255), random.randint(0, 255), random.randint(0, 255), 10]
+
+
 default = dict( color_content="[0,0,0,255]", width=0, height=0, vertical_alignment="center", \
 				horizontal_alignment="", margin="[0,0,0,0]", background_color="[255,255,255,0]", background_image=None, \
 				border_color="[0,0,0,0]", border_width="[0,0,0,0]", overflow="hidden",\
 				bold=0, underline=0, italic=0, text_align="center", vertical_align="center", font="DroidSans", font_size=12, text_offset_x=0, text_offset_y=0 )
 
+"""				
 p = properties.properties()
 for attr, value in default.iteritems():
 	p.set(attr, value)
-	
+"""
+
 class div(pygame.sprite.Sprite, module.Module):
 	def __init__(self, parent=None, id=None, kind=None, content="", **kws):
 		self.dirty = False
@@ -33,6 +40,22 @@ class div(pygame.sprite.Sprite, module.Module):
 			style.apply_to_elem(self)
 		self.update_position()
 			
+	def set_dirty(self, value):
+		self.__dirty = value
+		if value and hasattr(self, 'rect'):
+			t = self.calculate_rect()
+			t = self.rect.move(t.x, t.y)
+			self.add_dirty_rect(t)
+			
+	def get_dirty(self):
+		return self.__dirty
+	
+	dirty = property(get_dirty, set_dirty)
+	
+	def add_dirty_rect(self, rect):
+		#self.parent.add_dirty_rect(self.rect.union(rect))
+		self.parent.add_dirty_rect(rect)
+	
 	def update_self_position(self,*args):
 		self.container = self.rect = pygame.Rect(0, 0, self.p.get('width') , self.p.get('height'))
 		
@@ -147,15 +170,60 @@ class div(pygame.sprite.Sprite, module.Module):
 	def move(self, rel):
 		self.rect.move_ip(rel)
 		self.container.move_ip(rel)
-		
-	def update(self):
+	
+	def calculate_rect(self):
 		video = core.core.video.get_screen()
 		rect = self.parent.get_container(self).clip(video.get_rect())
 		if rect.w == 0: rect = pygame.Rect(0,0,0,0)
-		video.subsurface(rect).blit(self.image, self.rect)
-		for child in self.get_childs():
-			child.update()
+		return rect
 	
+	def update(self, rectan):
+		video = core.core.video.get_screen()
+		rect = self.calculate_rect() #parent
+		t = self.rect.move(-rect.x, -rect.y)
+		im = self.image
+		
+		video.subsurface(rect).blit(im, self.rect)
+		
+		
+		rct = self.rect.move(rect.x, rect.y)
+		p = rct.clip(rectan)
+		
+		#pygame.draw.rect(video.subsurface(rect), [255,255,255], self.rect, 1) #.blit(im, self.rect)
+		#pygame.draw.rect(video.subsurface(rect), [255,255,0], p.move(-rect.x, -rect.y) , 1) #.blit(im, self.rect)
+		
+		p2 = p.move(-self.rect.x-rect.x, -self.rect.y-rect.y).clip(im.get_rect())
+		if p.w:
+			#video.subsurface(rect).blit(im.subsurface(p), self.rect)
+			video.blit(im.subsurface(p2), p)
+			#pygame.draw.rect(video.subsurface(rect), [255,255,0], p.move(-rect.x, -rect.y) , 1) #.blit(im, self.rect)
+		
+		
+		'''
+		rct = self.rect.move(rect.x, rect.y)
+		p = rct.clip(rectan)
+		n = self.rect.move(rect.x, rect.y).clip(rectan).move(rect.x, rect.y)
+		t = im.get_rect().move(rect.x+self.rect.x, rect.y+self.rect.y).clip(p).clip(im.get_rect())
+		pygame.draw.rect(video, [255,255,255], rct, 1)
+		#pygame.draw.rect(video, [255,5,0,255], t)
+		'''
+		'''
+		if t.w:
+			im = im.subsurface(t)
+			#video.subsurface(rect.clip(rectan))
+			video.blit(im, t)
+		'''
+		#pygame.draw.rect(video, j(), p)
+		#pygame.draw.rect(video, [255,0,0], rct, 1)
+		#pygame.draw.rect(video.subsurface(rect), j(), p.move(-rect.x, -rect.y)  )
+		#pygame.draw.rect(video, j(), n, 1)
+		#pygame.draw.rect(video, [255,255,255], rectan, 1)
+		#pygame.draw.rect(video, j(), self.image.get_rect())
+		#pygame.draw.rect(video, j(), p.move(-rect.x, -rect.y), 1)
+		self.dirty = False
+		for child in self.get_childs():
+			child.update(rectan)
+		
 	def get_container(self, child):
 		return self.container
 		

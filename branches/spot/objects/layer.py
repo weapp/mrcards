@@ -5,11 +5,11 @@ import pygame
 class layer(basicapp.BasicApp):
 	def p(self):
 		return core.core.video.get_screen()
-
 	image = property(p)
 	
 	def __init__(self, parent=None):
 		basicapp.BasicApp.__init__(self)
+		self.rectangles = []
 		self.container = self.rect = core.core.video.get_screen().get_rect()
 		core.core.event.videoresize.bind(self.update_position)
 		
@@ -24,3 +24,13 @@ class layer(basicapp.BasicApp):
 		
 	def get_clip_container(self, child):
 		return self.container
+	
+	def add_dirty_rect(self, rect):
+		self.rectangles.append(rect)
+		
+	def update(self):
+		if self.rectangles:
+			t = self.rectangles[0].unionall(self.rectangles)
+			self.rectangles = []
+			for child in self.get_childs():
+				child.update(t)

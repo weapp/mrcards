@@ -41,14 +41,21 @@ class reproductor(module.Module):
 		onload = core.core.get_app().find('&SceneManager').get_childs()[0].onload
 		onload.bind(self.cargar)
 		self.lenght = 1
+		self.last_busy = False
 		
 	def update(self):
 		play = core.core.get_app().find('#play')
+		
 		if self.repr.busy:
-			play.p.set('background_image', "pause")
 			self.update_slide()
-		else:
+		
+		if self.repr.busy and not self.last_busy:
+			play.p.set('background_image', "pause")
+			self.lat_busy = True
+		elif not self.repr.busy and self.last_busy:
 			play.p.set('background_image', "play")
+			self.lat_busy = False
+			
 		play.update_surface()
 		
 	def update_slide(self):

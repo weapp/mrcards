@@ -48,11 +48,11 @@ class scrollpanel(div.div):
 			#return self.container
 			return self.container
 	
-	def update(self, force=False):
-		div.div.update(self)
+	def update(self, *args, **kws):
+		div.div.update(self, *args, **kws)
 		self.i += self.direction
 		#self.update_position()
-		
+	
 	'''
 	def update(self):
 		div.div.update(self)

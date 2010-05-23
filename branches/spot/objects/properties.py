@@ -41,7 +41,7 @@ class properties:
 			self.subscribe(key, event, event2)
 		
 	def subscribe(self, key, event, event2):
-		self.sub.setdefault(key, properties())
+		self.sub.setdefault(key, properties(self.parent))
 		a1, a2 = self.action(key)
 		event.bind(a1)
 		event2.bind(a2)
@@ -50,19 +50,21 @@ class properties:
 		self.actual.append(key)
 		if self.get_sub(key).prop:
 			if not self.parent is None: self.parent.update_position()
+		self.parent.dirty = True
 		self.update_surface()
 		
 	def pop(self, key):
 		if key in self.actual:
 			self.actual.remove(key)
 			if not self.parent is None: self.parent.update_position()
+		self.parent.dirty = True
 		self.update_surface()
 	
 	def get_sub(self, sub):
 		if sub is None:
 			return self
 		else:
-			return self.sub.setdefault(sub, properties())
+			return self.sub.setdefault(sub, properties(self.parent))
 	
 	def action(self, key):
 		def act(event, data):
@@ -82,6 +84,7 @@ class properties:
 		prop = prop.replace("-","_")
 		self.prop[prop] = self.parse(prop, value)
 		self.update_surface()
+		self.parent.dirty = True
 	
 	def update_surface(self):
 		if self.parent:

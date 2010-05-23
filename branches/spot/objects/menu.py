@@ -8,8 +8,6 @@ import vbox
 
 class menu(vbox.vbox):
 	def __init__(self, parent):
-	
-		
 		vbox.vbox.__init__(self, parent)
 		
 		#data
@@ -35,16 +33,16 @@ class menu(vbox.vbox):
 		vbox.vbox.add_child(self, option)
 		self.visible_options = self.get_childs()[self.minvisible:self.maxvisible]
 	
-	def no_out(self):
+	def no_out(self, position):
 		#actuacion en caso de que se salga del array
 		if self.menu_en_bucle:
-			self.position = self.position%len(self.get_childs())
+			position = position % len(self.get_childs())
 		else:
-			if self.position < 0:
-				self.position = 0
-			elif self.position >= len(self.get_childs()):
-				self.position = len(self.get_childs())-1
-		
+			if position < 0:
+				position = 0
+			elif position >= len(self.get_childs()):
+				position = len(self.get_childs())-1
+		"""
 		if self.position >= (self.maxvisible):
 			self.minvisible = self.position-self.nvisibles+1
 			self.maxvisible = self.position+1
@@ -54,7 +52,9 @@ class menu(vbox.vbox):
 			self.minvisible = self.position
 			self.maxvisible = self.position+self.nvisibles
 			self.visible_options = self.get_childs()[self.minvisible:self.maxvisible]
-			
+		"""
+		return position
+		
 	def change_options(self,options):
 		self.clear()
 		for option in options:
@@ -65,12 +65,15 @@ class menu(vbox.vbox):
 		self.visible_options = self.get_childs()[self.minvisible:self.maxvisible]
 		
 	def down(self):
-		self.position += 1
-		self.no_out()
+		self.item_on(self.position + 1)
 		
 	def up(self):
-		self.position -= 1
-		self.no_out()
+		self.item_on(self.position - 1)
+	
+	def item_on(self, position):
+		self.get_childs()[self.position].hover_off()
+		self.position = self.no_out(position)
+		self.get_childs()[self.position].hover_on()
 		
 	def obtain_position(self):
 		return self.position
@@ -90,16 +93,12 @@ class menu(vbox.vbox):
 	
 	def k_up(self, event, data):
 		if self.activate or self.persistant:
-			self.get_childs()[self.position].hover_off()
 			self.up()
-			self.get_childs()[self.position].hover_on()
 			
 		
 	def k_down(self, event, data):
 		if self.activate or self.persistant:
-			self.get_childs()[self.position].hover_off()
 			self.down()
-			self.get_childs()[self.position].hover_on()
 		
 
 	def seleccionar(self,n):
