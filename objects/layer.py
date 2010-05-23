@@ -9,16 +9,17 @@ class layer(basicapp.BasicApp):
 	
 	def __init__(self, parent=None):
 		basicapp.BasicApp.__init__(self)
-		self.rectangles = []
+		self.rectangles = [self.image.get_rect()]
 		self.container = self.rect = core.core.video.get_screen().get_rect()
 		core.core.event.videoresize.bind(self.update_position)
 		
 	def update_position(self,event, data):
 		core.core.video.set_size((data['w'],data['h']))
-		self.container = self.rect = pygame.Rect(0, 0, data['w'], data['h'])		
+		self.container = self.rect = pygame.Rect(0, 0, data['w'], data['h'])
+		self.add_dirty_rect(self.image.get_rect())
 		for child in self.get_all_childs():
 			child.update_position()
-	
+		
 	def get_container(self, child):
 		return self.container
 		
