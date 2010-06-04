@@ -1,3 +1,4 @@
+import copy
 import re
 
 def dec(s):
@@ -31,6 +32,12 @@ def parse_margin(s):
 		t *= 4
 		return t
 	
+default = dict( color_content=[0,0,0,255], width=0, height=0, vertical_alignment="center", \
+				horizontal_alignment="", margin=[0,0,0,0], background_color=[255,255,255,0], background_image=None, \
+				border_color=[0,0,0,0], border_width=[0,0,0,0], overflow="hidden",\
+				bold=0, underline=0, italic=0, text_align="center", vertical_align="center", font="DroidSans", font_size=12, text_offset_x=0, text_offset_y=0 )
+
+
 class properties:
 	def __init__(self, parent=None, eventskey=[]):
 		self.parent=parent
@@ -74,11 +81,17 @@ class properties:
 		return act, act2
 	
 	def get(self, prop):
+		r = self._get(prop)
+		if r is None:	
+			r = copy.deepcopy(default.get(prop, None))
+		return r
+	
+	def _get(self, prop):
 		r = None
 		for elem in reversed(self.actual):
-			r = self.get_sub(elem).get(prop)
+			r = self.get_sub(elem)._get(prop)
 			if not r is None: break
-		return r if not r is None else self.prop.get(prop, None)
+		return self.prop.get(prop, None) if r is None else  r
 		
 	def set(self, prop, value):
 		prop = prop.replace("-","_")
@@ -100,7 +113,7 @@ class properties:
 			for elem in reversed(self.actual):
 				r = getattr(self.get_sub(elem), attr, None)
 				if not r is None: break
-			return r if not r is None else self.prop.get(attr, None)
+			return self.prop.get(attr, None) if r is None else r
 		'''
 		r = getattr(self.sub[self.actual[-1]],attr) if self.sub.has_key(self.actual[-1]) else self.prop.get(attr, None)
 		if r is None:
