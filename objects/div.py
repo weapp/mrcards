@@ -11,17 +11,6 @@ import random
 j = lambda : [random.randint(0, 255), random.randint(0, 255), random.randint(0, 255), 10]
 
 
-default = dict( color_content="[0,0,0,255]", width=0, height=0, vertical_alignment="center", \
-				horizontal_alignment="", margin="[0,0,0,0]", background_color="[255,255,255,0]", background_image=None, \
-				border_color="[0,0,0,0]", border_width="[0,0,0,0]", overflow="hidden",\
-				bold=0, underline=0, italic=0, text_align="center", vertical_align="center", font="DroidSans", font_size=12, text_offset_x=0, text_offset_y=0 )
-
-"""				
-p = properties.properties()
-for attr, value in default.iteritems():
-	p.set(attr, value)
-"""
-
 class div(pygame.sprite.Sprite, module.Module):
 	def __init__(self, parent=None, id=None, kind=None, content="", **kws):
 		self.dirty = False
@@ -30,8 +19,6 @@ class div(pygame.sprite.Sprite, module.Module):
 		module.Module.__init__(self, id, kind)
 		pygame.sprite.Sprite.__init__(self)
 		self.p = properties.properties(self)
-		for attr, value in default.iteritems():
-			self.p.set(attr, value)
 		for attr, value in kws.iteritems():
 			self.p.set(attr, value)
 		self.content = content
