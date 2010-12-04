@@ -35,8 +35,6 @@ def main(rules, players, online=False):
     
     actions.new_round()
     
-    
-    
     game.set_down_func(rules.down_func)
     
     game.show()
