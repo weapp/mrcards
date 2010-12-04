@@ -9,8 +9,8 @@ from drawer import Drawer
 import luarules
 
 
-class Gamezone:
-    def __init__(self,rules=False,down_func={},up_func={}, netobj=None):
+class Gamezone(object):
+    def __init__(self,rules=False,down_func={},up_func={}, netobj=None, players=[]):
         self.show_layer_alternative=False
         
         self._counter=0
@@ -24,7 +24,6 @@ class Gamezone:
             self.down_func[pygame.K_ESCAPE]=sys.exit
         
         self.up_func=up_func
-        self.player_with_turn=0
         self.clockwise_direction=True
         self.pass_turns_counter=0 # contador de turnos sin tiradas
         self.round=0
@@ -54,7 +53,7 @@ class Gamezone:
             rules=__import__("rules").get_module(rules)
             self.rules=rules.Game(self)
         elif mode == "lua":
-            self.rules = luarules.load(rules, {"prueba1":self.prueba1, "prueba2":self.prueba2, "F1":self.F1, "F2":self.F2, "F3":self.F3, "F4":self.F4, "F12":self.F12, "deal":self.deal, "getattr":getattr, "len":len, "ending_turn":self.ending_turn, "deckdraws":self.deckdraws},
+            self.rules = luarules.load(rules, {"getattr":getattr, "len":len, "game":self},
             {"deckdraw":lambda: self.deckdraws[0]})
         else:
             raise Exception("mode != [py|lua]")
@@ -64,6 +63,12 @@ class Gamezone:
         
         try: self.keys_descriptions=self.rules.keys_descriptions
         except AttributeError: pass
+        
+        for player in players:
+            self.add_player(id_deck=player)
+        if self.rules.playzone:
+            self.add_playzone(id_deck="playzone",visible=True)
+    
         
         
     def set_down_func(self,down_func):
@@ -226,7 +231,6 @@ class Gamezone:
         
         
         
-        
     def new_round(self):
         """Es llamada al crear el juego y cada vez que se empieza una nueva ronda"""
         self.round+=1
@@ -236,8 +240,8 @@ class Gamezone:
         
         for ideck in self.rules.deckdraws:
             self.add_deckdraw(Deck(id_deck=ideck['name'], cards=[ideck['numbers'],ideck['suits']],visible=False,point=self.rules.points))
-        
-        self.rules.init()
+
+        self.rules.new_round()
      
     #seleccionar
     def select(self,n,player=-1):
@@ -305,7 +309,7 @@ class Gamezone:
         self.ending_turn(pass_turn=True)
         
     def end_turn(self,player=-1):
-        if self.terminable_turn:
+        if self.rules.terminable_turn():
             self.rules.end_turn()
             self.ending_turn()
             
@@ -322,8 +326,8 @@ class Gamezone:
         self.player_with_turn%=len(self.players)
         self.player=self.players[self.pwt]
         self.rules.ending_turn()
-        irf = self.rules.is_round_finished()
-        if irf:
+        if self.rules.is_round_finished():
+            print "\n"*10, "END OF ROUND", "\n"*10 
             self.rules.end_of_round()
             self.new_round()
             
@@ -378,37 +382,31 @@ class Gamezone:
         else:
             self.show_layer_alternative = True
         self.show()
-    
-
-    def __getattr__(self, attr):
-        if attr=="pwt":
-            return self.player_with_turn
-        elif attr=="last_throw":
-            return self.throws[len(self.throws)-1]
-        elif attr=="terminable_turn":
-            self.rules.terminable_turn()
-        elif attr=="player":
-            try: return self.players[self.player_with_turn]
-            except: pass
-        else:
-            print "\n    INTENTANDO ACCEDER A ATRIBUTO NO EXISTENTE:", attr,"\n"
-            raise AttributeError("Gamezone instance has no attribute '"+str(attr)+"'")
-
-            
-    def __setattr__(self, attr, value):
-        if attr=="pwt":
-            self.player_with_turn=value
-        elif attr=="player" and value ==-1:
+        
+    def get_player(self):
+        return self.players[self.player_with_turn]
+    def set_player(self, value):
+        if value ==-1:
             try: self.__dict__["p"] = self.player_with_turn
             except AttributeError:pass
-        elif attr=="player":
+        else:
             try: self.players[self.player_with_turn]=value
             except AttributeError: pass
-        elif attr=="player":
-            self.__dict__["p"] = value
-        else:
-            self.__dict__[attr] = value
-
+    player = property(get_player, set_player, None, "I'm the 'player' property.")
+    
+    def get_pwt(self):
+        return self.player_with_turn
+    def set_pwt(self, value):
+        self.player_with_turn=value
+    pwt = property(get_pwt, set_pwt, None, "I'm the 'last_throw' property.")
+    last_throw = property(lambda self: self.throws[len(self.throws)-1], None, None, "I'm the 'last_throw' property.")
+    
+    def __getitem__(self, key):
+        return getattr(self, key)
+            
+    def __setitem__(self, key, val):
+        return setattr(self, key, val)
+            
     #acciones para las pruebas       
     def prueba1(self):
         self.drawer.ancho *= 0.5

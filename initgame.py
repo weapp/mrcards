@@ -12,32 +12,18 @@ def main(rules, players, online=False):
         netobj.init_net(juego='culo', jugadores=2)
         players = netobj.players
         rules = netobj.juego
-        game=gamezone.Gamezone(rules=rules,netobj=netobj)#declaramos la zona de juegos y le anyadimos los jugadores y el mazo para robar
+        game=gamezone.Gamezone(rules=rules, netobj=netobj, players=players)#declaramos la zona de juegos y le anyadimos los jugadores y el mazo para robar
         game.user = netobj.me
         # TODO las cartas se reparten aleatoriamente, 
         # Hay que hacer algo para que los distintos jugadores tengan las 
         # jueguen con la misma baraja
-
     else:
         players=players.replace('_'," ").split(",")
-        game=gamezone.Gamezone(rules=rules)#declaramos la zona de juegos y le anyadimos los jugadores y el mazo para robar
-      
-    
-
+        game=gamezone.Gamezone(rules=rules, players=players)#declaramos la zona de juegos y le anyadimos los jugadores y el mazo para robar
     rules=game.rules
-    
-    for player in players:
-        game.add_player(id_deck=player)
-    
-    if rules.playzone:
-        game.add_playzone(id_deck="playzone",visible=True)
-    
     game.new_round()
-    
     game.set_down_func(rules.down_func)
-    
     game.show()
-    
     game.init_bucle()
     
 if __name__ == "__main__":

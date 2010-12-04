@@ -1,8 +1,8 @@
-game.caption = "Culo"
-game.descruption = "Game of Culo"
-game.playzone = 1
+rules.caption = "Culo"
+rules.descruption = "Game of Culo"
+rules.playzone = 1
 
-game.deckdraws = {
+rules.deckdraws = {
     {
         name = "Mazo para robar",
         numbers = {"As", 2, 3, 4, 5, 6, 7, "J", "Q", "K"},
@@ -10,12 +10,12 @@ game.deckdraws = {
     }
 }
 
-game.keys_descriptions="\
+rules.keys_descriptions="\
 F5:Reload  Esc:Exit  Down:Toggle Fullscreen  D:Draw a card \
 [1-10]:Add to/Rem from Selection  Z:Clear Selection  T,Return:Throws \
 E:End Turn  S:Sort P:Pass Turn F1-4:Choose User  F12:None User"
 
-game.down_func={
+rules.down_func={
     K_DOWN   =   {"pygame.display.toggle_fullscreen()","local"} ,
     K_ESCAPE =   {"self.exit()","local"}, 
     K_F5     =   {"self.show()","local"}, 
@@ -28,17 +28,17 @@ game.down_func={
     K_d      =   {"self.draw_a_card","global"}, 
     K_p      =   {"self.pass_turn","global"}, 
 
-    K_1       =   prueba1, 
-    K_2       =   prueba2, 
+    K_1       =   game.prueba1, 
+    K_2       =   game.prueba2, 
 
-    K_F1      =   F1, 
-    K_F2      =   F2, 
-    K_F3      =   F3, 
-    K_F4      =   F4, 
-    K_F12     =   F12, 
+    K_F1      =   game.F1, 
+    K_F2      =   game.F2, 
+    K_F3      =   game.F3, 
+    K_F4      =   game.F4, 
+    K_F12     =   game.F12, 
 }
  
-function game:points(number,suit)
+function rules:points(number,suit)
     if number=="As" then
         r=14
     elseif number=="J" then
@@ -53,30 +53,32 @@ function game:points(number,suit)
     return r
 end
         
-function game:init()
-    getattr(deckdraws[0], 'shuffle')()
-    deal(60) --repartir cartas    
+function rules:new_round()
+    getattr(game.deckdraws[0], 'shuffle')()
+    game.deal(60) --repartir cartas    
 end
     
-function game:pass_turn()
-    if self.gamezone.pass_turns_counter==len(self.gamezone.players)-1 then
+function rules:pass_turn()
+    if game.pass_turns_counter==len(game.players)-1 then
         --dar el turno al jugador que tiro la ultima carta, no hace falta porque casualmente es el siguiente
         --#self.gamezone.players.index( self.throws[len(self.throws)-1][0].previous_owner)
-        
-        self.clear_playzone()
+
+        game.clear_playzone()
+
         --del self.throws[:]
-        for k in self.throws do table.remove(self.throws,k) end
-        
+        --for k in self.throws do table.remove(self.throws,k) end
+
         self.throws = {}
+
     end
 end
 
-function game:throw_cards(selection)
-    ending_turn()
+function rules:throw_cards(selection)
+    game.ending_turn()
     table.insert(self.throws, selection)
 end
 
-function game:throwable_selection(selection)
+function rules:throwable_selection(selection)
     --tiene que haber algo seleccionado
     if len(selection)==0 then return false end
     
@@ -106,4 +108,6 @@ function game:throwable_selection(selection)
     end
 end
 
+
+--function rules:is_round_finished() return true end
 

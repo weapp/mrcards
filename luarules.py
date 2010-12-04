@@ -4,30 +4,31 @@ from lupa import LuaRuntime
 
 def load(filename, pyvars, objs, lua):
     lua.execute("""\
-game = {}
+rules = {}
 py = {}
-function game:select() end
-function game:clear_selection() end
-function game:throw_cards(selection) end
-function game:throwable_selection(selection) return true end
-function game:draw_a_card() end
-function game:deal() end
-function game:pass_turn() end
-function game:end_turn() end
-function game:ending_turn() end
-function game:is_round_finished() return false end
-function game:end_of_round_roun() end
-function game:new_turn() end
-function game:terminable_turn() return true end
-function game:points() return 1 end
-function game:init() end
-game.deckdraws = {}
-game.caption = "Sin Nombre"
-game.descruption = "Sin Descripcion"
-game.playzone = 1
-game.keys_descriptions=""
-game.down_func={}
-game.throws = {}
+function rules:select() end
+function rules:clear_selection() end
+function rules:throw_cards(selection) end
+function rules:throwable_selection(selection) return true end
+function rules:draw_a_card() end
+function rules:deal() end
+function rules:pass_turn() end
+function rules:end_turn() end
+function rules:ending_turn() end
+function rules:is_round_finished() return false end
+function rules:end_of_round() end
+function rules:new_round() end
+function rules:new_turn() end
+function rules:terminable_turn() return true end
+function rules:points() return 1 end
+function rules:init() end
+rules.deckdraws = {}
+rules.caption = "Sin Nombre"
+rules.descruption = "Sin Descripcion"
+rules.playzone = 1
+rules.keys_descriptions=""
+rules.down_func={}
+rules.throws = {}
 """)
 
     for key, value in objs.items():
@@ -48,12 +49,15 @@ game.throws = {}
             self.rules = rules
 
         def __getattr__(self, attr):
-            if attr in ["throwable_selection", "throw_cards"]:
+            if attr == "down_func":
+                return dict((getattr(pygame, key), list(strfunc.values()) if \
+                             hasattr(strfunc,'values') else strfunc) \
+                            for key,strfunc in self.rules.down_func.items() )
+            elif attr in ["throwable_selection", "throw_cards"]:
                 f = getattr(self.rules, attr)
                 def colons(selection):
                     return f(self.rules, lua.table(*selection))
                 return colons
-                
             elif attr in ["select", "clear_selection", "draw_a_card", "deal", "pass_turn", "end_turn", "ending_turn", "is_round_finished", "end_of_round_roun", "new_turn", "terminable_turn", "points", "init"]:
                 f = getattr(self.rules, attr)
                 def colons(*args, **kws):
@@ -62,37 +66,8 @@ game.throws = {}
             else:
                 return getattr(self.rules, attr)
     
-    rules =  lua.eval("game")
+    rules =  lua.eval("rules")
     
-    
-    """
-    rulesthrowable_selection = rules.throwable_selection
-    def throwable_selection (self, selection):
-        table = lua.table(*selection)
-        return rulesthrowable_selection(self, table)
-    rules.throwable_selection = throwable_selection
-
-    rulesthrow_cards = rules.throw_cards
-    def throw_cards (self, selection):
-        table = lua.table(*selection)
-        return rulesthrow_cards(self, table)
-    rules.throw_cards = throw_cards
-    """
-    
-    #down_func...
-    t = {}
-    
-    def fun(tup):
-        tup = list(tup)
-        tup[0] = getattr(pygame, tup[0])
-        if hasattr(tup[1],'values'):
-            tup[1] = list(tup[1].values())
-        return tup
-    
-    t.update(map(fun,rules.down_func.items()))
-    rules.down_func = t
-    del t
-    #...down_func
     
     #deck_draws...
     
