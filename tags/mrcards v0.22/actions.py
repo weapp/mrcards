@@ -1,13 +1,22 @@
 #self.gz.p[self.gz.pwt]
 from deck import Deck
+import luarules
 """funciones que interactuaran con los mazos y las cartas"""
 
 
 class Actions:
     def __init__(self,gamezone,rules):
         self.gz=gamezone
+        
+        
+        """
         rules=__import__("rules").get_module(rules)
         self.rules=rules.Game(self.gz,self)
+        """
+        self.rules = luarules.load(rules, {"prueba1":self.prueba1,"prueba2":self.prueba2,"F1":self.F1,"F2":self.F2,"F3":self.F3,"F4":self.F4,"F12":self.F12,"deal":self.deal,"getattr":getattr,"len":len,"ending_turn":self.ending_turn},
+        {"deckdraw":lambda: self.gz.deckdraws[0]})
+        
+        
         self.gz._counter=0
         self.gz.player_with_turn=0
         self.gz.pass_turns_counter=0 
@@ -20,16 +29,18 @@ class Actions:
         del self.gz.deckdraws[:]
         
         for ideck in self.rules.deckdraws:
-            
-            self.gz.add_deckdraw(Deck(id_deck=ideck["name"], cards=[ideck["numbers"],ideck["suits"]],visible=False,point=self.rules.points))
-        self.rules.init()
+            self.gz.add_deckdraw(Deck(id_deck=ideck['name'], cards=[ideck['numbers'],ideck['suits']],visible=False,point=self.rules.points))
         
+        self.rules.init()
+        self.deal(60)
+     
     #seleccionar
     def select(self,n,player=-1):
         self.player=player
         self.player.select(n)
         try: self.rules.select()
         except AttributeError: pass
+        except TypeError:pass
         self.gz.show()
         
     def clear_selection(self,player=-1):
@@ -37,6 +48,7 @@ class Actions:
         self.player.clear_selection_from_deck()
         try: self.rules.clear_selection()
         except AttributeError: pass
+        except TypeError:pass
         self.gz.show()
     
     #seleccionar con el raton
@@ -45,6 +57,7 @@ class Actions:
         self.player.select_card(card)
         try: self.rules.select()
         except AttributeError: pass
+        except TypeError:pass
         self.gz.show()
         
     
@@ -58,11 +71,13 @@ class Actions:
             self.gz.throws.append(selection)
             try: self.rules.throw_cards(selection)
             except AttributeError: pass
+            except TypeError:pass
             self.gz.show()
     
     def throwable_selection(self,selection):
         try: r=self.rules.throwable_selection(selection)
         except AttributeError: r=True
+        except TypeError: r=True
         return r
     
     def draw_a_card(self,n=1,player=-1):
@@ -70,20 +85,23 @@ class Actions:
         self.player.draw_a_card(self.gz.deckdraws[0],n)
         try: self.rules.draw_a_card()
         except AttributeError: pass
+        except TypeError:pass
         self.gz.draw.show()
         
     def deal(self,n):
         self.gz.deckdraws[0].deal(n,self.gz.p)
         try: self.rules.deal()
         except AttributeError: pass
+        except TypeError: pass
         self.gz.show()
-    
+
     #otras
     def pass_turn(self,player=-1):
         self.player=player
         self.gz.pass_turns_counter+=1
         try: self.rules.pass_turn()
         except AttributeError: pass
+        except TypeError:pass
         self.ending_turn(pass_turn=True)
         
     def end_turn(self,player=-1):
@@ -91,6 +109,7 @@ class Actions:
         if self.gz.terminable_turn:
             try: self.rules.end_turn()
             except AttributeError: pass
+            except TypeError:pass
             self.ending_turn()
             
     def ending_turn(self,pass_turn=False):
@@ -107,17 +126,21 @@ class Actions:
         self.gz.player=self.gz.p[self.gz.pwt]
         try: self.rules.ending_turn()
         except AttributeError: pass
+        except TypeError:pass
         try: irf = self.rules.is_round_finished()
         except AttributeError: irf = False
+        except TypeError: irf = False
         if irf:
             try: self.rules.end_of_round()
             except AttributeError: pass
+            except TypeError:pass
             self.new_round()
             
         else:           
             self.gz.show()
             try: self.rules.new_turn()
             except AttributeError: pass
+            except TypeError:pass
     
     def clear_playzone(self):
         del self.gz.playzone[0].cards[:]

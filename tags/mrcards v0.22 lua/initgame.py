@@ -24,7 +24,6 @@ def main(rules, players, online=False):
       
     
 
-    actions=game.actions
     rules=game.rules
     
     for player in players:
@@ -33,7 +32,7 @@ def main(rules, players, online=False):
     if rules.playzone:
         game.add_playzone(id_deck="playzone",visible=True)
     
-    actions.new_round()
+    game.new_round()
     
     game.set_down_func(rules.down_func)
     
