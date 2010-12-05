@@ -137,7 +137,10 @@ class Deck:
         return len(self.cards)
     
     def __getitem__(self, clave):
-        return self.cards[clave]
+        if isinstance(clave, int):
+            return self.cards[clave]
+        else:
+            return getattr(self, clave)
         
     def __setitem__(self, clave, valor):
         self.cards[clave]=valor

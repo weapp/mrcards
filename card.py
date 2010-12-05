@@ -68,7 +68,6 @@ class Card:
             return "[" + str(_(self.number)) + " " + str(_(self.suit)) + "]"
         else:
             return "#"
-
     
     def __id__(self):
         return "[" + str(self.number) + " " + str(self.suit) + "]"
@@ -85,4 +84,4 @@ class Card:
     
     
     def __getitem__(self, key):
-        return self.__dict__[key]
+        return getattr(self, key)
