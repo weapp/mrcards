@@ -5,7 +5,6 @@ import deck
 import gamezone
 import net
 
-
 def main(rules, players, online=False):
     if online:
         netobj = net.Net(options=False)
@@ -27,6 +26,8 @@ def main(rules, players, online=False):
     game.init_bucle()
     
 if __name__ == "__main__":
+    import gettext
+    gettext.install('mrcards', './mo/', unicode=1)
     options={
     "rules":"culo", \
     "players":"Player_1,Player_2,Player_3,Player_4"

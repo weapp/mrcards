@@ -9,6 +9,41 @@ from drawer import Drawer
 import luarules
 
 
+keys = {
+    pygame.K_ESCAPE: "esc",
+    pygame.K_LALT: "lalt",
+    pygame.K_RALT: "ralt",
+    pygame.K_LCTRL: "lctrl",
+    pygame.K_RCTRL: "rctrl",
+    pygame.K_LSHIFT: "lshift",
+    pygame.K_RSHIFT: "rshift",
+    pygame.K_LEFT: "left",
+    pygame.K_UP: "up",
+    pygame.K_RIGHT: "right",
+    pygame.K_DOWN: "down",
+    pygame.K_DELETE: "delete",
+    pygame.K_BACKSPACE: "backspace",
+    pygame.K_SPACE: "space",
+    pygame.K_RETURN: "ret",
+    pygame.K_F1: "F1",
+    pygame.K_F2: "F2",
+    pygame.K_F3: "F3",
+    pygame.K_F4: "F4",
+    pygame.K_F5: "F5",
+    pygame.K_F6: "F6",
+    pygame.K_F7: "F7",
+    pygame.K_F8: "F8",
+    pygame.K_F9: "F9",
+    pygame.K_F10: "F10",
+    pygame.K_F11: "F11",
+    pygame.K_F12: "F12",
+    pygame.K_F13: "F13",
+    pygame.K_F14: "F14",
+    pygame.K_F15: "F15",
+}
+
+
+
 class Gamezone(object):
     def __init__(self,rules=False,down_func={},up_func={}, netobj=None, players=[]):
         self.show_layer_alternative=False
@@ -140,7 +175,7 @@ class Gamezone(object):
     # Pintar
     def show(self):
         self.drawer.show()
-        print self
+        #print self
     
     
     def __iter__(self):
@@ -171,9 +206,9 @@ class Gamezone(object):
                 
                 # Eventos de raton
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    print "boton" + str(event.button) + str(pygame.mouse.get_pos())
+                    #print "boton" + str(event.button) + str(pygame.mouse.get_pos())
                     if event.button ==1 and self.player_with_turn == self.user:
-                        print str(pygame.mouse.get_pos())
+                        #print str(pygame.mouse.get_pos())
                         card=self.drawer.obtain_zone(pygame.mouse.get_pos())
                         self.select_card(card)
                 
@@ -183,35 +218,50 @@ class Gamezone(object):
                 elif event.type == pygame.KEYUP:
                     dic_func=self.up_func
                             
-                if event.type == pygame.KEYDOWN or event.type == pygame.KEYUP:
-                    if dic_func.has_key(event.key) and (True or self.player_with_turn == self.user): # "true or", para poder cambiar de jugador
+                if event.type == pygame.KEYDOWN:# or event.type == pygame.KEYUP:
+                    key = repr(str(event.dict.get("unicode", "")))[1:-1]
+                    key = repr(str(keys.get(event.key, key)))[1:-1]
+                    if dic_func.has_key(key) and (True or self.player_with_turn == self.user): # "true or", para poder cambiar de jugador
                         
-                        if type(dic_func[event.key])==type([]):
-                            tmp_fun=dic_func[event.key][0]
-                            tmp_sco=dic_func[event.key][1] #scope:ambito:local,global
+
+                        
+                        if isinstance(dic_func[key], list):
+                            tmp_fun=dic_func[key][0]
+                            tmp_sco=dic_func[key][1] #scope:ambito:local,global
                             
                             if tmp_sco=="global":
                                 #if self.user==self.pwt:
                                 self.globaleventlist.append( str(tmp_fun)+","+str(self.user) )
                             else:
-                                print eval(tmp_fun)
+                                #print "tmp_fun: %s" % tmp_fun
+                                eval("self."+tmp_fun)
 
-                            print self.globaleventlist
+                            #print "globalevenlist: %s" % self.globaleventlist
 
                         else:
-                            dic_func[event.key]()
+                            dic_func[key]()
 
 
                 # Eventos de la lista
                 for event in self.globaleventlist:
-                    string = event.split(",")
-                    string[-1] = "player=" + string[-1]
-                    function = string[0]
-                    args = ",".join(string[1:])
-                    eval(function + "(" + args + ")")
+                    func_args = event.split(",")
+                    function = func_args[0]
+                    args = func_args[1:]
+                    #args[-1] = "player=" + args[-1]
+                    getattr(self,function)(*args[:-1], player=int(args[-1]))
+                    """
+                    args[-1] = "player=" + args[-1]
+                    args_ = ",".join(args)
+                    eval("self.%s(%s)" % (function, args_))
+                    
+                    f = file("f.txt","a")
+                    f.write(repr((function, args_, args)))
+                    f.close()
+                    """
                     if self.net:
                         self.net.send(function+':'+args)
                     del self.globaleventlist[self.globaleventlist.index(event)]
+                    
                     
             if self.net:
                 if self.player_with_turn != self.user:
@@ -219,10 +269,10 @@ class Gamezone(object):
                     # envie algo
                     msg = self.net.read_non_blocking()
                     if msg:
-                        print msg
+                        #print msg
                         sender, msg = msg.split('#')
                         if msg[0:3] == 'FUN':
-                            print 'DEBUG ===========> ', msg
+                            #print 'DEBUG ===========> ', msg
                             function, args = msg[4:].split(':')
                             eval(function + '(' + args + ')')
 
@@ -237,49 +287,45 @@ class Gamezone(object):
         for player in self.players:
             del player[:]
         del self.deckdraws[:]
-        
+        del self.deckdiscard[:]
+        del self.deckpoints[:]
+        for playzone in self.playzone:
+            del playzone[:]
+        del self.throws[:]
         for ideck in self.rules.deckdraws:
             self.add_deckdraw(Deck(id_deck=ideck['name'], cards=[ideck['numbers'],ideck['suits']],visible=False,point=self.rules.points))
 
+        self.user = self.player_default
+        self.player_with_turn=0
+        
         self.rules.new_round()
      
     #seleccionar
     def select(self,n,player=-1):
-        if player == -1:
-            player = self.player
-        else:
-            player = self.players[player]
-        self.player.select(n)
+        player = self.player if player == -1 else self.players[player]
+        player.select(n)
         self.rules.select()
         self.show()
         
     def clear_selection(self,player=-1):
-        self.player=player
-        self.player.clear_selection_from_deck()
+        player = self.player if player == -1 else self.players[player]
+        player.clear_selection_from_deck()
         self.rules.clear_selection()
         self.show()
     
     #seleccionar con el raton
     def select_card(self,card,player=-1):
-        if player == -1:
-            player = self.player
-        else:
-            player = self.players[player]
+        player = self.player if player == -1 else self.players[player]
         player.select_card(card)
         self.rules.select()
         self.show()
-        
-    
     
     #entre mazos    
     def throw_cards(self,player=-1):
-        if player == -1:
-            player = self.player
-        else:
-            player = self.players[player]
-        selection=player.get_selection_from_deck()                
+        player = self.player if player == -1 else self.players[player]
+        selection=player.get_selection_from_deck()
         if self.throwable_selection(selection):#and self.p[self.pwt].clickable:
-            self.player.send(self.playzone[self.playzone_active])
+            player.send(self.playzone[self.playzone_active])
             self.throws.append(selection)
             self.rules.throw_cards(selection)
             self.show()
@@ -289,13 +335,10 @@ class Gamezone(object):
         return r
     
     def draw_a_card(self,n=1,player=-1):
-        if player == -1:
-            player = self.player
-        else:
-            player = self.players[player]
+        player = self.player if player == -1 else self.players[player]
         player.draw_a_card(self.deckdraws[0],n)
         self.rules.draw_a_card()
-        self.draw.show()
+        self.show()
         
     def deal(self,n):
         self.deckdraws[0].deal(n,self.players)
@@ -304,11 +347,13 @@ class Gamezone(object):
 
     #otras
     def pass_turn(self,player=-1):
+        #player = self.player if player == -1 else self.players[player]
         self.pass_turns_counter+=1
         self.rules.pass_turn()
         self.ending_turn(pass_turn=True)
         
     def end_turn(self,player=-1):
+        player = self.player if player == -1 else self.players[player]
         if self.rules.terminable_turn():
             self.rules.end_turn()
             self.ending_turn()
@@ -318,20 +363,22 @@ class Gamezone(object):
         if not pass_turn:
             self.pass_turns_counter=0
         if self.clockwise_direction:
-            self.player_with_turn+=1
+            self.player_with_turn+= 1 
         else:
-            self.player_with_turn-=1
+            self.player_with_turn-= 1 
         if self.pwt==0:
             self.turn+=1
         self.player_with_turn%=len(self.players)
         self.player=self.players[self.pwt]
         self.rules.ending_turn()
         if self.rules.is_round_finished():
-            print "\n"*10, "END OF ROUND", "\n"*10 
+            #print "\n"*10, "END OF ROUND", "\n"*10 
             self.rules.end_of_round()
-            self.new_round()
-            
-        else:           
+            if self.rules.is_game_finished():
+                self.rules.end_game()
+            else:
+                self.new_round()
+        else:
             self.show()
             self.rules.new_turn()
             
@@ -342,38 +389,39 @@ class Gamezone(object):
         pass#plantarse o retirarse TODO no puede estar bien, no es lo mismo no apostar mas que dejar el juego
         
     def discard(self,deckdiscard=None,player=-1):
-        self.player=player
+        player = self.player if player == -1 else self.players[player]
         #if self.p[self.pwt].clickable:
         if deckdiscard==None:
             deckdiscard=self.deckdiscard[self.deckdiscard_active]
-        self.player.send(deckdiscard)
+        player.send(deckdiscard)
         self.show()
         
     #ordenar
     def sort_by_suit(self,player=-1):
         """ordena el mazo del jugador cuyo indice se pasa por argumentos, en caso de no indicar cual utilizara
     el jugador con el turno"""
-        self.player=player
-        self.player.sort_by_suit()
+        player = self.player if player == -1 else self.players[player]
+        player.sort_by_suit()
         self.show()
         
     def sort_by_number(self,player=-1):
-        self.player=player
-        self.player.sort_by_number()
+        player = self.player if player == -1 else self.players[player]
+        player.sort_by_number()
         self.show()
         
     def sort_by_points(self,player=-1):
-        self.player=player
-        self.player.sort_by_points()
+        player = self.player if player == -1 else self.players[player]
+        player.sort_by_points()
         self.show()
         
-    def sort(self,by,player):
+    def sort(self, by, player=-1):
+        player = self.player if player == -1 else self.players[player]
         if by=="suit":
-            self.globaleventlist.append([self.user,"self.sort_by_suit()"])
+            self.globaleventlist.append("self.sort_by_suit,%s" % self.user)
         elif by=="number":
-            self.globaleventlist.append([self.user,"self.sort_by_number()"])
+            self.globaleventlist.append("self.sort_by_number,%s" % self.user)
         elif by=="points":
-            self.globaleventlist.append([self.user,"self.sort_by_points()"])
+            self.globaleventlist.append("self.sort_by_points,%s" % self.user)
         
     
     def showalt(self):
@@ -426,7 +474,6 @@ class Gamezone(object):
             for card in self.players[f].cards:
                 card.setVisibility(True)
         self.show()
-        print f
         
     def F1(self):
         self.F(0)
@@ -438,3 +485,6 @@ class Gamezone(object):
         self.F(3)
     def F12(self):
         self.F(10)
+        
+    def toggle_fullscreen(self):
+        pygame.display.toggle_fullscreen()

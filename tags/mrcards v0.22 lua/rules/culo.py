@@ -5,7 +5,37 @@ class AI:
     def __init__(self):
         pass
 
-class Game:
+class BasicGame:
+    def __init__(self):
+        self.deckdraws = [],
+        self.caption = "Sin Nombre",
+        self.descruption = "Sin Descripcion",
+        self.playzone = 1,
+        self.keys_descriptions="",
+        self.down_func={},
+        self.throws = []
+    
+    def select(self): pass
+    def clear_selection(self): pass
+    def throw_cards(self): pass
+    def throwable_selection(self, selection): return true
+    def draw_a_card(self): pass
+    def deal(self): pass
+    def pass_turn(self): pass
+    def end_turn(self): pass
+    def ending_turn(self): pass
+    def is_round_finished(self): return False
+    def end_of_round(self): pass
+    def new_round(self): pass
+    def new_turn(self): pass
+    def terminable_turn(self): return True
+    def points(self, number, suit): return 1
+    def init(self): pass
+    
+    
+    
+
+class Game(BasicGame):
     def __init__(self,gamezone):
         self.gamezone=gamezone
         self.throws=[]
@@ -55,7 +85,7 @@ class Game:
             r=number
         return r
         
-    def init(self):
+    def new_round(self):
         self.gamezone.deckdraws[0].shuffle()
         self.gamezone.deal(60) #repartir cartas    
         
@@ -97,10 +127,6 @@ class Game:
         if self.gamezone.player_with_turn>0:
             self.actions.sort_by_points()
                 #last_throw=throws[len(throws)-1][0].number
-                
-                
-                
-                
             pygame.K_1      :   ["self.actions.select(0)","global"], \
             pygame.K_2      :   ["self.actions.select(1)","global"], \
             pygame.K_3      :   ["self.actions.select(2)","global"], \
@@ -123,9 +149,4 @@ class Game:
             pygame.K_h      :   ["self.actions.select(19)","global"], \
             pygame.K_g      :   ["self.actions.select(20)","global"], \
             pygame.K_f      :   ["self.actions.select(21)","global"], \
-                
-                
-                
-                
-       
         """

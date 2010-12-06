@@ -336,10 +336,10 @@ class Drawer:
         color=self.alt_screen.get_at((x,y))
         if color[0]:
             r=self.zones[color[0]]
-            print r
+            #print r
             return r
         else:
-            print None
+            #print None
             return 0
 
 def prop(i, max1, max2):
