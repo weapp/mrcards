@@ -8,10 +8,10 @@ rules.winers = {}
 rules.deckdraws = list {
     {
         name = "Mazo para robar",
-        --numbers = list {"As", 2, 3, 4, 5, 6, 7, "J", "Q", "K"},
-        numbers = list {"2","4"},
-        --suits = list {"spades", "diamonds", "clubs", "hearts"}
-        suits = list {"spades"}
+        numbers = list {"As", 2, 3, 4, 5, 6, 7, "J", "Q", "K"},
+        --numbers = list {"2","4"},
+        suits = list {"spades", "diamonds", "clubs", "hearts"}
+        --suits = list {"spades"}
     },  
 }
 
