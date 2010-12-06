@@ -21,20 +21,26 @@ rules = {
     terminable_turn = function() return true end,
     points = function() return 1 end,
     init = function() end,
+    is_game_finished = function() return true end,
+    end_game = function() end,
     deckdraws = {},
     caption = "Sin Nombre",
-    descruption = "Sin Descripcion",
+    description = "Sin Descripcion",
     playzone = 1,
-    keys_descriptions="",
-    down_func={},
-    throws = {}
+    keys_descriptions=""
 }
 py = {}
 """)
+    lua.globals()["exit"] = exit
     lua.globals()["list"] = lambda elem: list(elem.values())
-    lua.globals()["keys"] = lambda elem: dict((getattr(pygame, key), strfunc) \
-                            for key,strfunc in elem.items() )
+    lua.globals()["dict"] = lambda elem: dict(elem.items())
     lua.globals()["list2table"] = lambda elem: lua.table(*elem)
+    lua.globals()["iter"] = lua.globals()["python"]["iter"]
+    lua.globals()["enumerate"] = lua.globals()["python"]["enumerate"]
+    lua.globals()["iterex"] = lua.globals()["python"]["iterex"]
+
+    lua.execute("""python = nil""")
+
     for key, value in pyvars.items():
        lua.globals()[key] = value
     for key, value in objs.items():
@@ -64,18 +70,19 @@ irules = {
     end_turn = function() return rules:end_turn() end,
     ending_turn = function() return rules:ending_turn() end,
     is_round_finished = function() return rules:is_round_finished() end,
-    end_of_round_roun = function() return rules:end_of_round() end,
+    end_of_round = function() return rules:end_of_round() end,
     new_turn = function() return rules:new_turn() end,
     terminable_turn = function() return rules:terminable_turn() end,
     points = function(number,suit) return rules:points(number,suit) end,
-    init = function() return rules:init() end
+    init = function() return rules:init() end,
+    is_game_finished = function() return rules:is_game_finished() end,
+    end_game = function() return rules:end_game() end,
 }    """)
 
     return lua.eval("irules")
     
 
 lua = LuaRuntime()
-lua.execute("""python = nil""")
 
 
 load = functools.partial(load, lua=lua)

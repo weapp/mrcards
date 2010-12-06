@@ -60,8 +60,6 @@ class Card:
     def remove_from_selection(self):
         self.selected=False
     
-
-    
     def __str__(self):
         if self.visible:
             #return "["+str(self.id) + ":" + str(self.number) + " de " + str(self.suit) + "("+str(self.points)+"p)]"
