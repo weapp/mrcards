@@ -417,11 +417,11 @@ class Gamezone(object):
     def sort(self, by, player=-1):
         player = self.player if player == -1 else self.players[player]
         if by=="suit":
-            self.globaleventlist.append("self.sort_by_suit,%s" % self.user)
+            self.globaleventlist.append("sort_by_suit,%s" % self.user)
         elif by=="number":
-            self.globaleventlist.append("self.sort_by_number,%s" % self.user)
+            self.globaleventlist.append("sort_by_number,%s" % self.user)
         elif by=="points":
-            self.globaleventlist.append("self.sort_by_points,%s" % self.user)
+            self.globaleventlist.append("sort_by_points,%s" % self.user)
         
     
     def showalt(self):
