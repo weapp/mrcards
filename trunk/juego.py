@@ -44,7 +44,7 @@ class Menu(module.Module):
 
 class ControllerMenu(module.Module):
 	def __init__(self, data, drawer):
-		
+		pass
 
 class ItemMenu(module.Module):
 	def __init__(self, name, option, *args, **kws):
