@@ -1,0 +1,20 @@
+ * Adaptar el mrcards lua a las librerias en trunk
+        * Especial atencion en el manejo de los eventos
+ * Mejorar la forma de definir los eventos de pulsado de tecla, actualmente 
+   hay 2 tipos:
+        * Por lista
+            * Si es local se pasa la funcion con parametros
+            * Si es global solo se pasa el nombre de la funcion
+        * Por una referencia a una funcion
+   Estudiar cual es la mejor opción teniendo en cuenta que es necesario un 
+   juego red.
+ * Cambiar el drawer que muestre transiciones cuando se roba o se echan cartas
+   y añadir en el gamezone que se envie al drawer las señales necesarias al
+   drawer
+ * Añadir al drawer funciones para pintar tablas de clasificaciones
+   (actualmente se muestran en consola)
+ * Arreglar el juego en Red:
+        * Eliminar la parte de red que hay ahora
+        * Implementar un modelo basado en un servidor centralizado
+        * Seria una buena opción, utilizar http y json
+        * Anyadir este modelo en la capa de las librerias
