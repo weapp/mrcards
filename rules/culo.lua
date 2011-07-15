@@ -8,9 +8,10 @@ rules.winers = {}
 rules.deckdraws = list {
     {
         name = "Mazo para robar",
-        numbers = list {"As", 2, 3, 4, 5, 6, 7, "J", "Q", "K"},
+        numbers = list {"As", 2, 3, 4, 5, 6, 7, "J", "Q", "K","As", 2, 3, 4, 5, 6, 7, "J", "Q", "K","As", 2, 3, 4, 5, 6, 7, "J", "Q", "K","As", 2, 3, 4, 5, 6, 7, "J", "Q", "K",},
         --numbers = list {"2","4"},
-        suits = list {"spades", "diamonds", "clubs", "hearts"}
+        --suits = list {"spades", "diamonds", "clubs", "hearts"}
+        suits = list {"spades", "diamonds", "clubs", "hearts","selected","oros","copas","bastos","espadas","spades", "diamonds", "clubs", "hearts","selected","oros","copas","bastos","espadas",}
         --suits = list {"spades"}
     },  
 }
@@ -35,10 +36,10 @@ rules.down_func= dict {
     p      =  list {"pass_turn", "global"}, 
     down   =  game.toggle_fullscreen ,
     F5     =  game.show, 
-    UP     =  game.showalt, 
+    up     =  game.showalt, 
     esc    =  game.exit, 
-    [1]    =  game.prueba1,
-    [2]    =  game.prueba2, 
+    ["1"]    =  game.prueba1,
+    ["2"]    =  game.prueba2, 
     F1     =  game.F1, 
     F2     =  game.F2, 
     F3     =  game.F3, 

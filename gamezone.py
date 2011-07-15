@@ -457,6 +457,7 @@ class Gamezone(object):
             
     #acciones para las pruebas       
     def prueba1(self):
+        print "prueba1"
         self.drawer.ancho *= 0.5
         pass
         
