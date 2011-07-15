@@ -19,6 +19,7 @@ print "\n\n\ncargado pars:",pars
 
 
 class Zones:
+
     def __init__(self):
         self.counter=0
         self.zones={}
@@ -26,8 +27,10 @@ class Zones:
     def create_color(self,item):
         self.counter+=1
         self.zones[self.counter]=item
-        return (self.counter,self.counter,self.counter)
+        return ((self.counter/(256**2))%256,(self.counter/256)%256,self.counter%256)
         
+    def get_number(self, color):
+        return color[0] * (256**2) + color[1] * 256 + color[2]
         
     def __getitem__(self, item):
         return self.zones[item]
@@ -268,8 +271,6 @@ class Drawer:
             for card in deck:
                 self.show_card(card, zoom=0.50)
         
-        
-        
         if self.gz.show_layer_alternative:
             self.screen.blit(self.alt_screen, self.screen.get_rect())
         
@@ -334,8 +335,9 @@ class Drawer:
         
     def obtain_zone(self, (x, y)):
         color=self.alt_screen.get_at((x,y))
-        if color[0]:
-            r=self.zones[color[0]]
+        index = self.zones.get_number(color)
+        if index:
+            r=self.zones[index]
             #print r
             return r
         else:
