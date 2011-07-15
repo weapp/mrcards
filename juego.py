@@ -7,6 +7,7 @@ import pygame
 from library import core
 from library.stdmodules.apps import extendedapp
 from library.stdmodules import module
+import objects
 
 class obj(module.Module):
 	def __init__ (self, char="#"):
@@ -80,11 +81,21 @@ class factory(object):
 		
 	def Menu(self,*args,**kws):
 		return Menu(*args,**kws)
-	
+
+class factory:
+	def list(self,*arg): return arg
+	def __getattr__(self, name):
+		return getattr(getattr(objects, name), name)
+
+
 c=core.Core()
 app=extendedapp.ExtendedApp(factory())
-app.get_childs('#SceneManager')[0].charge_and_change_scene('scena1', 'menu.xml')
-core.FLAGS ^= pygame.RESIZABLE
-c.set_size((150,150))
+
+
+app['SceneManager'].charge_and_change_scene('scena1', 'menu.xml')
+#app.get_childs('#SceneManager')[0].charge_and_change_scene('scena1', 'menu.xml')
+
+c.video.flags ^= pygame.RESIZABLE
+c.video.set_size((150,150))
 c.set_app(app)
 c.start()

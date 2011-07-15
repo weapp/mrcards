@@ -1,0 +1,53 @@
+<state>
+	<style file="css"/>
+
+	<layer>
+	<div background-color="#FFF">
+
+		<div content="" margin="[175,15,55,25]"  border_color="[100,100,100,200]" border_width="5">
+		
+			<background filename="image" />
+			<div content="Menu" margin="[20,20,20,20]" background-color="[130,130,175,100]" horizontal-alignment="left" width="150">
+			<menu>
+				<itemmenu name="Reset" func="menu" />
+				<itemmenu name="Instinctiv" func="spot" />
+				<itemmenu name="Instinctiv" func="spot" />
+				<itemmenu name="Instinctiv" func="spot" />
+				<itemmenu name="Instinctiv" func="spot" />
+				<itemmenu name="Instinctiv" func="spot" />
+			</menu>
+			</div>
+			<div content="Content" margin="[170,20,20,20]" background-color="#8884" />
+			<button func="core.core.get_app()['SceneManager'].change_scene('menu')" content="Reset" vertical_alignment="bottom" horizontal_alignment="right" margin="[0,0,15,15]" kind="classic"/>
+			<button func="core.core.get_app()['SceneManager'].change_scene('spot')" content="Instinctiv" vertical_alignment="bottom" horizontal_alignment="right" margin="[0,0,215,15]" kind="classic" />
+			<button id="close" func="core.core.stop()"/>
+
+			<imagedraggable background-image="ad" margin="80,80"/>
+
+		</div>
+	</div>
+	
+
+		
+	</layer>
+	
+<!--
+	<obj type="gfxobj">
+		<param>1. Ir al Menu 3</param>
+		<param>menu</param>
+	</obj>
+-->	
+
+	<character filename="vx_chara01_b.png" num="4" up="w" down="s" left="a" right="d" jump="e" />
+	<character filename="vx_chara01_b.png" num="2" up="up" down="down" left="left" right="right" jump="space" />
+	
+	<!--
+	<obj type="libmenu2">
+		<param>Pref</param>
+		<param>Cont</param>
+		<param>Exit</param>
+	</obj>
+	
+	-->
+	
+</state>

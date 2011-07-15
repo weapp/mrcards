@@ -18,6 +18,7 @@ def loadFont(name, size, force=False): #TODO eliminar try y catch
     for FORMAT in FORMATS:
         fullname = path.join (SKIN, str(name) + '.' + FORMAT)
         try:
+            print fullname
             font = pygame.font.Font(fullname, size)
             cargado = True
             break
